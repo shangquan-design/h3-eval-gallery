@@ -544,6 +544,14 @@
         "sha256": "2739224814853dbdea60be2a78d1cd38b08bf38b8f901b8eea809fcba56ef92d",
         "note": "newest milestone found on disk; checkpoint file dmd_student_iter700_FINAL.safetensors saved same day as this artifact was built; training job 4382 was still running toward iter=1000 at build time",
         "public_path": "assets/video/s_campfire_sparks_dmd_student_iter700.mp4"
+      },
+      "iter1000": {
+        "path": "/data/home/sunsean/work/h3_sft_dmd/outputs/eval_full/s_campfire_sparks_dmd_student_iter1000.mp4",
+        "exists": true,
+        "size_bytes": 1921728,
+        "sha256": "07aab7a2afebd16056b1ac1bccd1a7685ef09867b101f146a70942ac5c0a8c0c",
+        "note": "iter1000 -- final DMD milestone (job 4382 completed 2026-09-06); the iter700 entry above previously noted this job was 'still running toward iter=1000 at build time'. Added to the progression gallery for Dense-vs-iter1000 comparison; not used to re-select the 3-way comparison arm (that curatorial choice, iter700, is preserved as originally documented in arm_selection.dmd8_main_arm).",
+        "public_path": "assets/video/s_campfire_sparks_dmd_student_iter1000.mp4"
       }
     },
     "s_gas_stove_flare": {
@@ -594,6 +602,14 @@
         "sha256": "36f0fce516c1da06e7344ef6ce5bb8792dc2845e5f1e309444c9487e25058a6f",
         "note": "newest milestone found on disk; checkpoint file dmd_student_iter700_FINAL.safetensors saved same day as this artifact was built; training job 4382 was still running toward iter=1000 at build time",
         "public_path": "assets/video/s_gas_stove_flare_dmd_student_iter700.mp4"
+      },
+      "iter1000": {
+        "path": "/data/home/sunsean/work/h3_sft_dmd/outputs/eval_full/s_gas_stove_flare_dmd_student_iter1000.mp4",
+        "exists": true,
+        "size_bytes": 1079124,
+        "sha256": "6fa024b55a74ac95b634a03d0fb8ea733bb275ff9fad6d8744f406d678aef49e",
+        "note": "iter1000 -- final DMD milestone (job 4382 completed 2026-09-06); the iter700 entry above previously noted this job was 'still running toward iter=1000 at build time'. Added to the progression gallery for Dense-vs-iter1000 comparison; not used to re-select the 3-way comparison arm (that curatorial choice, iter700, is preserved as originally documented in arm_selection.dmd8_main_arm).",
+        "public_path": "assets/video/s_gas_stove_flare_dmd_student_iter1000.mp4"
       }
     },
     "s_incense_smoke_curl": {
@@ -644,6 +660,14 @@
         "sha256": "d2b01427ce2d4f24889cc56e7130a0e77228b0f3e0b35dab21f723c71e2c5ed9",
         "note": "newest milestone found on disk; checkpoint file dmd_student_iter700_FINAL.safetensors saved same day as this artifact was built; training job 4382 was still running toward iter=1000 at build time",
         "public_path": "assets/video/s_incense_smoke_curl_dmd_student_iter700.mp4"
+      },
+      "iter1000": {
+        "path": "/data/home/sunsean/work/h3_sft_dmd/outputs/eval_full/s_incense_smoke_curl_dmd_student_iter1000.mp4",
+        "exists": true,
+        "size_bytes": 572489,
+        "sha256": "330aad548a82fab759dc21d6cabfb59ee9082a6a00a98512b0e66e05884c1afc",
+        "note": "iter1000 -- final DMD milestone (job 4382 completed 2026-09-06); the iter700 entry above previously noted this job was 'still running toward iter=1000 at build time'. Added to the progression gallery for Dense-vs-iter1000 comparison; not used to re-select the 3-way comparison arm (that curatorial choice, iter700, is preserved as originally documented in arm_selection.dmd8_main_arm).",
+        "public_path": "assets/video/s_incense_smoke_curl_dmd_student_iter1000.mp4"
       }
     },
     "s_firework_burst": {
@@ -694,6 +718,14 @@
         "sha256": "69e0fe6e529458a7b82892b429144056e7c428d8a33dfbe6cef080c40847ddc1",
         "note": "newest milestone found on disk; checkpoint file dmd_student_iter700_FINAL.safetensors saved same day as this artifact was built; training job 4382 was still running toward iter=1000 at build time",
         "public_path": "assets/video/s_firework_burst_dmd_student_iter700.mp4"
+      },
+      "iter1000": {
+        "path": "/data/home/sunsean/work/h3_sft_dmd/outputs/eval_full/s_firework_burst_dmd_student_iter1000.mp4",
+        "exists": true,
+        "size_bytes": 1571717,
+        "sha256": "7f9be25459e33a64ee4a1ebae3d40edc90a57f5f55ff3f74f07ad6226ae2356e",
+        "note": "iter1000 -- final DMD milestone (job 4382 completed 2026-09-06); the iter700 entry above previously noted this job was 'still running toward iter=1000 at build time'. Added to the progression gallery for Dense-vs-iter1000 comparison; not used to re-select the 3-way comparison arm (that curatorial choice, iter700, is preserved as originally documented in arm_selection.dmd8_main_arm).",
+        "public_path": "assets/video/s_firework_burst_dmd_student_iter1000.mp4"
       }
     },
     "s_building_demolition": {
@@ -744,6 +776,14 @@
         "sha256": "6e714d6081c6119cdea83e347eb72ac4dffd3a65dfd222ad4f25ba0e8766e4a4",
         "note": "newest milestone found on disk; checkpoint file dmd_student_iter700_FINAL.safetensors saved same day as this artifact was built; training job 4382 was still running toward iter=1000 at build time",
         "public_path": "assets/video/s_building_demolition_dmd_student_iter700.mp4"
+      },
+      "iter1000": {
+        "path": "/data/home/sunsean/work/h3_sft_dmd/outputs/eval_full/s_building_demolition_dmd_student_iter1000.mp4",
+        "exists": true,
+        "size_bytes": 2292519,
+        "sha256": "e16fd5d50191698516d54d0e2557225af413c8ee4c3714828e4c10d738e64fc2",
+        "note": "iter1000 -- final DMD milestone (job 4382 completed 2026-09-06); the iter700 entry above previously noted this job was 'still running toward iter=1000 at build time'. Added to the progression gallery for Dense-vs-iter1000 comparison; not used to re-select the 3-way comparison arm (that curatorial choice, iter700, is preserved as originally documented in arm_selection.dmd8_main_arm).",
+        "public_path": "assets/video/s_building_demolition_dmd_student_iter1000.mp4"
       }
     },
     "s_house_fire_window": {
@@ -794,6 +834,14 @@
         "sha256": "60783d3093d5584446e5dea817801abfd2a8f617dab081c2c06f8b1969ccf533",
         "note": "newest milestone found on disk; checkpoint file dmd_student_iter700_FINAL.safetensors saved same day as this artifact was built; training job 4382 was still running toward iter=1000 at build time",
         "public_path": "assets/video/s_house_fire_window_dmd_student_iter700.mp4"
+      },
+      "iter1000": {
+        "path": "/data/home/sunsean/work/h3_sft_dmd/outputs/eval_full/s_house_fire_window_dmd_student_iter1000.mp4",
+        "exists": true,
+        "size_bytes": 783723,
+        "sha256": "606543348096985ef60871e5a6e528351c62a56732583e0c33444244c94f2537",
+        "note": "iter1000 -- final DMD milestone (job 4382 completed 2026-09-06); the iter700 entry above previously noted this job was 'still running toward iter=1000 at build time'. Added to the progression gallery for Dense-vs-iter1000 comparison; not used to re-select the 3-way comparison arm (that curatorial choice, iter700, is preserved as originally documented in arm_selection.dmd8_main_arm).",
+        "public_path": "assets/video/s_house_fire_window_dmd_student_iter1000.mp4"
       }
     },
     "s_smoke_grenade_field": {
@@ -844,6 +892,14 @@
         "sha256": "e9fea306d25e0b021c41b0b472e7788f60323dc3e01462edfdec1763704edc24",
         "note": "newest milestone found on disk; checkpoint file dmd_student_iter700_FINAL.safetensors saved same day as this artifact was built; training job 4382 was still running toward iter=1000 at build time",
         "public_path": "assets/video/s_smoke_grenade_field_dmd_student_iter700.mp4"
+      },
+      "iter1000": {
+        "path": "/data/home/sunsean/work/h3_sft_dmd/outputs/eval_full/s_smoke_grenade_field_dmd_student_iter1000.mp4",
+        "exists": true,
+        "size_bytes": 1504839,
+        "sha256": "b52fcf6d8911c7e868d29c5a26f680b7db9f435b74a5b7bbca9f14d242095a35",
+        "note": "iter1000 -- final DMD milestone (job 4382 completed 2026-09-06); the iter700 entry above previously noted this job was 'still running toward iter=1000 at build time'. Added to the progression gallery for Dense-vs-iter1000 comparison; not used to re-select the 3-way comparison arm (that curatorial choice, iter700, is preserved as originally documented in arm_selection.dmd8_main_arm).",
+        "public_path": "assets/video/s_smoke_grenade_field_dmd_student_iter1000.mp4"
       }
     },
     "s_volcano_eruption_distant": {
@@ -894,6 +950,14 @@
         "sha256": "31c7a2d979cf882ebb68bcd1ecd429b2d40b6670c77e59418636b91e3b0dd217",
         "note": "newest milestone found on disk; checkpoint file dmd_student_iter700_FINAL.safetensors saved same day as this artifact was built; training job 4382 was still running toward iter=1000 at build time",
         "public_path": "assets/video/s_volcano_eruption_distant_dmd_student_iter700.mp4"
+      },
+      "iter1000": {
+        "path": "/data/home/sunsean/work/h3_sft_dmd/outputs/eval_full/s_volcano_eruption_distant_dmd_student_iter1000.mp4",
+        "exists": true,
+        "size_bytes": 1124886,
+        "sha256": "8dcfa767f15ab21147ad00bef7fa4f3144dff55f158f5a3daba192bf0512afb0",
+        "note": "iter1000 -- final DMD milestone (job 4382 completed 2026-09-06); the iter700 entry above previously noted this job was 'still running toward iter=1000 at build time'. Added to the progression gallery for Dense-vs-iter1000 comparison; not used to re-select the 3-way comparison arm (that curatorial choice, iter700, is preserved as originally documented in arm_selection.dmd8_main_arm).",
+        "public_path": "assets/video/s_volcano_eruption_distant_dmd_student_iter1000.mp4"
       }
     },
     "n_water_balloon_splash": {
@@ -944,6 +1008,14 @@
         "sha256": "952f862aed1555cb2ae6eda827f0a99216d6f4961a2dfe58cee0265fed5e1f8a",
         "note": "newest milestone found on disk; checkpoint file dmd_student_iter700_FINAL.safetensors saved same day as this artifact was built; training job 4382 was still running toward iter=1000 at build time",
         "public_path": "assets/video/n_water_balloon_splash_dmd_student_iter700.mp4"
+      },
+      "iter1000": {
+        "path": "/data/home/sunsean/work/h3_sft_dmd/outputs/eval_full/n_water_balloon_splash_dmd_student_iter1000.mp4",
+        "exists": true,
+        "size_bytes": 3355679,
+        "sha256": "445704fbcd65ef7843bd309daa36e2ae57fb01da1f8db67a989d680101726262",
+        "note": "iter1000 -- final DMD milestone (job 4382 completed 2026-09-06); the iter700 entry above previously noted this job was 'still running toward iter=1000 at build time'. Added to the progression gallery for Dense-vs-iter1000 comparison; not used to re-select the 3-way comparison arm (that curatorial choice, iter700, is preserved as originally documented in arm_selection.dmd8_main_arm).",
+        "public_path": "assets/video/n_water_balloon_splash_dmd_student_iter1000.mp4"
       }
     },
     "n_domino_chain_fall": {
@@ -994,6 +1066,14 @@
         "sha256": "d3cd281c5247a43debba6cffc07a735785788b037f86ddcf0c879c65555d26d3",
         "note": "newest milestone found on disk; checkpoint file dmd_student_iter700_FINAL.safetensors saved same day as this artifact was built; training job 4382 was still running toward iter=1000 at build time",
         "public_path": "assets/video/n_domino_chain_fall_dmd_student_iter700.mp4"
+      },
+      "iter1000": {
+        "path": "/data/home/sunsean/work/h3_sft_dmd/outputs/eval_full/n_domino_chain_fall_dmd_student_iter1000.mp4",
+        "exists": true,
+        "size_bytes": 761780,
+        "sha256": "0531368bd2b1fa3a5de82e93f1bf40268081aa5db2f5ebca79a89095f95ab937",
+        "note": "iter1000 -- final DMD milestone (job 4382 completed 2026-09-06); the iter700 entry above previously noted this job was 'still running toward iter=1000 at build time'. Added to the progression gallery for Dense-vs-iter1000 comparison; not used to re-select the 3-way comparison arm (that curatorial choice, iter700, is preserved as originally documented in arm_selection.dmd8_main_arm).",
+        "public_path": "assets/video/n_domino_chain_fall_dmd_student_iter1000.mp4"
       }
     },
     "n_glass_shatter_impact": {
@@ -1044,6 +1124,14 @@
         "sha256": "c7a62656b5f8d0015ccc8e50580c26cc2adeb84cfebdf6a69c10af2314d36cc7",
         "note": "newest milestone found on disk; checkpoint file dmd_student_iter700_FINAL.safetensors saved same day as this artifact was built; training job 4382 was still running toward iter=1000 at build time",
         "public_path": "assets/video/n_glass_shatter_impact_dmd_student_iter700.mp4"
+      },
+      "iter1000": {
+        "path": "/data/home/sunsean/work/h3_sft_dmd/outputs/eval_full/n_glass_shatter_impact_dmd_student_iter1000.mp4",
+        "exists": true,
+        "size_bytes": 2471337,
+        "sha256": "1bc175d74accb2768fc0158be4d90572e1c699e843e8048be44d5a97dd4faf84",
+        "note": "iter1000 -- final DMD milestone (job 4382 completed 2026-09-06); the iter700 entry above previously noted this job was 'still running toward iter=1000 at build time'. Added to the progression gallery for Dense-vs-iter1000 comparison; not used to re-select the 3-way comparison arm (that curatorial choice, iter700, is preserved as originally documented in arm_selection.dmd8_main_arm).",
+        "public_path": "assets/video/n_glass_shatter_impact_dmd_student_iter1000.mp4"
       }
     },
     "h_snowglobe": {
@@ -1094,6 +1182,14 @@
         "sha256": "f033cd7947daa779563792fc8fd8add5db1bb0e229add3027283580368ba572b",
         "note": "newest milestone found on disk; checkpoint file dmd_student_iter700_FINAL.safetensors saved same day as this artifact was built; training job 4382 was still running toward iter=1000 at build time",
         "public_path": "assets/video/h_snowglobe_dmd_student_iter700.mp4"
+      },
+      "iter1000": {
+        "path": "/data/home/sunsean/work/h3_sft_dmd/outputs/eval_full/h_snowglobe_dmd_student_iter1000.mp4",
+        "exists": true,
+        "size_bytes": 1033318,
+        "sha256": "be33676a4714240bd80a4adf2120b29e60170c4102624f5ca59940aa96d4b1a7",
+        "note": "iter1000 -- final DMD milestone (job 4382 completed 2026-09-06); the iter700 entry above previously noted this job was 'still running toward iter=1000 at build time'. Added to the progression gallery for Dense-vs-iter1000 comparison; not used to re-select the 3-way comparison arm (that curatorial choice, iter700, is preserved as originally documented in arm_selection.dmd8_main_arm).",
+        "public_path": "assets/video/h_snowglobe_dmd_student_iter1000.mp4"
       }
     },
     "h_argument": {
@@ -1144,6 +1240,14 @@
         "sha256": "25ef2f1b018161b681fe282e4bc4bc27ab45e06d781d59859d133746eff3f966",
         "note": "newest milestone found on disk; checkpoint file dmd_student_iter700_FINAL.safetensors saved same day as this artifact was built; training job 4382 was still running toward iter=1000 at build time",
         "public_path": "assets/video/h_argument_dmd_student_iter700.mp4"
+      },
+      "iter1000": {
+        "path": "/data/home/sunsean/work/h3_sft_dmd/outputs/eval_full/h_argument_dmd_student_iter1000.mp4",
+        "exists": true,
+        "size_bytes": 756780,
+        "sha256": "2245cb26a5fadac1af81ecf158e10793a1f2de399c60c31c0eb86e8974f87281",
+        "note": "iter1000 -- final DMD milestone (job 4382 completed 2026-09-06); the iter700 entry above previously noted this job was 'still running toward iter=1000 at build time'. Added to the progression gallery for Dense-vs-iter1000 comparison; not used to re-select the 3-way comparison arm (that curatorial choice, iter700, is preserved as originally documented in arm_selection.dmd8_main_arm).",
+        "public_path": "assets/video/h_argument_dmd_student_iter1000.mp4"
       }
     },
     "h_train_window": {
@@ -1194,6 +1298,14 @@
         "sha256": "55d008ddcee57dcb6dbb17d7ddab37b3ed6d348824d062f6eda8fb29ff505762",
         "note": "newest milestone found on disk; checkpoint file dmd_student_iter700_FINAL.safetensors saved same day as this artifact was built; training job 4382 was still running toward iter=1000 at build time",
         "public_path": "assets/video/h_train_window_dmd_student_iter700.mp4"
+      },
+      "iter1000": {
+        "path": "/data/home/sunsean/work/h3_sft_dmd/outputs/eval_full/h_train_window_dmd_student_iter1000.mp4",
+        "exists": true,
+        "size_bytes": 971664,
+        "sha256": "e29118ba8615d6fa193aae3e657b9a9e7f558c775f99d7758abefaba4a7a0f29",
+        "note": "iter1000 -- final DMD milestone (job 4382 completed 2026-09-06); the iter700 entry above previously noted this job was 'still running toward iter=1000 at build time'. Added to the progression gallery for Dense-vs-iter1000 comparison; not used to re-select the 3-way comparison arm (that curatorial choice, iter700, is preserved as originally documented in arm_selection.dmd8_main_arm).",
+        "public_path": "assets/video/h_train_window_dmd_student_iter1000.mp4"
       }
     }
   },
@@ -1228,7 +1340,8 @@
     "iter150",
     "iter300",
     "iter500",
-    "iter700"
+    "iter700",
+    "iter1000"
   ],
   "missing_files": [],
   "missing_count": 0,
@@ -1393,5 +1506,11 @@
     "prompts_total": 14,
     "prompts_with_dense": 14,
     "prompts_missing_dense": []
+  },
+  "dmd_progression_coverage": {
+    "prompts_total": 14,
+    "prompts_with_iter1000": 14,
+    "prompts_missing_iter1000": [],
+    "added": "2026-09-06"
   }
 }
