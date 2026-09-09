@@ -1,0 +1,403 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>MiniMax-H3 6-step Comparison (Detailed)</title><style>
+:root{color-scheme:light dark;--bg:#0e0f12;--panel:#17191d;--panel2:#1e2126;--text:#e8e8ea;--muted:#9aa0aa;--accent:#5fb0ff;--turbo:#ff9d4d;--vdn:#c98bff;--ours6:#47d7c4;--ours8:#5fd97a;--border:#2b2f36;--nav-h:46px;}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%;text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;line-height:1.4;overflow-x:hidden}
+header.page{position:static;background:rgba(14,15,18,.96);border-bottom:1px solid var(--border);padding:14px 24px}
+header.page h1{margin:0;font-size:1.25rem;overflow-wrap:anywhere}
+header.page p{margin:4px 0 0;color:var(--muted);font-size:.85rem}
+header.page .links{margin-top:8px;font-size:.8rem;display:flex;flex-wrap:wrap;gap:4px 14px}
+header.page .links a{color:var(--accent);text-decoration:none}
+header.page .links a:hover{text-decoration:underline}
+nav.toc{display:flex;flex-wrap:wrap;gap:6px;padding:10px 24px;background:var(--panel);border-bottom:1px solid var(--border);position:sticky;top:0;z-index:9}
+nav.toc a{color:var(--muted);text-decoration:none;font-size:.78rem;padding:4px 9px;border:1px solid var(--border);border-radius:999px}
+nav.toc a:hover{color:var(--text);border-color:var(--accent)}
+main{max-width:1500px;margin:0 auto;padding:24px;overflow-x:hidden}
+section{margin-bottom:44px;scroll-margin-top:var(--nav-h)}
+section.prompt-block{background:var(--panel);border:1px solid var(--border);border-radius:12px;padding:18px 20px;margin-bottom:22px;max-width:100%}
+h2.section-title{font-size:1.4rem;border-bottom:2px solid var(--border);padding-bottom:8px;margin-top:0;overflow-wrap:anywhere}
+h3.prompt-id{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:1.05rem;margin:0 0 12px;color:var(--accent);overflow-wrap:anywhere}
+.arm-label{font-weight:700;font-size:.82rem;letter-spacing:.03em;text-transform:uppercase;padding:3px 10px;border-radius:6px;display:inline-block;margin-bottom:6px}
+.arm-label.turbo8{background:rgba(255,157,77,.15);color:var(--turbo);border:1px solid rgba(255,157,77,.4)}
+.arm-label.vdn{background:rgba(201,139,255,.15);color:var(--vdn);border:1px solid rgba(201,139,255,.4)}
+.arm-label.ours6{background:rgba(71,215,196,.15);color:var(--ours6);border:1px solid rgba(71,215,196,.4)}
+.arm-label.ours8{background:rgba(95,217,122,.15);color:var(--ours8);border:1px solid rgba(95,217,122,.4)}
+.row{display:grid;gap:14px}
+.row.four{grid-template-columns:repeat(auto-fit,minmax(240px,1fr))}
+.cell{background:var(--panel2);border:1px solid var(--border);border-radius:8px;padding:10px;min-width:0}
+video{width:100%;max-width:100%;border-radius:6px;background:#000;display:block}
+.note{margin-top:10px;padding:9px 12px;background:rgba(95,176,255,.08);border-left:3px solid var(--accent);border-radius:4px;font-size:.85rem;color:var(--text);overflow-wrap:anywhere}
+p.prompt-text{overflow-wrap:anywhere}
+.path{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:.72rem;color:var(--muted);word-break:break-all;overflow-wrap:anywhere;margin-top:6px}
+code{overflow-wrap:anywhere;word-break:break-word;font-size:.85em}
+.legend{display:flex;flex-wrap:wrap;gap:16px;margin:14px 0}
+.legend .item{display:flex;align-items:center;gap:8px;font-size:.85rem;overflow-wrap:anywhere}
+.legend .swatch{flex:0 0 auto;width:14px;height:14px;border-radius:4px}
+.badge{display:inline-block;padding:2px 8px;border-radius:6px;background:var(--panel2);border:1px solid var(--border);font-size:.75rem;color:var(--muted)}
+details.appendix{background:var(--panel);border:1px solid var(--border);border-radius:10px;padding:14px 18px;margin-top:10px}
+details.appendix summary{cursor:pointer;font-weight:600}
+pre.pathblock{white-space:pre-wrap;word-break:break-word;overflow-wrap:anywhere;font-size:.72rem;background:var(--panel2);padding:10px;border-radius:6px;overflow-x:auto;color:var(--muted)}
+ul.findings li{margin-bottom:10px}
+.table-wrap{overflow-x:auto;max-width:100%}
+table.timing{border-collapse:collapse;width:100%;min-width:480px;margin:10px 0;font-size:.85rem}
+table.timing th,table.timing td{border:1px solid var(--border);padding:6px 10px;text-align:left}
+table.timing th{background:var(--panel2)}
+.disclaimer-box{background:rgba(255,80,80,.08);border:1px solid rgba(255,80,80,.35);border-radius:8px;padding:12px 16px;font-size:.85rem;margin-bottom:20px;overflow-wrap:anywhere}
+footer{padding:30px 24px;color:var(--muted);font-size:.78rem;border-top:1px solid var(--border);margin-top:40px;overflow-wrap:anywhere}
+.row-controls{display:flex;flex-wrap:wrap;align-items:center;gap:10px;margin-bottom:10px;padding:8px 10px;background:var(--panel2);border:1px solid var(--border);border-radius:8px;font-size:.8rem}
+.row-controls button{font:inherit;font-size:.78rem;font-weight:600;color:var(--text);background:var(--panel);border:1px solid var(--border);border-radius:999px;padding:5px 12px;cursor:pointer}
+.row-controls button:hover{border-color:var(--accent)}
+.row-audio{display:flex;flex-wrap:wrap;gap:2px 10px;align-items:center}
+.row-audio label{display:flex;align-items:center;gap:4px;color:var(--muted);cursor:pointer}
+.row-audio input{accent-color:var(--accent)}
+.row-audio-label{color:var(--muted)}
+@media (max-width:700px){
+  nav.toc{flex-wrap:nowrap;overflow-x:auto;-webkit-overflow-scrolling:touch;gap:8px;padding:8px 12px}
+  nav.toc a{flex:0 0 auto;white-space:nowrap}
+}
+@media (max-width:640px){
+  .row-controls{gap:8px 10px;padding:8px}
+  .row-controls button{padding:6px 10px}
+  main{padding:14px}
+  section.prompt-block{padding:14px 12px}
+  header.page{padding:12px 14px}
+}
+@media (max-width:400px){
+  main{padding:8px}
+  section.prompt-block{padding:10px 8px}
+  header.page{padding:10px}
+  header.page h1{font-size:1.05rem}
+  h2.section-title{font-size:1.15rem}
+  table.timing{font-size:.78rem}
+  table.timing th,table.timing td{padding:5px 6px}
+}
+</style></head>
+<body>
+<header class="page"><h1>MiniMax-H3 6-step comparison &mdash; detailed review</h1>
+<p>Our 6-step vs. our previous best 8-step, plus Turbo8 and VDN-H3 as reference
+columns, across the same 14 held-out prompts. Read-only artifact, reused stored
+outputs only.</p>
+<div class="links"><a href="6step.html">Video-first gallery &rarr;</a> <a href="simple.html">4-way gallery</a> <a href="detailed.html">4-way detailed</a></div>
+</header>
+<nav class="toc"><a href="#d0">Overview</a><a href="#d1">Models</a><a href="#d2">Result</a><a href="#d3">Speed</a><a href="#d4">Comparison</a><a href="#d5">Provenance</a><a href="#p-s_campfire_sparks">s_campfire_sparks</a><a href="#p-s_gas_stove_flare">s_gas_stove_flare</a><a href="#p-s_incense_smoke_curl">s_incense_smoke_curl</a><a href="#p-s_firework_burst">s_firework_burst</a><a href="#p-s_building_demolition">s_building_demolition</a><a href="#p-s_house_fire_window">s_house_fire_window</a><a href="#p-s_smoke_grenade_field">s_smoke_grenade_field</a><a href="#p-s_volcano_eruption_distant">s_volcano_eruption_distant</a><a href="#p-n_water_balloon_splash">n_water_balloon_splash</a><a href="#p-n_domino_chain_fall">n_domino_chain_fall</a><a href="#p-n_glass_shatter_impact">n_glass_shatter_impact</a><a href="#p-h_snowglobe">h_snowglobe</a><a href="#p-h_argument">h_argument</a><a href="#p-h_train_window">h_train_window</a></nav>
+<main>
+<section id="d0"><h2 class="section-title">D0 &mdash; Overview</h2>
+<p>This artifact compares our current best checkpoints across two step counts (6-step
+vs. our previous best 8-step) side by side with two external 8-step references
+(LightX2V's public Turbo8 LoRA and OpenVDN's VDN-H3), across the same 14 held-out
+prompts used throughout this project (<span class="path">h3_sft/prompts/holdout.json</span>).
+All media are reused exactly as stored on disk &mdash; <strong>no fresh inference,
+training, or evaluation was run to build this artifact.</strong> Each row plays,
+pauses, restarts, and stays time-synchronized together (row controls, or any
+individual video's own controls); every video starts muted (the row's "Mute all"
+picker option), with a per-row picker to choose exactly one video to unmute.</p>
+<div class="disclaimer-box"><strong>No new quality assessment was performed to
+build this gallery page.</strong> The tie/win/loss judgments in D2/D4 below are
+reported verbatim from the historical AI screening pass documented in
+<span class="path">h3_sft_dmd/PHASE4_GATE350_FULL14_AND_BENCHMARK.md</span>
+(that report states its own comparisons are a full-video-review AI screening
+pass, explicitly not a human evaluation) &mdash; and cover <strong>only our 6-step vs.
+our previous best 8-step</strong>. Turbo8 and VDN-H3 are shown as reference
+columns for side-by-side viewing only; no tie/win/loss claim is made against
+them here or in that report.</div>
+<div class="legend">
+<div class="item"><span class="swatch" style="background:var(--ours6)"></span>Our 6-step &mdash; phase4_c_gate350.safetensors</div>
+<div class="item"><span class="swatch" style="background:var(--ours8)"></span>Our previous best 8-step &mdash; phase3_c_gate250.safetensors (not iter700/iter1000)</div>
+<div class="item"><span class="swatch" style="background:var(--turbo)"></span>Turbo8 &mdash; LightX2V public 8-step Turbo LoRA (reference column, bug-fixed scale per h3_8step_threeway_compare/REPORT.md)</div>
+<div class="item"><span class="swatch" style="background:var(--vdn)"></span>VDN-H3 &mdash; OpenVDN vdn-minimax-h3, 8-step (reference column)</div>
+</div>
+</section>
+<section id="d1"><h2 class="section-title">D1 &mdash; Model descriptions</h2>
+<p><strong>Our 6-step</strong> (<span class="path">phase4_c_gate350.safetensors</span>) &mdash;
+our DMD-distilled student, Phase 4 of the campaign, trained from the Phase 3
+gate250 checkpoint (student+fake+optimizer state carried over via auto_resume)
+for +100 iterations with <code>num_inference_steps</code> dropped from 8 to 6
+(the only changed variable vs. Phase 3), same hard-case-weighted training data,
+<code>video_flow_shift</code> unchanged at 6.0. Passed all three required gates
+(+25/+50/+100 iterations) on the reduced hard-case board, then validated on the
+full 14-prompt holdout set. See
+<span class="path">h3_sft_dmd/PHASE4_6STEP_RESULT.md</span> and
+<span class="path">h3_sft_dmd/PHASE4_GATE350_FULL14_AND_BENCHMARK.md</span>.</p>
+<p><strong>Our previous best 8-step</strong> (<span class="path">phase3_c_gate250.safetensors</span>)
+&mdash; the Phase 3 checkpoint this project's own DMD campaign considered its best
+8-step Pareto point before Phase 4. This is <strong>not</strong> the same lineage
+as the <code>dmd_student_iter700</code>/<code>iter1000</code> checkpoints used as the
+"DMD8" arm in <span class="path">simple.html</span>/<span class="path">detailed.html</span>
+&mdash; those are milestone snapshots from a different (earlier, non-gated)
+training run. <code>phase3_c_gate250</code> is the specific checkpoint the 6-step
+result in D2 below is benchmarked against.</p>
+<p><strong>LightX2V Turbo8</strong> (<span class="path">minimax_h3_fl2v_turbo_8step_v1.0_768p_bf16.safetensors</span>,
+HF <span class="path">lightx2v/Minimax-h3-Turbo</span>) &mdash; a public 8-step
+distillation LoRA, not affiliated with this project's DMD campaign. Shown here as
+a reference column only; reused from the already-published threeway-comparison
+assets (<span class="path">h3_8step_threeway_compare/results/</span>), the
+LoRA-scale-bug-fixed set (see that project's own REPORT.md &sect;1) &mdash; not the
+corrupted <span class="path">h3_sft_dmd/outputs/eval_full/*_turbo8.mp4</span> set.</p>
+<p><strong>VDN-H3 8-step</strong> (OpenVDN <span class="path">vdn-minimax-h3</span>,
+checkpoint <span class="path">stage-dmd-step-250</span>) &mdash; a re-architected
+model (frozen MiniMax-H3 backbone + trained linear-attention branch + LoRA
+adapters), not affiliated with this project's DMD campaign. Shown here as a
+reference column only; reused from the already-published threeway-comparison
+assets.</p>
+</section>
+<section id="d2"><h2 class="section-title">D2 &mdash; Result summary</h2>
+<div class="disclaimer-box">This gallery build performed no new quality assessment. The tie/win/loss result below is reported verbatim from the historical AI screening pass (full-video review, not a human evaluation) documented in the source report at the time it was written.</div>
+<p><strong>14/14 ties, 0 wins, 0 losses -- 6-step (gate350) vs previous best 8-step (gate250).</strong> No new failure modes were found on any of the 14 prompts.
+Specifically preserved relative to the previous best 8-step:</p>
+<ul class="findings"><li>water-balloon rupture (n_water_balloon_splash)</li><li>campfire/background richness (s_campfire_sparks)</li><li>train-window moderate camera-motion/parallax (h_train_window)</li><li>clean h_argument (no anime/style drift)</li></ul>
+<p>Source report: <span class="path">h3_sft_dmd/PHASE4_GATE350_FULL14_AND_BENCHMARK.md</span>. Ties are only claimed between our 6-step and our previous best 8-step. Turbo8 and VDN-H3 are reference columns shown for side-by-side viewing only -- no tie/win/loss claim is made against them in this artifact.</p>
+</section>
+<section id="d3"><h2 class="section-title">D3 &mdash; Speed / VRAM (with caveats)</h2>
+<p>same GPU (1x 80GB H100-class card), same harness (dmd_student_eval.py&#x27;s make_pipe/generate, enable_auto_cpu_offload NOT disabled), sequential same-node run. single measurement per arm, not averaged (this offload harness sits at its ~70GB VRAM ceiling; repeated calls in-process OOM&#x27;d).</p>
+<div class="table-wrap"><table class="timing">
+<tr><th>Metric</th><th>Our 6-step (gate350)</th><th>Our previous best 8-step (gate250)</th></tr>
+<tr><td>E2E latency</td><td>138.90s</td><td>147.11s</td></tr>
+<tr><td>Denoising steps</td><td>6</td><td>8</td></tr>
+<tr><td>Peak VRAM</td><td>70.29GB</td><td>70.29GB</td></tr>
+</table></div>
+<p><strong>Correct framing:</strong> 8.21s / 5.6% lower E2E latency for the 6-step arm in this harness. Separately, the 6-step arm requests 25% fewer denoising steps (NOT the same as 25% faster E2E -- this harness is offload-bound, not denoise-bound; see caveat)
+&mdash; a real reduction in compute, but this was <strong>not</strong> isolated and
+measured as a standalone per-step speedup in this task; treat it as a step-count
+fact, not a measured timing claim. Peak VRAM is identical between the two arms
+(the CPU-offload harness pins VRAM near its ceiling regardless of step count).</p>
+<div class="disclaimer-box">This is a same-GPU, same-harness research comparison, one measurement per arm (not averaged), CPU-offload bound -- not a denoise-only or production-serving benchmark, and not a promise of deployment-grade gains. The 25% step-count reduction is a real reduction in requested denoising steps but was not separately measured as an isolated per-step or fixed-overhead speedup -- no such breakdown is reported here. No speed numbers are reported here for Turbo8/VDN-H3 -- they were not re-measured in this same harness for this task and are omitted rather than presented out of context.</div>
+</section>
+<section id="d4"><h2 class="section-title">D4 &mdash; Prompt-by-prompt comparison</h2>
+<section class="prompt-block" id="p-s_campfire_sparks"><h3 class="prompt-id">s_campfire_sparks</h3><p class="prompt-text">integrated_multimodal_description: [Shot 1] Static medium shot, night, warm firelight flicker. A campfire crackles and pops, orange embers spiraling upward into the dark sky, flames licking around a stacked log.<br>overall_soundscape: Steady crackling and popping of burning wood, occasional soft hiss.<br>non_diegetic_music: None.</p><div class="sync-row" id="sync-cmp-s_campfire_sparks"><div class="row-controls" data-row-id="cmp-s_campfire_sparks"><button type="button" class="row-play">▶ Play row</button><button type="button" class="row-restart">⟲ Restart</button><span class="row-audio-label">Audio:</span><span class="row-audio" role="radiogroup" aria-label="Choose audio source"><label><input type="radio" name="audio-cmp-s_campfire_sparks" value="mute" checked> Mute all</label><label><input type="radio" name="audio-cmp-s_campfire_sparks" value="ours_6step"> Our 6-step</label><label><input type="radio" name="audio-cmp-s_campfire_sparks" value="ours_prev_best_8step"> Our prev. best 8-step</label><label><input type="radio" name="audio-cmp-s_campfire_sparks" value="turbo8"> Turbo8</label><label><input type="radio" name="audio-cmp-s_campfire_sparks" value="vdn_h3_8step"> VDN-H3</label></span></div><div class="row four"><div class="cell"><span class="arm-label ours6">Our 6-step</span><video controls playsinline preload="none" data-arm="ours_6step" src="assets/video/s_campfire_sparks_phase4_c_gate350.mp4" muted></video><div class="path">assets/video/s_campfire_sparks_phase4_c_gate350.mp4</div></div><div class="cell"><span class="arm-label ours8">Our prev. best 8-step</span><video controls playsinline preload="none" data-arm="ours_prev_best_8step" src="assets/video/s_campfire_sparks_phase3_c_gate250.mp4" muted></video><div class="path">assets/video/s_campfire_sparks_phase3_c_gate250.mp4</div></div><div class="cell"><span class="arm-label turbo8">Turbo8</span><video controls playsinline preload="none" data-arm="turbo8" src="assets/video/s_campfire_sparks_turbo8.mp4" muted></video><div class="path">assets/video/s_campfire_sparks_turbo8.mp4</div></div><div class="cell"><span class="arm-label vdn">VDN-H3</span><video controls playsinline preload="none" data-arm="vdn_h3_8step" src="assets/video/s_campfire_sparks_vdn_h3_8step.mp4" muted></video><div class="path">assets/video/s_campfire_sparks_vdn_h3_8step.mp4</div></div></div></div><div class="note"><strong>6-step vs. previous-best-8-step:</strong> Tie -- background richness preserved on both</div></section>
+<section class="prompt-block" id="p-s_gas_stove_flare"><h3 class="prompt-id">s_gas_stove_flare</h3><p class="prompt-text">integrated_multimodal_description: [Shot 1] Extreme close-up, static camera. A gas stove burner ignites with a sudden blue-orange flare, then settles into a steady ring of blue flame.<br>overall_soundscape: A sharp ignition whoosh, then a low steady hiss.<br>non_diegetic_music: None.</p><div class="sync-row" id="sync-cmp-s_gas_stove_flare"><div class="row-controls" data-row-id="cmp-s_gas_stove_flare"><button type="button" class="row-play">▶ Play row</button><button type="button" class="row-restart">⟲ Restart</button><span class="row-audio-label">Audio:</span><span class="row-audio" role="radiogroup" aria-label="Choose audio source"><label><input type="radio" name="audio-cmp-s_gas_stove_flare" value="mute" checked> Mute all</label><label><input type="radio" name="audio-cmp-s_gas_stove_flare" value="ours_6step"> Our 6-step</label><label><input type="radio" name="audio-cmp-s_gas_stove_flare" value="ours_prev_best_8step"> Our prev. best 8-step</label><label><input type="radio" name="audio-cmp-s_gas_stove_flare" value="turbo8"> Turbo8</label><label><input type="radio" name="audio-cmp-s_gas_stove_flare" value="vdn_h3_8step"> VDN-H3</label></span></div><div class="row four"><div class="cell"><span class="arm-label ours6">Our 6-step</span><video controls playsinline preload="none" data-arm="ours_6step" src="assets/video/s_gas_stove_flare_phase4_c_gate350.mp4" muted></video><div class="path">assets/video/s_gas_stove_flare_phase4_c_gate350.mp4</div></div><div class="cell"><span class="arm-label ours8">Our prev. best 8-step</span><video controls playsinline preload="none" data-arm="ours_prev_best_8step" src="assets/video/s_gas_stove_flare_phase3_c_gate250.mp4" muted></video><div class="path">assets/video/s_gas_stove_flare_phase3_c_gate250.mp4</div></div><div class="cell"><span class="arm-label turbo8">Turbo8</span><video controls playsinline preload="none" data-arm="turbo8" src="assets/video/s_gas_stove_flare_turbo8.mp4" muted></video><div class="path">assets/video/s_gas_stove_flare_turbo8.mp4</div></div><div class="cell"><span class="arm-label vdn">VDN-H3</span><video controls playsinline preload="none" data-arm="vdn_h3_8step" src="assets/video/s_gas_stove_flare_vdn_h3_8step.mp4" muted></video><div class="path">assets/video/s_gas_stove_flare_vdn_h3_8step.mp4</div></div></div></div><div class="note"><strong>6-step vs. previous-best-8-step:</strong> Tie -- both excellent</div></section>
+<section class="prompt-block" id="p-s_incense_smoke_curl"><h3 class="prompt-id">s_incense_smoke_curl</h3><p class="prompt-text">integrated_multimodal_description: [Shot 1] Close-up, static camera, dark background. A thin stick of incense burns at its tip, a slow ribbon of smoke curling and twisting upward before dispersing.<br>overall_soundscape: Near silence, faint room tone.<br>non_diegetic_music: Sparse, meditative ambient tone.</p><div class="sync-row" id="sync-cmp-s_incense_smoke_curl"><div class="row-controls" data-row-id="cmp-s_incense_smoke_curl"><button type="button" class="row-play">▶ Play row</button><button type="button" class="row-restart">⟲ Restart</button><span class="row-audio-label">Audio:</span><span class="row-audio" role="radiogroup" aria-label="Choose audio source"><label><input type="radio" name="audio-cmp-s_incense_smoke_curl" value="mute" checked> Mute all</label><label><input type="radio" name="audio-cmp-s_incense_smoke_curl" value="ours_6step"> Our 6-step</label><label><input type="radio" name="audio-cmp-s_incense_smoke_curl" value="ours_prev_best_8step"> Our prev. best 8-step</label><label><input type="radio" name="audio-cmp-s_incense_smoke_curl" value="turbo8"> Turbo8</label><label><input type="radio" name="audio-cmp-s_incense_smoke_curl" value="vdn_h3_8step"> VDN-H3</label></span></div><div class="row four"><div class="cell"><span class="arm-label ours6">Our 6-step</span><video controls playsinline preload="none" data-arm="ours_6step" src="assets/video/s_incense_smoke_curl_phase4_c_gate350.mp4" muted></video><div class="path">assets/video/s_incense_smoke_curl_phase4_c_gate350.mp4</div></div><div class="cell"><span class="arm-label ours8">Our prev. best 8-step</span><video controls playsinline preload="none" data-arm="ours_prev_best_8step" src="assets/video/s_incense_smoke_curl_phase3_c_gate250.mp4" muted></video><div class="path">assets/video/s_incense_smoke_curl_phase3_c_gate250.mp4</div></div><div class="cell"><span class="arm-label turbo8">Turbo8</span><video controls playsinline preload="none" data-arm="turbo8" src="assets/video/s_incense_smoke_curl_turbo8.mp4" muted></video><div class="path">assets/video/s_incense_smoke_curl_turbo8.mp4</div></div><div class="cell"><span class="arm-label vdn">VDN-H3</span><video controls playsinline preload="none" data-arm="vdn_h3_8step" src="assets/video/s_incense_smoke_curl_vdn_h3_8step.mp4" muted></video><div class="path">assets/video/s_incense_smoke_curl_vdn_h3_8step.mp4</div></div></div></div><div class="note"><strong>6-step vs. previous-best-8-step:</strong> Tie -- both excellent</div></section>
+<section class="prompt-block" id="p-s_firework_burst"><h3 class="prompt-id">s_firework_burst</h3><p class="prompt-text">integrated_multimodal_description: [Shot 1] Static wide shot, night sky. A single firework launches and bursts into a shower of gold sparks, trailing smoke drifting away afterward.<br>overall_soundscape: A whistling launch, a sharp booming burst, crackling sparks fading out.<br>non_diegetic_music: None.</p><div class="sync-row" id="sync-cmp-s_firework_burst"><div class="row-controls" data-row-id="cmp-s_firework_burst"><button type="button" class="row-play">▶ Play row</button><button type="button" class="row-restart">⟲ Restart</button><span class="row-audio-label">Audio:</span><span class="row-audio" role="radiogroup" aria-label="Choose audio source"><label><input type="radio" name="audio-cmp-s_firework_burst" value="mute" checked> Mute all</label><label><input type="radio" name="audio-cmp-s_firework_burst" value="ours_6step"> Our 6-step</label><label><input type="radio" name="audio-cmp-s_firework_burst" value="ours_prev_best_8step"> Our prev. best 8-step</label><label><input type="radio" name="audio-cmp-s_firework_burst" value="turbo8"> Turbo8</label><label><input type="radio" name="audio-cmp-s_firework_burst" value="vdn_h3_8step"> VDN-H3</label></span></div><div class="row four"><div class="cell"><span class="arm-label ours6">Our 6-step</span><video controls playsinline preload="none" data-arm="ours_6step" src="assets/video/s_firework_burst_phase4_c_gate350.mp4" muted></video><div class="path">assets/video/s_firework_burst_phase4_c_gate350.mp4</div></div><div class="cell"><span class="arm-label ours8">Our prev. best 8-step</span><video controls playsinline preload="none" data-arm="ours_prev_best_8step" src="assets/video/s_firework_burst_phase3_c_gate250.mp4" muted></video><div class="path">assets/video/s_firework_burst_phase3_c_gate250.mp4</div></div><div class="cell"><span class="arm-label turbo8">Turbo8</span><video controls playsinline preload="none" data-arm="turbo8" src="assets/video/s_firework_burst_turbo8.mp4" muted></video><div class="path">assets/video/s_firework_burst_turbo8.mp4</div></div><div class="cell"><span class="arm-label vdn">VDN-H3</span><video controls playsinline preload="none" data-arm="vdn_h3_8step" src="assets/video/s_firework_burst_vdn_h3_8step.mp4" muted></video><div class="path">assets/video/s_firework_burst_vdn_h3_8step.mp4</div></div></div></div><div class="note"><strong>6-step vs. previous-best-8-step:</strong> Tie -- both excellent</div></section>
+<section class="prompt-block" id="p-s_building_demolition"><h3 class="prompt-id">s_building_demolition</h3><p class="prompt-text">integrated_multimodal_description: [Shot 1] Static wide shot, daytime. A controlled demolition charge detonates at the base of an old brick smokestack, a plume of dust and debris erupting outward as the structure begins to topple.<br>overall_soundscape: A sharp cracking boom, rumbling debris, a rising cloud of dust hissing outward.<br>non_diegetic_music: None.</p><div class="sync-row" id="sync-cmp-s_building_demolition"><div class="row-controls" data-row-id="cmp-s_building_demolition"><button type="button" class="row-play">▶ Play row</button><button type="button" class="row-restart">⟲ Restart</button><span class="row-audio-label">Audio:</span><span class="row-audio" role="radiogroup" aria-label="Choose audio source"><label><input type="radio" name="audio-cmp-s_building_demolition" value="mute" checked> Mute all</label><label><input type="radio" name="audio-cmp-s_building_demolition" value="ours_6step"> Our 6-step</label><label><input type="radio" name="audio-cmp-s_building_demolition" value="ours_prev_best_8step"> Our prev. best 8-step</label><label><input type="radio" name="audio-cmp-s_building_demolition" value="turbo8"> Turbo8</label><label><input type="radio" name="audio-cmp-s_building_demolition" value="vdn_h3_8step"> VDN-H3</label></span></div><div class="row four"><div class="cell"><span class="arm-label ours6">Our 6-step</span><video controls playsinline preload="none" data-arm="ours_6step" src="assets/video/s_building_demolition_phase4_c_gate350.mp4" muted></video><div class="path">assets/video/s_building_demolition_phase4_c_gate350.mp4</div></div><div class="cell"><span class="arm-label ours8">Our prev. best 8-step</span><video controls playsinline preload="none" data-arm="ours_prev_best_8step" src="assets/video/s_building_demolition_phase3_c_gate250.mp4" muted></video><div class="path">assets/video/s_building_demolition_phase3_c_gate250.mp4</div></div><div class="cell"><span class="arm-label turbo8">Turbo8</span><video controls playsinline preload="none" data-arm="turbo8" src="assets/video/s_building_demolition_turbo8.mp4" muted></video><div class="path">assets/video/s_building_demolition_turbo8.mp4</div></div><div class="cell"><span class="arm-label vdn">VDN-H3</span><video controls playsinline preload="none" data-arm="vdn_h3_8step" src="assets/video/s_building_demolition_vdn_h3_8step.mp4" muted></video><div class="path">assets/video/s_building_demolition_vdn_h3_8step.mp4</div></div></div></div><div class="note"><strong>6-step vs. previous-best-8-step:</strong> Tie -- both excellent</div></section>
+<section class="prompt-block" id="p-s_house_fire_window"><h3 class="prompt-id">s_house_fire_window</h3><p class="prompt-text">integrated_multimodal_description: [Shot 1] Static medium shot, night, from across a street. Orange flames roar behind a second-story window of a house, thick black smoke pouring out through a broken pane.<br>overall_soundscape: A deep roaring fire, distant sirens, crackling glass.<br>non_diegetic_music: None.</p><div class="sync-row" id="sync-cmp-s_house_fire_window"><div class="row-controls" data-row-id="cmp-s_house_fire_window"><button type="button" class="row-play">▶ Play row</button><button type="button" class="row-restart">⟲ Restart</button><span class="row-audio-label">Audio:</span><span class="row-audio" role="radiogroup" aria-label="Choose audio source"><label><input type="radio" name="audio-cmp-s_house_fire_window" value="mute" checked> Mute all</label><label><input type="radio" name="audio-cmp-s_house_fire_window" value="ours_6step"> Our 6-step</label><label><input type="radio" name="audio-cmp-s_house_fire_window" value="ours_prev_best_8step"> Our prev. best 8-step</label><label><input type="radio" name="audio-cmp-s_house_fire_window" value="turbo8"> Turbo8</label><label><input type="radio" name="audio-cmp-s_house_fire_window" value="vdn_h3_8step"> VDN-H3</label></span></div><div class="row four"><div class="cell"><span class="arm-label ours6">Our 6-step</span><video controls playsinline preload="none" data-arm="ours_6step" src="assets/video/s_house_fire_window_phase4_c_gate350.mp4" muted></video><div class="path">assets/video/s_house_fire_window_phase4_c_gate350.mp4</div></div><div class="cell"><span class="arm-label ours8">Our prev. best 8-step</span><video controls playsinline preload="none" data-arm="ours_prev_best_8step" src="assets/video/s_house_fire_window_phase3_c_gate250.mp4" muted></video><div class="path">assets/video/s_house_fire_window_phase3_c_gate250.mp4</div></div><div class="cell"><span class="arm-label turbo8">Turbo8</span><video controls playsinline preload="none" data-arm="turbo8" src="assets/video/s_house_fire_window_turbo8.mp4" muted></video><div class="path">assets/video/s_house_fire_window_turbo8.mp4</div></div><div class="cell"><span class="arm-label vdn">VDN-H3</span><video controls playsinline preload="none" data-arm="vdn_h3_8step" src="assets/video/s_house_fire_window_vdn_h3_8step.mp4" muted></video><div class="path">assets/video/s_house_fire_window_vdn_h3_8step.mp4</div></div></div></div><div class="note"><strong>6-step vs. previous-best-8-step:</strong> Tie -- both excellent</div></section>
+<section class="prompt-block" id="p-s_smoke_grenade_field"><h3 class="prompt-id">s_smoke_grenade_field</h3><p class="prompt-text">integrated_multimodal_description: [Shot 1] Static wide shot, open field. A smoke grenade ignites on the ground, thick purple smoke billowing outward and rising in a dense expanding cloud.<br>overall_soundscape: A sharp hissing pop, a steady billowing hiss as smoke expands.<br>non_diegetic_music: None.</p><div class="sync-row" id="sync-cmp-s_smoke_grenade_field"><div class="row-controls" data-row-id="cmp-s_smoke_grenade_field"><button type="button" class="row-play">▶ Play row</button><button type="button" class="row-restart">⟲ Restart</button><span class="row-audio-label">Audio:</span><span class="row-audio" role="radiogroup" aria-label="Choose audio source"><label><input type="radio" name="audio-cmp-s_smoke_grenade_field" value="mute" checked> Mute all</label><label><input type="radio" name="audio-cmp-s_smoke_grenade_field" value="ours_6step"> Our 6-step</label><label><input type="radio" name="audio-cmp-s_smoke_grenade_field" value="ours_prev_best_8step"> Our prev. best 8-step</label><label><input type="radio" name="audio-cmp-s_smoke_grenade_field" value="turbo8"> Turbo8</label><label><input type="radio" name="audio-cmp-s_smoke_grenade_field" value="vdn_h3_8step"> VDN-H3</label></span></div><div class="row four"><div class="cell"><span class="arm-label ours6">Our 6-step</span><video controls playsinline preload="none" data-arm="ours_6step" src="assets/video/s_smoke_grenade_field_phase4_c_gate350.mp4" muted></video><div class="path">assets/video/s_smoke_grenade_field_phase4_c_gate350.mp4</div></div><div class="cell"><span class="arm-label ours8">Our prev. best 8-step</span><video controls playsinline preload="none" data-arm="ours_prev_best_8step" src="assets/video/s_smoke_grenade_field_phase3_c_gate250.mp4" muted></video><div class="path">assets/video/s_smoke_grenade_field_phase3_c_gate250.mp4</div></div><div class="cell"><span class="arm-label turbo8">Turbo8</span><video controls playsinline preload="none" data-arm="turbo8" src="assets/video/s_smoke_grenade_field_turbo8.mp4" muted></video><div class="path">assets/video/s_smoke_grenade_field_turbo8.mp4</div></div><div class="cell"><span class="arm-label vdn">VDN-H3</span><video controls playsinline preload="none" data-arm="vdn_h3_8step" src="assets/video/s_smoke_grenade_field_vdn_h3_8step.mp4" muted></video><div class="path">assets/video/s_smoke_grenade_field_vdn_h3_8step.mp4</div></div></div></div><div class="note"><strong>6-step vs. previous-best-8-step:</strong> Tie -- both excellent</div></section>
+<section class="prompt-block" id="p-s_volcano_eruption_distant"><h3 class="prompt-id">s_volcano_eruption_distant</h3><p class="prompt-text">integrated_multimodal_description: [Shot 1] Static wide shot, distant volcano at dusk. A sudden eruption sends a glowing plume of ash and molten fragments bursting from the crater, smoke billowing high into the sky.<br>overall_soundscape: A deep distant rumble, faint crackling embers.<br>non_diegetic_music: Low ominous orchestral drone.</p><div class="sync-row" id="sync-cmp-s_volcano_eruption_distant"><div class="row-controls" data-row-id="cmp-s_volcano_eruption_distant"><button type="button" class="row-play">▶ Play row</button><button type="button" class="row-restart">⟲ Restart</button><span class="row-audio-label">Audio:</span><span class="row-audio" role="radiogroup" aria-label="Choose audio source"><label><input type="radio" name="audio-cmp-s_volcano_eruption_distant" value="mute" checked> Mute all</label><label><input type="radio" name="audio-cmp-s_volcano_eruption_distant" value="ours_6step"> Our 6-step</label><label><input type="radio" name="audio-cmp-s_volcano_eruption_distant" value="ours_prev_best_8step"> Our prev. best 8-step</label><label><input type="radio" name="audio-cmp-s_volcano_eruption_distant" value="turbo8"> Turbo8</label><label><input type="radio" name="audio-cmp-s_volcano_eruption_distant" value="vdn_h3_8step"> VDN-H3</label></span></div><div class="row four"><div class="cell"><span class="arm-label ours6">Our 6-step</span><video controls playsinline preload="none" data-arm="ours_6step" src="assets/video/s_volcano_eruption_distant_phase4_c_gate350.mp4" muted></video><div class="path">assets/video/s_volcano_eruption_distant_phase4_c_gate350.mp4</div></div><div class="cell"><span class="arm-label ours8">Our prev. best 8-step</span><video controls playsinline preload="none" data-arm="ours_prev_best_8step" src="assets/video/s_volcano_eruption_distant_phase3_c_gate250.mp4" muted></video><div class="path">assets/video/s_volcano_eruption_distant_phase3_c_gate250.mp4</div></div><div class="cell"><span class="arm-label turbo8">Turbo8</span><video controls playsinline preload="none" data-arm="turbo8" src="assets/video/s_volcano_eruption_distant_turbo8.mp4" muted></video><div class="path">assets/video/s_volcano_eruption_distant_turbo8.mp4</div></div><div class="cell"><span class="arm-label vdn">VDN-H3</span><video controls playsinline preload="none" data-arm="vdn_h3_8step" src="assets/video/s_volcano_eruption_distant_vdn_h3_8step.mp4" muted></video><div class="path">assets/video/s_volcano_eruption_distant_vdn_h3_8step.mp4</div></div></div></div><div class="note"><strong>6-step vs. previous-best-8-step:</strong> Tie -- both excellent</div></section>
+<section class="prompt-block" id="p-n_water_balloon_splash"><h3 class="prompt-id">n_water_balloon_splash</h3><p class="prompt-text">integrated_multimodal_description: [Shot 1] Static close-up, slow high-detail motion. A water balloon strikes a concrete step and bursts apart, water splashing outward in an irregular spray.<br>overall_soundscape: A sharp wet pop, a splattering spray of water.<br>non_diegetic_music: None.</p><div class="sync-row" id="sync-cmp-n_water_balloon_splash"><div class="row-controls" data-row-id="cmp-n_water_balloon_splash"><button type="button" class="row-play">▶ Play row</button><button type="button" class="row-restart">⟲ Restart</button><span class="row-audio-label">Audio:</span><span class="row-audio" role="radiogroup" aria-label="Choose audio source"><label><input type="radio" name="audio-cmp-n_water_balloon_splash" value="mute" checked> Mute all</label><label><input type="radio" name="audio-cmp-n_water_balloon_splash" value="ours_6step"> Our 6-step</label><label><input type="radio" name="audio-cmp-n_water_balloon_splash" value="ours_prev_best_8step"> Our prev. best 8-step</label><label><input type="radio" name="audio-cmp-n_water_balloon_splash" value="turbo8"> Turbo8</label><label><input type="radio" name="audio-cmp-n_water_balloon_splash" value="vdn_h3_8step"> VDN-H3</label></span></div><div class="row four"><div class="cell"><span class="arm-label ours6">Our 6-step</span><video controls playsinline preload="none" data-arm="ours_6step" src="assets/video/n_water_balloon_splash_phase4_c_gate350.mp4" muted></video><div class="path">assets/video/n_water_balloon_splash_phase4_c_gate350.mp4</div></div><div class="cell"><span class="arm-label ours8">Our prev. best 8-step</span><video controls playsinline preload="none" data-arm="ours_prev_best_8step" src="assets/video/n_water_balloon_splash_phase3_c_gate250.mp4" muted></video><div class="path">assets/video/n_water_balloon_splash_phase3_c_gate250.mp4</div></div><div class="cell"><span class="arm-label turbo8">Turbo8</span><video controls playsinline preload="none" data-arm="turbo8" src="assets/video/n_water_balloon_splash_turbo8.mp4" muted></video><div class="path">assets/video/n_water_balloon_splash_turbo8.mp4</div></div><div class="cell"><span class="arm-label vdn">VDN-H3</span><video controls playsinline preload="none" data-arm="vdn_h3_8step" src="assets/video/n_water_balloon_splash_vdn_h3_8step.mp4" muted></video><div class="path">assets/video/n_water_balloon_splash_vdn_h3_8step.mp4</div></div></div></div><div class="note"><strong>6-step vs. previous-best-8-step:</strong> Tie -- both show full rupture/deflation, comparably strong</div></section>
+<section class="prompt-block" id="p-n_domino_chain_fall"><h3 class="prompt-id">n_domino_chain_fall</h3><p class="prompt-text">integrated_multimodal_description: [Shot 1] Static overhead close-up. A long line of dominoes topples in a rapid chain reaction, each tile striking the next in quick succession across the frame.<br>overall_soundscape: A rapid, rhythmic clacking as each domino falls.<br>non_diegetic_music: None.</p><div class="sync-row" id="sync-cmp-n_domino_chain_fall"><div class="row-controls" data-row-id="cmp-n_domino_chain_fall"><button type="button" class="row-play">▶ Play row</button><button type="button" class="row-restart">⟲ Restart</button><span class="row-audio-label">Audio:</span><span class="row-audio" role="radiogroup" aria-label="Choose audio source"><label><input type="radio" name="audio-cmp-n_domino_chain_fall" value="mute" checked> Mute all</label><label><input type="radio" name="audio-cmp-n_domino_chain_fall" value="ours_6step"> Our 6-step</label><label><input type="radio" name="audio-cmp-n_domino_chain_fall" value="ours_prev_best_8step"> Our prev. best 8-step</label><label><input type="radio" name="audio-cmp-n_domino_chain_fall" value="turbo8"> Turbo8</label><label><input type="radio" name="audio-cmp-n_domino_chain_fall" value="vdn_h3_8step"> VDN-H3</label></span></div><div class="row four"><div class="cell"><span class="arm-label ours6">Our 6-step</span><video controls playsinline preload="none" data-arm="ours_6step" src="assets/video/n_domino_chain_fall_phase4_c_gate350.mp4" muted></video><div class="path">assets/video/n_domino_chain_fall_phase4_c_gate350.mp4</div></div><div class="cell"><span class="arm-label ours8">Our prev. best 8-step</span><video controls playsinline preload="none" data-arm="ours_prev_best_8step" src="assets/video/n_domino_chain_fall_phase3_c_gate250.mp4" muted></video><div class="path">assets/video/n_domino_chain_fall_phase3_c_gate250.mp4</div></div><div class="cell"><span class="arm-label turbo8">Turbo8</span><video controls playsinline preload="none" data-arm="turbo8" src="assets/video/n_domino_chain_fall_turbo8.mp4" muted></video><div class="path">assets/video/n_domino_chain_fall_turbo8.mp4</div></div><div class="cell"><span class="arm-label vdn">VDN-H3</span><video controls playsinline preload="none" data-arm="vdn_h3_8step" src="assets/video/n_domino_chain_fall_vdn_h3_8step.mp4" muted></video><div class="path">assets/video/n_domino_chain_fall_vdn_h3_8step.mp4</div></div></div></div><div class="note"><strong>6-step vs. previous-best-8-step:</strong> Tie -- both excellent</div></section>
+<section class="prompt-block" id="p-n_glass_shatter_impact"><h3 class="prompt-id">n_glass_shatter_impact</h3><p class="prompt-text">integrated_multimodal_description: [Shot 1] Slow-motion-style static close-up. A thrown baseball strikes a glass window, the pane shattering outward into scattered fragments.<br>overall_soundscape: A sharp crack followed by a scattering tinkle of falling glass.<br>non_diegetic_music: None.</p><div class="sync-row" id="sync-cmp-n_glass_shatter_impact"><div class="row-controls" data-row-id="cmp-n_glass_shatter_impact"><button type="button" class="row-play">▶ Play row</button><button type="button" class="row-restart">⟲ Restart</button><span class="row-audio-label">Audio:</span><span class="row-audio" role="radiogroup" aria-label="Choose audio source"><label><input type="radio" name="audio-cmp-n_glass_shatter_impact" value="mute" checked> Mute all</label><label><input type="radio" name="audio-cmp-n_glass_shatter_impact" value="ours_6step"> Our 6-step</label><label><input type="radio" name="audio-cmp-n_glass_shatter_impact" value="ours_prev_best_8step"> Our prev. best 8-step</label><label><input type="radio" name="audio-cmp-n_glass_shatter_impact" value="turbo8"> Turbo8</label><label><input type="radio" name="audio-cmp-n_glass_shatter_impact" value="vdn_h3_8step"> VDN-H3</label></span></div><div class="row four"><div class="cell"><span class="arm-label ours6">Our 6-step</span><video controls playsinline preload="none" data-arm="ours_6step" src="assets/video/n_glass_shatter_impact_phase4_c_gate350.mp4" muted></video><div class="path">assets/video/n_glass_shatter_impact_phase4_c_gate350.mp4</div></div><div class="cell"><span class="arm-label ours8">Our prev. best 8-step</span><video controls playsinline preload="none" data-arm="ours_prev_best_8step" src="assets/video/n_glass_shatter_impact_phase3_c_gate250.mp4" muted></video><div class="path">assets/video/n_glass_shatter_impact_phase3_c_gate250.mp4</div></div><div class="cell"><span class="arm-label turbo8">Turbo8</span><video controls playsinline preload="none" data-arm="turbo8" src="assets/video/n_glass_shatter_impact_turbo8.mp4" muted></video><div class="path">assets/video/n_glass_shatter_impact_turbo8.mp4</div></div><div class="cell"><span class="arm-label vdn">VDN-H3</span><video controls playsinline preload="none" data-arm="vdn_h3_8step" src="assets/video/n_glass_shatter_impact_vdn_h3_8step.mp4" muted></video><div class="path">assets/video/n_glass_shatter_impact_vdn_h3_8step.mp4</div></div></div></div><div class="note"><strong>6-step vs. previous-best-8-step:</strong> Tie -- both excellent</div></section>
+<section class="prompt-block" id="p-h_snowglobe"><h3 class="prompt-id">h_snowglobe</h3><p class="prompt-text">integrated_multimodal_description: [Shot 1] Static close shot, locked-off camera. A glass snow globe sits on a shelf, tiny white flakes drifting slowly downward inside it after being gently shaken, settling over a miniature cabin scene.<br>overall_soundscape: Near silence, a faint room tone, a very soft occasional tinkle of glass settling.<br>non_diegetic_music: None.</p><div class="sync-row" id="sync-cmp-h_snowglobe"><div class="row-controls" data-row-id="cmp-h_snowglobe"><button type="button" class="row-play">▶ Play row</button><button type="button" class="row-restart">⟲ Restart</button><span class="row-audio-label">Audio:</span><span class="row-audio" role="radiogroup" aria-label="Choose audio source"><label><input type="radio" name="audio-cmp-h_snowglobe" value="mute" checked> Mute all</label><label><input type="radio" name="audio-cmp-h_snowglobe" value="ours_6step"> Our 6-step</label><label><input type="radio" name="audio-cmp-h_snowglobe" value="ours_prev_best_8step"> Our prev. best 8-step</label><label><input type="radio" name="audio-cmp-h_snowglobe" value="turbo8"> Turbo8</label><label><input type="radio" name="audio-cmp-h_snowglobe" value="vdn_h3_8step"> VDN-H3</label></span></div><div class="row four"><div class="cell"><span class="arm-label ours6">Our 6-step</span><video controls playsinline preload="none" data-arm="ours_6step" src="assets/video/h_snowglobe_phase4_c_gate350.mp4" muted></video><div class="path">assets/video/h_snowglobe_phase4_c_gate350.mp4</div></div><div class="cell"><span class="arm-label ours8">Our prev. best 8-step</span><video controls playsinline preload="none" data-arm="ours_prev_best_8step" src="assets/video/h_snowglobe_phase3_c_gate250.mp4" muted></video><div class="path">assets/video/h_snowglobe_phase3_c_gate250.mp4</div></div><div class="cell"><span class="arm-label turbo8">Turbo8</span><video controls playsinline preload="none" data-arm="turbo8" src="assets/video/h_snowglobe_turbo8.mp4" muted></video><div class="path">assets/video/h_snowglobe_turbo8.mp4</div></div><div class="cell"><span class="arm-label vdn">VDN-H3</span><video controls playsinline preload="none" data-arm="vdn_h3_8step" src="assets/video/h_snowglobe_vdn_h3_8step.mp4" muted></video><div class="path">assets/video/h_snowglobe_vdn_h3_8step.mp4</div></div></div></div><div class="note"><strong>6-step vs. previous-best-8-step:</strong> Tie -- both excellent</div></section>
+<section class="prompt-block" id="p-h_argument"><h3 class="prompt-id">h_argument</h3><p class="prompt-text">integrated_multimodal_description: [Shot 1] Medium two-shot, static camera. Two siblings stand in a kitchen mid-argument, one with arms crossed speaking sharply, the other shaking their head and replying defensively.<br>overall_soundscape: Two raised, overlapping voices in a tense back-and-forth, clattering of a dish being set down hard, quiet kitchen ambience.<br>non_diegetic_music: None.</p><div class="sync-row" id="sync-cmp-h_argument"><div class="row-controls" data-row-id="cmp-h_argument"><button type="button" class="row-play">▶ Play row</button><button type="button" class="row-restart">⟲ Restart</button><span class="row-audio-label">Audio:</span><span class="row-audio" role="radiogroup" aria-label="Choose audio source"><label><input type="radio" name="audio-cmp-h_argument" value="mute" checked> Mute all</label><label><input type="radio" name="audio-cmp-h_argument" value="ours_6step"> Our 6-step</label><label><input type="radio" name="audio-cmp-h_argument" value="ours_prev_best_8step"> Our prev. best 8-step</label><label><input type="radio" name="audio-cmp-h_argument" value="turbo8"> Turbo8</label><label><input type="radio" name="audio-cmp-h_argument" value="vdn_h3_8step"> VDN-H3</label></span></div><div class="row four"><div class="cell"><span class="arm-label ours6">Our 6-step</span><video controls playsinline preload="none" data-arm="ours_6step" src="assets/video/h_argument_phase4_c_gate350.mp4" muted></video><div class="path">assets/video/h_argument_phase4_c_gate350.mp4</div></div><div class="cell"><span class="arm-label ours8">Our prev. best 8-step</span><video controls playsinline preload="none" data-arm="ours_prev_best_8step" src="assets/video/h_argument_phase3_c_gate250.mp4" muted></video><div class="path">assets/video/h_argument_phase3_c_gate250.mp4</div></div><div class="cell"><span class="arm-label turbo8">Turbo8</span><video controls playsinline preload="none" data-arm="turbo8" src="assets/video/h_argument_turbo8.mp4" muted></video><div class="path">assets/video/h_argument_turbo8.mp4</div></div><div class="cell"><span class="arm-label vdn">VDN-H3</span><video controls playsinline preload="none" data-arm="vdn_h3_8step" src="assets/video/h_argument_vdn_h3_8step.mp4" muted></video><div class="path">assets/video/h_argument_vdn_h3_8step.mp4</div></div></div></div><div class="note"><strong>6-step vs. previous-best-8-step:</strong> Tie -- both fully photorealistic, no drift</div></section>
+<section class="prompt-block" id="p-h_train_window"><h3 class="prompt-id">h_train_window</h3><p class="prompt-text">integrated_multimodal_description: [Shot 1] Smooth lateral tracking shot from inside a moving train, camera gliding past a window as a countryside landscape of rolling hills and scattered trees streams by continuously.<br>overall_soundscape: A steady rhythmic clack of wheels on rails, faint train engine hum.<br>non_diegetic_music: Gentle, wistful acoustic guitar melody.</p><div class="sync-row" id="sync-cmp-h_train_window"><div class="row-controls" data-row-id="cmp-h_train_window"><button type="button" class="row-play">▶ Play row</button><button type="button" class="row-restart">⟲ Restart</button><span class="row-audio-label">Audio:</span><span class="row-audio" role="radiogroup" aria-label="Choose audio source"><label><input type="radio" name="audio-cmp-h_train_window" value="mute" checked> Mute all</label><label><input type="radio" name="audio-cmp-h_train_window" value="ours_6step"> Our 6-step</label><label><input type="radio" name="audio-cmp-h_train_window" value="ours_prev_best_8step"> Our prev. best 8-step</label><label><input type="radio" name="audio-cmp-h_train_window" value="turbo8"> Turbo8</label><label><input type="radio" name="audio-cmp-h_train_window" value="vdn_h3_8step"> VDN-H3</label></span></div><div class="row four"><div class="cell"><span class="arm-label ours6">Our 6-step</span><video controls playsinline preload="none" data-arm="ours_6step" src="assets/video/h_train_window_phase4_c_gate350.mp4" muted></video><div class="path">assets/video/h_train_window_phase4_c_gate350.mp4</div></div><div class="cell"><span class="arm-label ours8">Our prev. best 8-step</span><video controls playsinline preload="none" data-arm="ours_prev_best_8step" src="assets/video/h_train_window_phase3_c_gate250.mp4" muted></video><div class="path">assets/video/h_train_window_phase3_c_gate250.mp4</div></div><div class="cell"><span class="arm-label turbo8">Turbo8</span><video controls playsinline preload="none" data-arm="turbo8" src="assets/video/h_train_window_turbo8.mp4" muted></video><div class="path">assets/video/h_train_window_turbo8.mp4</div></div><div class="cell"><span class="arm-label vdn">VDN-H3</span><video controls playsinline preload="none" data-arm="vdn_h3_8step" src="assets/video/h_train_window_vdn_h3_8step.mp4" muted></video><div class="path">assets/video/h_train_window_vdn_h3_8step.mp4</div></div></div></div><div class="note"><strong>6-step vs. previous-best-8-step:</strong> Tie -- both retain moderate camera-motion/parallax</div></section>
+</section>
+<section id="d5"><h2 class="section-title">D5 &mdash; Provenance</h2>
+<p><strong>Directories searched:</strong></p>
+<ul>
+<li class='path'>h3_sft_dmd/outputs/eval_full (our 6-step and previous-best-8-step clips)</li>
+<li class='path'>h3_8step_threeway_compare/results (Turbo8, VDN-H3 reference clips)</li>
+</ul>
+<p><strong>Our 6-step</strong> &mdash; all 14 <span class="path">{prompt}_phase4_c_gate350.mp4</span>
+files listed in <span class="path">h3_sft_dmd/PHASE4_GATE350_FULL14_AND_BENCHMARK.md</span> &sect;4,
+copied byte-for-byte into this repo's <span class="path">assets/video/</span>
+(sha256-verified against source before publishing -- see the per-clip
+<code>source_path</code>/<code>sha256</code> fields in
+<a href="6step_manifest.json">6step_manifest.json</a>). No re-encoding, no fresh
+inference.</p>
+<p><strong>Our previous best 8-step</strong> &mdash; the corresponding 14
+<span class="path">{prompt}_phase3_c_gate250.mp4</span> files from the same
+directory, the exact 8-step baseline the 6-step arm was benchmarked against in
+that report. Copied and sha256-verified the same way (see
+<a href="6step_manifest.json">6step_manifest.json</a>). Confirmed distinct from
+the <span class="path">dmd_student_iter700</span>/<span class="path">iter1000</span>
+checkpoints used as the "DMD8" arm elsewhere in this gallery.</p>
+<p><strong>Turbo8 / VDN-H3</strong> &mdash; not copied; both already exist in this
+repo's <span class="path">assets/video/</span> from the earlier threeway-comparison
+publish (commit 8101eca and prior). Reused as-is; the sha256 values in
+<a href="6step_manifest.json">6step_manifest.json</a> confirm they match the
+already-published files. No new evaluation was run against these two columns
+for this task.</p>
+<p><strong>Checkpoints:</strong> <span class="path">phase4_c_gate350.safetensors</span>
+(6-step), <span class="path">phase3_c_gate250.safetensors</span> (previous best
+8-step) &mdash; both from this project's own DMD campaign
+(<span class="path">h3_sft_dmd/</span>). <span class="path">minimax_h3_fl2v_turbo_8step_v1.0_768p_bf16.safetensors</span>
+(Turbo8) and OpenVDN's <span class="path">stage-dmd-step-250</span> (VDN-H3) are
+external, unaffiliated checkpoints.</p>
+<p><strong>Prompts/seeds:</strong> identical 14 held-out prompts/seeds as every
+other arm in this gallery (<span class="path">h3_sft/prompts/holdout.json</span>),
+same resolution/frame-count/audio convention throughout.</p>
+</section><section id="d6"><h2 class="section-title">D6 &mdash; Public video paths appendix</h2>
+<p>Full per-clip provenance (source path, public path, bytes, sha256) is in
+<a href="6step_manifest.json">6step_manifest.json</a>. This list is the public
+(repo-relative) path only.</p>
+<details class="appendix" open><summary>All 56 public video paths used in this artifact</summary>
+<pre class="pathblock">s_campfire_sparks | ours_6step             -&gt; assets/video/s_campfire_sparks_phase4_c_gate350.mp4
+s_campfire_sparks | ours_prev_best_8step   -&gt; assets/video/s_campfire_sparks_phase3_c_gate250.mp4
+s_campfire_sparks | turbo8                 -&gt; assets/video/s_campfire_sparks_turbo8.mp4
+s_campfire_sparks | vdn_h3_8step           -&gt; assets/video/s_campfire_sparks_vdn_h3_8step.mp4
+s_gas_stove_flare | ours_6step             -&gt; assets/video/s_gas_stove_flare_phase4_c_gate350.mp4
+s_gas_stove_flare | ours_prev_best_8step   -&gt; assets/video/s_gas_stove_flare_phase3_c_gate250.mp4
+s_gas_stove_flare | turbo8                 -&gt; assets/video/s_gas_stove_flare_turbo8.mp4
+s_gas_stove_flare | vdn_h3_8step           -&gt; assets/video/s_gas_stove_flare_vdn_h3_8step.mp4
+s_incense_smoke_curl | ours_6step             -&gt; assets/video/s_incense_smoke_curl_phase4_c_gate350.mp4
+s_incense_smoke_curl | ours_prev_best_8step   -&gt; assets/video/s_incense_smoke_curl_phase3_c_gate250.mp4
+s_incense_smoke_curl | turbo8                 -&gt; assets/video/s_incense_smoke_curl_turbo8.mp4
+s_incense_smoke_curl | vdn_h3_8step           -&gt; assets/video/s_incense_smoke_curl_vdn_h3_8step.mp4
+s_firework_burst | ours_6step             -&gt; assets/video/s_firework_burst_phase4_c_gate350.mp4
+s_firework_burst | ours_prev_best_8step   -&gt; assets/video/s_firework_burst_phase3_c_gate250.mp4
+s_firework_burst | turbo8                 -&gt; assets/video/s_firework_burst_turbo8.mp4
+s_firework_burst | vdn_h3_8step           -&gt; assets/video/s_firework_burst_vdn_h3_8step.mp4
+s_building_demolition | ours_6step             -&gt; assets/video/s_building_demolition_phase4_c_gate350.mp4
+s_building_demolition | ours_prev_best_8step   -&gt; assets/video/s_building_demolition_phase3_c_gate250.mp4
+s_building_demolition | turbo8                 -&gt; assets/video/s_building_demolition_turbo8.mp4
+s_building_demolition | vdn_h3_8step           -&gt; assets/video/s_building_demolition_vdn_h3_8step.mp4
+s_house_fire_window | ours_6step             -&gt; assets/video/s_house_fire_window_phase4_c_gate350.mp4
+s_house_fire_window | ours_prev_best_8step   -&gt; assets/video/s_house_fire_window_phase3_c_gate250.mp4
+s_house_fire_window | turbo8                 -&gt; assets/video/s_house_fire_window_turbo8.mp4
+s_house_fire_window | vdn_h3_8step           -&gt; assets/video/s_house_fire_window_vdn_h3_8step.mp4
+s_smoke_grenade_field | ours_6step             -&gt; assets/video/s_smoke_grenade_field_phase4_c_gate350.mp4
+s_smoke_grenade_field | ours_prev_best_8step   -&gt; assets/video/s_smoke_grenade_field_phase3_c_gate250.mp4
+s_smoke_grenade_field | turbo8                 -&gt; assets/video/s_smoke_grenade_field_turbo8.mp4
+s_smoke_grenade_field | vdn_h3_8step           -&gt; assets/video/s_smoke_grenade_field_vdn_h3_8step.mp4
+s_volcano_eruption_distant | ours_6step             -&gt; assets/video/s_volcano_eruption_distant_phase4_c_gate350.mp4
+s_volcano_eruption_distant | ours_prev_best_8step   -&gt; assets/video/s_volcano_eruption_distant_phase3_c_gate250.mp4
+s_volcano_eruption_distant | turbo8                 -&gt; assets/video/s_volcano_eruption_distant_turbo8.mp4
+s_volcano_eruption_distant | vdn_h3_8step           -&gt; assets/video/s_volcano_eruption_distant_vdn_h3_8step.mp4
+n_water_balloon_splash | ours_6step             -&gt; assets/video/n_water_balloon_splash_phase4_c_gate350.mp4
+n_water_balloon_splash | ours_prev_best_8step   -&gt; assets/video/n_water_balloon_splash_phase3_c_gate250.mp4
+n_water_balloon_splash | turbo8                 -&gt; assets/video/n_water_balloon_splash_turbo8.mp4
+n_water_balloon_splash | vdn_h3_8step           -&gt; assets/video/n_water_balloon_splash_vdn_h3_8step.mp4
+n_domino_chain_fall | ours_6step             -&gt; assets/video/n_domino_chain_fall_phase4_c_gate350.mp4
+n_domino_chain_fall | ours_prev_best_8step   -&gt; assets/video/n_domino_chain_fall_phase3_c_gate250.mp4
+n_domino_chain_fall | turbo8                 -&gt; assets/video/n_domino_chain_fall_turbo8.mp4
+n_domino_chain_fall | vdn_h3_8step           -&gt; assets/video/n_domino_chain_fall_vdn_h3_8step.mp4
+n_glass_shatter_impact | ours_6step             -&gt; assets/video/n_glass_shatter_impact_phase4_c_gate350.mp4
+n_glass_shatter_impact | ours_prev_best_8step   -&gt; assets/video/n_glass_shatter_impact_phase3_c_gate250.mp4
+n_glass_shatter_impact | turbo8                 -&gt; assets/video/n_glass_shatter_impact_turbo8.mp4
+n_glass_shatter_impact | vdn_h3_8step           -&gt; assets/video/n_glass_shatter_impact_vdn_h3_8step.mp4
+h_snowglobe | ours_6step             -&gt; assets/video/h_snowglobe_phase4_c_gate350.mp4
+h_snowglobe | ours_prev_best_8step   -&gt; assets/video/h_snowglobe_phase3_c_gate250.mp4
+h_snowglobe | turbo8                 -&gt; assets/video/h_snowglobe_turbo8.mp4
+h_snowglobe | vdn_h3_8step           -&gt; assets/video/h_snowglobe_vdn_h3_8step.mp4
+h_argument | ours_6step             -&gt; assets/video/h_argument_phase4_c_gate350.mp4
+h_argument | ours_prev_best_8step   -&gt; assets/video/h_argument_phase3_c_gate250.mp4
+h_argument | turbo8                 -&gt; assets/video/h_argument_turbo8.mp4
+h_argument | vdn_h3_8step           -&gt; assets/video/h_argument_vdn_h3_8step.mp4
+h_train_window | ours_6step             -&gt; assets/video/h_train_window_phase4_c_gate350.mp4
+h_train_window | ours_prev_best_8step   -&gt; assets/video/h_train_window_phase3_c_gate250.mp4
+h_train_window | turbo8                 -&gt; assets/video/h_train_window_turbo8.mp4
+h_train_window | vdn_h3_8step           -&gt; assets/video/h_train_window_vdn_h3_8step.mp4</pre></details>
+</section>
+</main>
+<footer>Manifest: <a href="6step_manifest.json">6step_manifest.json</a> &middot; Built read-only from files already on disk.</footer>
+<script>
+(function(){
+function initSyncRows(){
+  document.querySelectorAll('.sync-row').forEach(function(row){
+    var videos = Array.prototype.slice.call(row.querySelectorAll('video[data-arm]'));
+    if(!videos.length) return;
+    var playBtn = row.querySelector('.row-play');
+    var restartBtn = row.querySelector('.row-restart');
+    var audioInputs = Array.prototype.slice.call(row.querySelectorAll('.row-audio input[type=radio]'));
+    var syncing = false;
+    var DRIFT = 0.15;
+
+    function withSync(fn){
+      syncing = true;
+      try { fn(); } finally { setTimeout(function(){ syncing = false; }, 80); }
+    }
+    function setAllTime(t){
+      videos.forEach(function(v){
+        if (Math.abs(v.currentTime - t) > 0.03) { try { v.currentTime = t; } catch(e){} }
+      });
+    }
+    function playAll(){
+      videos.forEach(function(v){ var p = v.play(); if (p && p.catch) p.catch(function(){}); });
+    }
+    function pauseAll(){ videos.forEach(function(v){ v.pause(); }); }
+    function isPlaying(){ return videos.some(function(v){ return !v.paused && !v.ended; }); }
+    function updatePlayBtn(){ if (playBtn) playBtn.textContent = isPlaying() ? '\u23f8 Pause row' : '\u25b6 Play row'; }
+
+    if (playBtn) {
+      playBtn.addEventListener('click', function(){
+        withSync(function(){
+          if (isPlaying()) { pauseAll(); }
+          else { setAllTime(videos[0].currentTime); playAll(); }
+        });
+        setTimeout(updatePlayBtn, 60);
+      });
+    }
+    if (restartBtn) {
+      restartBtn.addEventListener('click', function(){
+        var wasPlaying = isPlaying();
+        withSync(function(){
+          setAllTime(0);
+          if (wasPlaying) playAll(); else pauseAll();
+        });
+        setTimeout(updatePlayBtn, 60);
+      });
+    }
+
+    videos.forEach(function(v){
+      v.addEventListener('play', function(){
+        if (syncing) return;
+        withSync(function(){ setAllTime(v.currentTime); playAll(); });
+        setTimeout(updatePlayBtn, 60);
+      });
+      v.addEventListener('pause', function(){
+        if (syncing) return;
+        withSync(function(){ pauseAll(); });
+        setTimeout(updatePlayBtn, 60);
+      });
+      v.addEventListener('seeked', function(){
+        if (syncing) return;
+        withSync(function(){ setAllTime(v.currentTime); });
+      });
+      v.addEventListener('timeupdate', function(){
+        if (syncing) return;
+        var t = v.currentTime;
+        var drifted = videos.some(function(o){ return o !== v && Math.abs(o.currentTime - t) > DRIFT; });
+        if (drifted) {
+          withSync(function(){
+            videos.forEach(function(o){
+              if (o !== v && Math.abs(o.currentTime - t) > 0.03) { try { o.currentTime = t; } catch(e){} }
+            });
+          });
+        }
+      });
+      v.addEventListener('ended', function(){ setTimeout(updatePlayBtn, 60); });
+    });
+
+    // All videos start muted (the 'mute' radio is checked by default in the
+    // markup). Selecting a per-column radio unmutes exactly that video and
+    // (re-)mutes every other video in the row.
+    function selectAudioOnly(v){
+      videos.forEach(function(o){ if (o !== v) { o.muted = true; } });
+      v.muted = false;
+      v.volume = 1;
+    }
+    function muteAll(){ videos.forEach(function(v){ v.muted = true; }); }
+
+    audioInputs.forEach(function(radio){
+      radio.addEventListener('change', function(){
+        if (radio.value === 'mute') { muteAll(); return; }
+        var target = radio.value;
+        var match = videos.filter(function(v){ return v.getAttribute('data-arm') === target; })[0];
+        if (match) selectAudioOnly(match);
+      });
+    });
+
+    // Best-effort: if the user unmutes a video via its own native controls
+    // (rather than the row's audio picker), mirror that choice -- mute every
+    // other video in the row and check the matching radio.
+    var suppressVolumeSync = false;
+    videos.forEach(function(v){
+      v.addEventListener('volumechange', function(){
+        if (suppressVolumeSync) return;
+        if (!v.muted) {
+          suppressVolumeSync = true;
+          videos.forEach(function(o){ if (o !== v) o.muted = true; });
+          var arm = v.getAttribute('data-arm');
+          audioInputs.forEach(function(r){ r.checked = (r.value === arm); });
+          setTimeout(function(){ suppressVolumeSync = false; }, 50);
+        }
+      });
+    });
+
+    updatePlayBtn();
+  });
+}
+if (document.readyState === 'loading') { document.addEventListener('DOMContentLoaded', initSyncRows); }
+else { initSyncRows(); }
+})();
+</script>
+</body></html>

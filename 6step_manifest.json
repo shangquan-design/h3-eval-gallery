@@ -1,0 +1,671 @@
+{
+  "generated_by": "h3-eval-gallery 6-step comparison build script (manual construction, 2026-09-09)",
+  "mode": "read-only discovery + copy of existing stored eval clips; no inference/training/eval jobs run",
+  "prompts": [
+    "s_campfire_sparks",
+    "s_gas_stove_flare",
+    "s_incense_smoke_curl",
+    "s_firework_burst",
+    "s_building_demolition",
+    "s_house_fire_window",
+    "s_smoke_grenade_field",
+    "s_volcano_eruption_distant",
+    "n_water_balloon_splash",
+    "n_domino_chain_fall",
+    "n_glass_shatter_impact",
+    "h_snowglobe",
+    "h_argument",
+    "h_train_window"
+  ],
+  "columns": [
+    "ours_6step",
+    "ours_prev_best_8step",
+    "turbo8",
+    "vdn_h3_8step"
+  ],
+  "column_labels": {
+    "ours_6step": "Our 6-step (phase4_c_gate350.safetensors)",
+    "ours_prev_best_8step": "Our previous best 8-step (phase3_c_gate250.safetensors)",
+    "turbo8": "LightX2V Turbo8",
+    "vdn_h3_8step": "VDN-H3 8-step"
+  },
+  "clips": {
+    "s_campfire_sparks": {
+      "ours_6step": {
+        "source_path": "/data/home/sunsean/work/h3_sft_dmd/outputs/eval_full/s_campfire_sparks_phase4_c_gate350.mp4",
+        "public_path": "assets/video/s_campfire_sparks_phase4_c_gate350.mp4",
+        "bytes": 1596601,
+        "sha256": "e7c6ebb9866bb68fb1de518529adbffcad4041138bdee685ded6a8395837e208",
+        "prompt_id": "s_campfire_sparks",
+        "checkpoint": "phase4_c_gate350.safetensors",
+        "steps": 6,
+        "note": "Our 6-step DMD checkpoint, current best Pareto point per PHASE4_GATE350_FULL14_AND_BENCHMARK.md."
+      },
+      "ours_prev_best_8step": {
+        "source_path": "/data/home/sunsean/work/h3_sft_dmd/outputs/eval_full/s_campfire_sparks_phase3_c_gate250.mp4",
+        "public_path": "assets/video/s_campfire_sparks_phase3_c_gate250.mp4",
+        "bytes": 1647941,
+        "sha256": "adb8a9fa26b3d078df793841013541215900f857bee865217bd04227cbfe0c02",
+        "prompt_id": "s_campfire_sparks",
+        "checkpoint": "phase3_c_gate250.safetensors",
+        "steps": 8,
+        "note": "Our previous best 8-step DMD checkpoint (NOT iter700/iter1000 -- those are separate DMD-student milestone checkpoints used elsewhere in this gallery, not this comparison's 8-step arm)."
+      },
+      "turbo8": {
+        "source_path": "/data/home/sunsean/work/h3_8step_threeway_compare/results/s_campfire_sparks_turbo8.mp4",
+        "public_path": "assets/video/s_campfire_sparks_turbo8.mp4",
+        "bytes": 2504430,
+        "sha256": "80c34199a6f9dadbea0af382bd41859eabc4c15ca1ee44fc30d98eab17b42c28",
+        "prompt_id": "s_campfire_sparks",
+        "checkpoint": "minimax_h3_fl2v_turbo_8step_v1.0_768p_bf16.safetensors (HF lightx2v/Minimax-h3-Turbo)",
+        "steps": 8,
+        "note": "Reference column only -- reused from the existing published threeway comparison assets; no new evaluation was run against our 6-step arm."
+      },
+      "vdn_h3_8step": {
+        "source_path": "/data/home/sunsean/work/h3_8step_threeway_compare/results/s_campfire_sparks_vdn_h3_8step.mp4",
+        "public_path": "assets/video/s_campfire_sparks_vdn_h3_8step.mp4",
+        "bytes": 2147047,
+        "sha256": "94c4bc1114dcf199450cd5e1dea772fd65d5fc9cb67f8f2f79ca2f814b0daf4b",
+        "prompt_id": "s_campfire_sparks",
+        "checkpoint": "OpenVDN vdn-minimax-h3, stage-dmd-step-250",
+        "steps": 8,
+        "note": "Reference column only -- reused from the existing published threeway comparison assets; no new evaluation was run against our 6-step arm."
+      }
+    },
+    "s_gas_stove_flare": {
+      "ours_6step": {
+        "source_path": "/data/home/sunsean/work/h3_sft_dmd/outputs/eval_full/s_gas_stove_flare_phase4_c_gate350.mp4",
+        "public_path": "assets/video/s_gas_stove_flare_phase4_c_gate350.mp4",
+        "bytes": 1044500,
+        "sha256": "c9668d61a447d7e7c83c9c099ed49543b35d9ded6f185556fcdca888dff59917",
+        "prompt_id": "s_gas_stove_flare",
+        "checkpoint": "phase4_c_gate350.safetensors",
+        "steps": 6,
+        "note": "Our 6-step DMD checkpoint, current best Pareto point per PHASE4_GATE350_FULL14_AND_BENCHMARK.md."
+      },
+      "ours_prev_best_8step": {
+        "source_path": "/data/home/sunsean/work/h3_sft_dmd/outputs/eval_full/s_gas_stove_flare_phase3_c_gate250.mp4",
+        "public_path": "assets/video/s_gas_stove_flare_phase3_c_gate250.mp4",
+        "bytes": 1083710,
+        "sha256": "180ce80fdb48466b5d5ab1a1dd25820c0570f36c88def44437a4367a0900c57b",
+        "prompt_id": "s_gas_stove_flare",
+        "checkpoint": "phase3_c_gate250.safetensors",
+        "steps": 8,
+        "note": "Our previous best 8-step DMD checkpoint (NOT iter700/iter1000 -- those are separate DMD-student milestone checkpoints used elsewhere in this gallery, not this comparison's 8-step arm)."
+      },
+      "turbo8": {
+        "source_path": "/data/home/sunsean/work/h3_8step_threeway_compare/results/s_gas_stove_flare_turbo8.mp4",
+        "public_path": "assets/video/s_gas_stove_flare_turbo8.mp4",
+        "bytes": 1153232,
+        "sha256": "bc5eab5bd17c89d8aedc84f9da2015f7e4675d696397427a3bf6e70b4b8042f1",
+        "prompt_id": "s_gas_stove_flare",
+        "checkpoint": "minimax_h3_fl2v_turbo_8step_v1.0_768p_bf16.safetensors (HF lightx2v/Minimax-h3-Turbo)",
+        "steps": 8,
+        "note": "Reference column only -- reused from the existing published threeway comparison assets; no new evaluation was run against our 6-step arm."
+      },
+      "vdn_h3_8step": {
+        "source_path": "/data/home/sunsean/work/h3_8step_threeway_compare/results/s_gas_stove_flare_vdn_h3_8step.mp4",
+        "public_path": "assets/video/s_gas_stove_flare_vdn_h3_8step.mp4",
+        "bytes": 642652,
+        "sha256": "38c3ec88ec546aa8fa82d91b0f052b4062f1755e3313a0940b9c77b648d1ff82",
+        "prompt_id": "s_gas_stove_flare",
+        "checkpoint": "OpenVDN vdn-minimax-h3, stage-dmd-step-250",
+        "steps": 8,
+        "note": "Reference column only -- reused from the existing published threeway comparison assets; no new evaluation was run against our 6-step arm."
+      }
+    },
+    "s_incense_smoke_curl": {
+      "ours_6step": {
+        "source_path": "/data/home/sunsean/work/h3_sft_dmd/outputs/eval_full/s_incense_smoke_curl_phase4_c_gate350.mp4",
+        "public_path": "assets/video/s_incense_smoke_curl_phase4_c_gate350.mp4",
+        "bytes": 477867,
+        "sha256": "25eb72d0c4303a52b9532d6353a200482bffe7c4f60be6690f5c57571af75cc8",
+        "prompt_id": "s_incense_smoke_curl",
+        "checkpoint": "phase4_c_gate350.safetensors",
+        "steps": 6,
+        "note": "Our 6-step DMD checkpoint, current best Pareto point per PHASE4_GATE350_FULL14_AND_BENCHMARK.md."
+      },
+      "ours_prev_best_8step": {
+        "source_path": "/data/home/sunsean/work/h3_sft_dmd/outputs/eval_full/s_incense_smoke_curl_phase3_c_gate250.mp4",
+        "public_path": "assets/video/s_incense_smoke_curl_phase3_c_gate250.mp4",
+        "bytes": 378764,
+        "sha256": "80f625828d717849421c7fa99532b23ee51c299441be27f11f8b221a4ca070e1",
+        "prompt_id": "s_incense_smoke_curl",
+        "checkpoint": "phase3_c_gate250.safetensors",
+        "steps": 8,
+        "note": "Our previous best 8-step DMD checkpoint (NOT iter700/iter1000 -- those are separate DMD-student milestone checkpoints used elsewhere in this gallery, not this comparison's 8-step arm)."
+      },
+      "turbo8": {
+        "source_path": "/data/home/sunsean/work/h3_8step_threeway_compare/results/s_incense_smoke_curl_turbo8.mp4",
+        "public_path": "assets/video/s_incense_smoke_curl_turbo8.mp4",
+        "bytes": 533756,
+        "sha256": "52553daf2a14060bafeb91d8284918aba2374e30a409d45f1d56db5793c8fb29",
+        "prompt_id": "s_incense_smoke_curl",
+        "checkpoint": "minimax_h3_fl2v_turbo_8step_v1.0_768p_bf16.safetensors (HF lightx2v/Minimax-h3-Turbo)",
+        "steps": 8,
+        "note": "Reference column only -- reused from the existing published threeway comparison assets; no new evaluation was run against our 6-step arm."
+      },
+      "vdn_h3_8step": {
+        "source_path": "/data/home/sunsean/work/h3_8step_threeway_compare/results/s_incense_smoke_curl_vdn_h3_8step.mp4",
+        "public_path": "assets/video/s_incense_smoke_curl_vdn_h3_8step.mp4",
+        "bytes": 533320,
+        "sha256": "915675290a83ebe8599699dedb1434b40f182a57fd7da306f422d040615eed19",
+        "prompt_id": "s_incense_smoke_curl",
+        "checkpoint": "OpenVDN vdn-minimax-h3, stage-dmd-step-250",
+        "steps": 8,
+        "note": "Reference column only -- reused from the existing published threeway comparison assets; no new evaluation was run against our 6-step arm."
+      }
+    },
+    "s_firework_burst": {
+      "ours_6step": {
+        "source_path": "/data/home/sunsean/work/h3_sft_dmd/outputs/eval_full/s_firework_burst_phase4_c_gate350.mp4",
+        "public_path": "assets/video/s_firework_burst_phase4_c_gate350.mp4",
+        "bytes": 1343146,
+        "sha256": "8325d7b22caedcd3ba67e899231b592f5fecf4569de89d0d5609f9f9d4e0f892",
+        "prompt_id": "s_firework_burst",
+        "checkpoint": "phase4_c_gate350.safetensors",
+        "steps": 6,
+        "note": "Our 6-step DMD checkpoint, current best Pareto point per PHASE4_GATE350_FULL14_AND_BENCHMARK.md."
+      },
+      "ours_prev_best_8step": {
+        "source_path": "/data/home/sunsean/work/h3_sft_dmd/outputs/eval_full/s_firework_burst_phase3_c_gate250.mp4",
+        "public_path": "assets/video/s_firework_burst_phase3_c_gate250.mp4",
+        "bytes": 1643270,
+        "sha256": "3c7efcadff419ab4456bf4557bcb42cdc8da700cc35f1b003a318a890ad80719",
+        "prompt_id": "s_firework_burst",
+        "checkpoint": "phase3_c_gate250.safetensors",
+        "steps": 8,
+        "note": "Our previous best 8-step DMD checkpoint (NOT iter700/iter1000 -- those are separate DMD-student milestone checkpoints used elsewhere in this gallery, not this comparison's 8-step arm)."
+      },
+      "turbo8": {
+        "source_path": "/data/home/sunsean/work/h3_8step_threeway_compare/results/s_firework_burst_turbo8.mp4",
+        "public_path": "assets/video/s_firework_burst_turbo8.mp4",
+        "bytes": 1774228,
+        "sha256": "2c60b26ce49386dc0d5fb98b38486e39438ad3ea726dc40e1522a7fe6ccf59c6",
+        "prompt_id": "s_firework_burst",
+        "checkpoint": "minimax_h3_fl2v_turbo_8step_v1.0_768p_bf16.safetensors (HF lightx2v/Minimax-h3-Turbo)",
+        "steps": 8,
+        "note": "Reference column only -- reused from the existing published threeway comparison assets; no new evaluation was run against our 6-step arm."
+      },
+      "vdn_h3_8step": {
+        "source_path": "/data/home/sunsean/work/h3_8step_threeway_compare/results/s_firework_burst_vdn_h3_8step.mp4",
+        "public_path": "assets/video/s_firework_burst_vdn_h3_8step.mp4",
+        "bytes": 873958,
+        "sha256": "510d9aab6a5a1fd7209001a7c1aa7f9517252a530d2720b2b765ae11600a1d19",
+        "prompt_id": "s_firework_burst",
+        "checkpoint": "OpenVDN vdn-minimax-h3, stage-dmd-step-250",
+        "steps": 8,
+        "note": "Reference column only -- reused from the existing published threeway comparison assets; no new evaluation was run against our 6-step arm."
+      }
+    },
+    "s_building_demolition": {
+      "ours_6step": {
+        "source_path": "/data/home/sunsean/work/h3_sft_dmd/outputs/eval_full/s_building_demolition_phase4_c_gate350.mp4",
+        "public_path": "assets/video/s_building_demolition_phase4_c_gate350.mp4",
+        "bytes": 2224913,
+        "sha256": "9bc1e7649b207c8f7c12f1abe33a0262f108ee545a53ba8be11542d365b05bdc",
+        "prompt_id": "s_building_demolition",
+        "checkpoint": "phase4_c_gate350.safetensors",
+        "steps": 6,
+        "note": "Our 6-step DMD checkpoint, current best Pareto point per PHASE4_GATE350_FULL14_AND_BENCHMARK.md."
+      },
+      "ours_prev_best_8step": {
+        "source_path": "/data/home/sunsean/work/h3_sft_dmd/outputs/eval_full/s_building_demolition_phase3_c_gate250.mp4",
+        "public_path": "assets/video/s_building_demolition_phase3_c_gate250.mp4",
+        "bytes": 2460794,
+        "sha256": "0a3cf5e37b5ebb54c77bae8dec0a31dca4ac88f350176a644d6988df5eb8cb6b",
+        "prompt_id": "s_building_demolition",
+        "checkpoint": "phase3_c_gate250.safetensors",
+        "steps": 8,
+        "note": "Our previous best 8-step DMD checkpoint (NOT iter700/iter1000 -- those are separate DMD-student milestone checkpoints used elsewhere in this gallery, not this comparison's 8-step arm)."
+      },
+      "turbo8": {
+        "source_path": "/data/home/sunsean/work/h3_8step_threeway_compare/results/s_building_demolition_turbo8.mp4",
+        "public_path": "assets/video/s_building_demolition_turbo8.mp4",
+        "bytes": 2101695,
+        "sha256": "c54f650c216c55242950b0b02d606fd2128ef8a7677c71128c5c2aaea093d50c",
+        "prompt_id": "s_building_demolition",
+        "checkpoint": "minimax_h3_fl2v_turbo_8step_v1.0_768p_bf16.safetensors (HF lightx2v/Minimax-h3-Turbo)",
+        "steps": 8,
+        "note": "Reference column only -- reused from the existing published threeway comparison assets; no new evaluation was run against our 6-step arm."
+      },
+      "vdn_h3_8step": {
+        "source_path": "/data/home/sunsean/work/h3_8step_threeway_compare/results/s_building_demolition_vdn_h3_8step.mp4",
+        "public_path": "assets/video/s_building_demolition_vdn_h3_8step.mp4",
+        "bytes": 1911709,
+        "sha256": "92135ff2f9a2774c6d753abd02cb860518a36e6decc3680e32eb6ebd71ea179e",
+        "prompt_id": "s_building_demolition",
+        "checkpoint": "OpenVDN vdn-minimax-h3, stage-dmd-step-250",
+        "steps": 8,
+        "note": "Reference column only -- reused from the existing published threeway comparison assets; no new evaluation was run against our 6-step arm."
+      }
+    },
+    "s_house_fire_window": {
+      "ours_6step": {
+        "source_path": "/data/home/sunsean/work/h3_sft_dmd/outputs/eval_full/s_house_fire_window_phase4_c_gate350.mp4",
+        "public_path": "assets/video/s_house_fire_window_phase4_c_gate350.mp4",
+        "bytes": 712956,
+        "sha256": "8ca09f509c11a18e5c9b4603b4e73638c78b4e9a3033d89c0bb7a1d3df1c5490",
+        "prompt_id": "s_house_fire_window",
+        "checkpoint": "phase4_c_gate350.safetensors",
+        "steps": 6,
+        "note": "Our 6-step DMD checkpoint, current best Pareto point per PHASE4_GATE350_FULL14_AND_BENCHMARK.md."
+      },
+      "ours_prev_best_8step": {
+        "source_path": "/data/home/sunsean/work/h3_sft_dmd/outputs/eval_full/s_house_fire_window_phase3_c_gate250.mp4",
+        "public_path": "assets/video/s_house_fire_window_phase3_c_gate250.mp4",
+        "bytes": 826683,
+        "sha256": "5dcd884b59638c3ba7dea99cb5bd788a8b42860cac4635c123a5cc073c7c18d2",
+        "prompt_id": "s_house_fire_window",
+        "checkpoint": "phase3_c_gate250.safetensors",
+        "steps": 8,
+        "note": "Our previous best 8-step DMD checkpoint (NOT iter700/iter1000 -- those are separate DMD-student milestone checkpoints used elsewhere in this gallery, not this comparison's 8-step arm)."
+      },
+      "turbo8": {
+        "source_path": "/data/home/sunsean/work/h3_8step_threeway_compare/results/s_house_fire_window_turbo8.mp4",
+        "public_path": "assets/video/s_house_fire_window_turbo8.mp4",
+        "bytes": 748129,
+        "sha256": "8a5b302cdd972f9a927eaf8ac82186ce68039c1ebd5c0bb47f1852167ed81d5f",
+        "prompt_id": "s_house_fire_window",
+        "checkpoint": "minimax_h3_fl2v_turbo_8step_v1.0_768p_bf16.safetensors (HF lightx2v/Minimax-h3-Turbo)",
+        "steps": 8,
+        "note": "Reference column only -- reused from the existing published threeway comparison assets; no new evaluation was run against our 6-step arm."
+      },
+      "vdn_h3_8step": {
+        "source_path": "/data/home/sunsean/work/h3_8step_threeway_compare/results/s_house_fire_window_vdn_h3_8step.mp4",
+        "public_path": "assets/video/s_house_fire_window_vdn_h3_8step.mp4",
+        "bytes": 551905,
+        "sha256": "a5281e0786abf09f41137233623c35ee7009a434a8541b80b6515e68b9b850d0",
+        "prompt_id": "s_house_fire_window",
+        "checkpoint": "OpenVDN vdn-minimax-h3, stage-dmd-step-250",
+        "steps": 8,
+        "note": "Reference column only -- reused from the existing published threeway comparison assets; no new evaluation was run against our 6-step arm."
+      }
+    },
+    "s_smoke_grenade_field": {
+      "ours_6step": {
+        "source_path": "/data/home/sunsean/work/h3_sft_dmd/outputs/eval_full/s_smoke_grenade_field_phase4_c_gate350.mp4",
+        "public_path": "assets/video/s_smoke_grenade_field_phase4_c_gate350.mp4",
+        "bytes": 1289100,
+        "sha256": "3a4b2b14d6ff72b87cc3fa31ae9134b3e6656c098fd982165ff7e12d057ac021",
+        "prompt_id": "s_smoke_grenade_field",
+        "checkpoint": "phase4_c_gate350.safetensors",
+        "steps": 6,
+        "note": "Our 6-step DMD checkpoint, current best Pareto point per PHASE4_GATE350_FULL14_AND_BENCHMARK.md."
+      },
+      "ours_prev_best_8step": {
+        "source_path": "/data/home/sunsean/work/h3_sft_dmd/outputs/eval_full/s_smoke_grenade_field_phase3_c_gate250.mp4",
+        "public_path": "assets/video/s_smoke_grenade_field_phase3_c_gate250.mp4",
+        "bytes": 1548755,
+        "sha256": "8c748b6006f6d7fc983767a5fb20ee4e3f007a6cee5717c3748c3d92f03b4619",
+        "prompt_id": "s_smoke_grenade_field",
+        "checkpoint": "phase3_c_gate250.safetensors",
+        "steps": 8,
+        "note": "Our previous best 8-step DMD checkpoint (NOT iter700/iter1000 -- those are separate DMD-student milestone checkpoints used elsewhere in this gallery, not this comparison's 8-step arm)."
+      },
+      "turbo8": {
+        "source_path": "/data/home/sunsean/work/h3_8step_threeway_compare/results/s_smoke_grenade_field_turbo8.mp4",
+        "public_path": "assets/video/s_smoke_grenade_field_turbo8.mp4",
+        "bytes": 1262053,
+        "sha256": "47195c4b2ddb29c04c90f9a1bb980618fc1afe1e79f87fb58a5830c9f4a35928",
+        "prompt_id": "s_smoke_grenade_field",
+        "checkpoint": "minimax_h3_fl2v_turbo_8step_v1.0_768p_bf16.safetensors (HF lightx2v/Minimax-h3-Turbo)",
+        "steps": 8,
+        "note": "Reference column only -- reused from the existing published threeway comparison assets; no new evaluation was run against our 6-step arm."
+      },
+      "vdn_h3_8step": {
+        "source_path": "/data/home/sunsean/work/h3_8step_threeway_compare/results/s_smoke_grenade_field_vdn_h3_8step.mp4",
+        "public_path": "assets/video/s_smoke_grenade_field_vdn_h3_8step.mp4",
+        "bytes": 1366606,
+        "sha256": "3048d40802d4fd7825172ee4aa0360d404958e7296088c6f5cff80845599cea5",
+        "prompt_id": "s_smoke_grenade_field",
+        "checkpoint": "OpenVDN vdn-minimax-h3, stage-dmd-step-250",
+        "steps": 8,
+        "note": "Reference column only -- reused from the existing published threeway comparison assets; no new evaluation was run against our 6-step arm."
+      }
+    },
+    "s_volcano_eruption_distant": {
+      "ours_6step": {
+        "source_path": "/data/home/sunsean/work/h3_sft_dmd/outputs/eval_full/s_volcano_eruption_distant_phase4_c_gate350.mp4",
+        "public_path": "assets/video/s_volcano_eruption_distant_phase4_c_gate350.mp4",
+        "bytes": 1085166,
+        "sha256": "46aad2b66f3a594d7e8fc87aa029a764f1955b2f9c034db25c57d8119f6a144a",
+        "prompt_id": "s_volcano_eruption_distant",
+        "checkpoint": "phase4_c_gate350.safetensors",
+        "steps": 6,
+        "note": "Our 6-step DMD checkpoint, current best Pareto point per PHASE4_GATE350_FULL14_AND_BENCHMARK.md."
+      },
+      "ours_prev_best_8step": {
+        "source_path": "/data/home/sunsean/work/h3_sft_dmd/outputs/eval_full/s_volcano_eruption_distant_phase3_c_gate250.mp4",
+        "public_path": "assets/video/s_volcano_eruption_distant_phase3_c_gate250.mp4",
+        "bytes": 1172167,
+        "sha256": "8890eced9dc322151a90e5b8ab4588646bb40c408e709c80e3d84be4af8b3d80",
+        "prompt_id": "s_volcano_eruption_distant",
+        "checkpoint": "phase3_c_gate250.safetensors",
+        "steps": 8,
+        "note": "Our previous best 8-step DMD checkpoint (NOT iter700/iter1000 -- those are separate DMD-student milestone checkpoints used elsewhere in this gallery, not this comparison's 8-step arm)."
+      },
+      "turbo8": {
+        "source_path": "/data/home/sunsean/work/h3_8step_threeway_compare/results/s_volcano_eruption_distant_turbo8.mp4",
+        "public_path": "assets/video/s_volcano_eruption_distant_turbo8.mp4",
+        "bytes": 958329,
+        "sha256": "19b9d57775b6bd54c5b2ddfd655987396c552f90c64b90497950cdaa49acd8c1",
+        "prompt_id": "s_volcano_eruption_distant",
+        "checkpoint": "minimax_h3_fl2v_turbo_8step_v1.0_768p_bf16.safetensors (HF lightx2v/Minimax-h3-Turbo)",
+        "steps": 8,
+        "note": "Reference column only -- reused from the existing published threeway comparison assets; no new evaluation was run against our 6-step arm."
+      },
+      "vdn_h3_8step": {
+        "source_path": "/data/home/sunsean/work/h3_8step_threeway_compare/results/s_volcano_eruption_distant_vdn_h3_8step.mp4",
+        "public_path": "assets/video/s_volcano_eruption_distant_vdn_h3_8step.mp4",
+        "bytes": 486341,
+        "sha256": "d02d159af0539c58a5f9cae225bf7cced2303a29736a70b078c876108267e92c",
+        "prompt_id": "s_volcano_eruption_distant",
+        "checkpoint": "OpenVDN vdn-minimax-h3, stage-dmd-step-250",
+        "steps": 8,
+        "note": "Reference column only -- reused from the existing published threeway comparison assets; no new evaluation was run against our 6-step arm."
+      }
+    },
+    "n_water_balloon_splash": {
+      "ours_6step": {
+        "source_path": "/data/home/sunsean/work/h3_sft_dmd/outputs/eval_full/n_water_balloon_splash_phase4_c_gate350.mp4",
+        "public_path": "assets/video/n_water_balloon_splash_phase4_c_gate350.mp4",
+        "bytes": 3038374,
+        "sha256": "24d7328e494ea6f15943126298152a98ad9c9c98dab9727677064b9b91569f22",
+        "prompt_id": "n_water_balloon_splash",
+        "checkpoint": "phase4_c_gate350.safetensors",
+        "steps": 6,
+        "note": "Our 6-step DMD checkpoint, current best Pareto point per PHASE4_GATE350_FULL14_AND_BENCHMARK.md."
+      },
+      "ours_prev_best_8step": {
+        "source_path": "/data/home/sunsean/work/h3_sft_dmd/outputs/eval_full/n_water_balloon_splash_phase3_c_gate250.mp4",
+        "public_path": "assets/video/n_water_balloon_splash_phase3_c_gate250.mp4",
+        "bytes": 3200617,
+        "sha256": "1003bd7e517b2051e89f21ded933848cfe82f68a15f8892cb82d3fee6803223e",
+        "prompt_id": "n_water_balloon_splash",
+        "checkpoint": "phase3_c_gate250.safetensors",
+        "steps": 8,
+        "note": "Our previous best 8-step DMD checkpoint (NOT iter700/iter1000 -- those are separate DMD-student milestone checkpoints used elsewhere in this gallery, not this comparison's 8-step arm)."
+      },
+      "turbo8": {
+        "source_path": "/data/home/sunsean/work/h3_8step_threeway_compare/results/n_water_balloon_splash_turbo8.mp4",
+        "public_path": "assets/video/n_water_balloon_splash_turbo8.mp4",
+        "bytes": 2785804,
+        "sha256": "15d38d4d93ceaf3b6747df69913095778f87a1c4c986086d340e2f0510923cdd",
+        "prompt_id": "n_water_balloon_splash",
+        "checkpoint": "minimax_h3_fl2v_turbo_8step_v1.0_768p_bf16.safetensors (HF lightx2v/Minimax-h3-Turbo)",
+        "steps": 8,
+        "note": "Reference column only -- reused from the existing published threeway comparison assets; no new evaluation was run against our 6-step arm."
+      },
+      "vdn_h3_8step": {
+        "source_path": "/data/home/sunsean/work/h3_8step_threeway_compare/results/n_water_balloon_splash_vdn_h3_8step.mp4",
+        "public_path": "assets/video/n_water_balloon_splash_vdn_h3_8step.mp4",
+        "bytes": 2248994,
+        "sha256": "c5d24a55123b33c4a0aac3fac3b63cf5c3d5af3cd07e0fbc63b37162a54cff4e",
+        "prompt_id": "n_water_balloon_splash",
+        "checkpoint": "OpenVDN vdn-minimax-h3, stage-dmd-step-250",
+        "steps": 8,
+        "note": "Reference column only -- reused from the existing published threeway comparison assets; no new evaluation was run against our 6-step arm."
+      }
+    },
+    "n_domino_chain_fall": {
+      "ours_6step": {
+        "source_path": "/data/home/sunsean/work/h3_sft_dmd/outputs/eval_full/n_domino_chain_fall_phase4_c_gate350.mp4",
+        "public_path": "assets/video/n_domino_chain_fall_phase4_c_gate350.mp4",
+        "bytes": 727774,
+        "sha256": "8063c8b202decfee1dff43d993923fcf05d76e332db40b1fbc48b73b3ca05907",
+        "prompt_id": "n_domino_chain_fall",
+        "checkpoint": "phase4_c_gate350.safetensors",
+        "steps": 6,
+        "note": "Our 6-step DMD checkpoint, current best Pareto point per PHASE4_GATE350_FULL14_AND_BENCHMARK.md."
+      },
+      "ours_prev_best_8step": {
+        "source_path": "/data/home/sunsean/work/h3_sft_dmd/outputs/eval_full/n_domino_chain_fall_phase3_c_gate250.mp4",
+        "public_path": "assets/video/n_domino_chain_fall_phase3_c_gate250.mp4",
+        "bytes": 825810,
+        "sha256": "1a87712965adae6cfd98efbfbab8c0083f0c9e2012dd5af01290c1abe38c99e3",
+        "prompt_id": "n_domino_chain_fall",
+        "checkpoint": "phase3_c_gate250.safetensors",
+        "steps": 8,
+        "note": "Our previous best 8-step DMD checkpoint (NOT iter700/iter1000 -- those are separate DMD-student milestone checkpoints used elsewhere in this gallery, not this comparison's 8-step arm)."
+      },
+      "turbo8": {
+        "source_path": "/data/home/sunsean/work/h3_8step_threeway_compare/results/n_domino_chain_fall_turbo8.mp4",
+        "public_path": "assets/video/n_domino_chain_fall_turbo8.mp4",
+        "bytes": 911774,
+        "sha256": "162f8007865e81ee71a46dd7fa1beb5a2f3d22a885dc698f93eef5638f7f9928",
+        "prompt_id": "n_domino_chain_fall",
+        "checkpoint": "minimax_h3_fl2v_turbo_8step_v1.0_768p_bf16.safetensors (HF lightx2v/Minimax-h3-Turbo)",
+        "steps": 8,
+        "note": "Reference column only -- reused from the existing published threeway comparison assets; no new evaluation was run against our 6-step arm."
+      },
+      "vdn_h3_8step": {
+        "source_path": "/data/home/sunsean/work/h3_8step_threeway_compare/results/n_domino_chain_fall_vdn_h3_8step.mp4",
+        "public_path": "assets/video/n_domino_chain_fall_vdn_h3_8step.mp4",
+        "bytes": 556857,
+        "sha256": "4a85c2a8182be1efedeb3cb23d22884a0316912cda5ad2284eb389c2fcfbf454",
+        "prompt_id": "n_domino_chain_fall",
+        "checkpoint": "OpenVDN vdn-minimax-h3, stage-dmd-step-250",
+        "steps": 8,
+        "note": "Reference column only -- reused from the existing published threeway comparison assets; no new evaluation was run against our 6-step arm."
+      }
+    },
+    "n_glass_shatter_impact": {
+      "ours_6step": {
+        "source_path": "/data/home/sunsean/work/h3_sft_dmd/outputs/eval_full/n_glass_shatter_impact_phase4_c_gate350.mp4",
+        "public_path": "assets/video/n_glass_shatter_impact_phase4_c_gate350.mp4",
+        "bytes": 2543664,
+        "sha256": "6b2432ad7572de1bfb6aa3e1416b9479bcf9d89c123e816e923e5061ea77a20f",
+        "prompt_id": "n_glass_shatter_impact",
+        "checkpoint": "phase4_c_gate350.safetensors",
+        "steps": 6,
+        "note": "Our 6-step DMD checkpoint, current best Pareto point per PHASE4_GATE350_FULL14_AND_BENCHMARK.md."
+      },
+      "ours_prev_best_8step": {
+        "source_path": "/data/home/sunsean/work/h3_sft_dmd/outputs/eval_full/n_glass_shatter_impact_phase3_c_gate250.mp4",
+        "public_path": "assets/video/n_glass_shatter_impact_phase3_c_gate250.mp4",
+        "bytes": 2510867,
+        "sha256": "5012d1206876891450a3ed3260017ce357b8690ef84b8f1448a886c3d9770b20",
+        "prompt_id": "n_glass_shatter_impact",
+        "checkpoint": "phase3_c_gate250.safetensors",
+        "steps": 8,
+        "note": "Our previous best 8-step DMD checkpoint (NOT iter700/iter1000 -- those are separate DMD-student milestone checkpoints used elsewhere in this gallery, not this comparison's 8-step arm)."
+      },
+      "turbo8": {
+        "source_path": "/data/home/sunsean/work/h3_8step_threeway_compare/results/n_glass_shatter_impact_turbo8.mp4",
+        "public_path": "assets/video/n_glass_shatter_impact_turbo8.mp4",
+        "bytes": 3169152,
+        "sha256": "1688913968463dadbba6574978d9fc7501a2b677193e4b40e7642a0d68772e43",
+        "prompt_id": "n_glass_shatter_impact",
+        "checkpoint": "minimax_h3_fl2v_turbo_8step_v1.0_768p_bf16.safetensors (HF lightx2v/Minimax-h3-Turbo)",
+        "steps": 8,
+        "note": "Reference column only -- reused from the existing published threeway comparison assets; no new evaluation was run against our 6-step arm."
+      },
+      "vdn_h3_8step": {
+        "source_path": "/data/home/sunsean/work/h3_8step_threeway_compare/results/n_glass_shatter_impact_vdn_h3_8step.mp4",
+        "public_path": "assets/video/n_glass_shatter_impact_vdn_h3_8step.mp4",
+        "bytes": 1096230,
+        "sha256": "71dec07f639eb8ea3b46a0f3c58ff1db96451afe66800cdb336572b6da62976b",
+        "prompt_id": "n_glass_shatter_impact",
+        "checkpoint": "OpenVDN vdn-minimax-h3, stage-dmd-step-250",
+        "steps": 8,
+        "note": "Reference column only -- reused from the existing published threeway comparison assets; no new evaluation was run against our 6-step arm."
+      }
+    },
+    "h_snowglobe": {
+      "ours_6step": {
+        "source_path": "/data/home/sunsean/work/h3_sft_dmd/outputs/eval_full/h_snowglobe_phase4_c_gate350.mp4",
+        "public_path": "assets/video/h_snowglobe_phase4_c_gate350.mp4",
+        "bytes": 1162303,
+        "sha256": "e20bdbc842501ce6b9e47366a631071910681e7da4641ed1e5f9402d96732889",
+        "prompt_id": "h_snowglobe",
+        "checkpoint": "phase4_c_gate350.safetensors",
+        "steps": 6,
+        "note": "Our 6-step DMD checkpoint, current best Pareto point per PHASE4_GATE350_FULL14_AND_BENCHMARK.md."
+      },
+      "ours_prev_best_8step": {
+        "source_path": "/data/home/sunsean/work/h3_sft_dmd/outputs/eval_full/h_snowglobe_phase3_c_gate250.mp4",
+        "public_path": "assets/video/h_snowglobe_phase3_c_gate250.mp4",
+        "bytes": 1140995,
+        "sha256": "a1c12c493075174fc622467b54d668814035bf5bedd6d536bd9f6bdde9fb5ce6",
+        "prompt_id": "h_snowglobe",
+        "checkpoint": "phase3_c_gate250.safetensors",
+        "steps": 8,
+        "note": "Our previous best 8-step DMD checkpoint (NOT iter700/iter1000 -- those are separate DMD-student milestone checkpoints used elsewhere in this gallery, not this comparison's 8-step arm)."
+      },
+      "turbo8": {
+        "source_path": "/data/home/sunsean/work/h3_8step_threeway_compare/results/h_snowglobe_turbo8.mp4",
+        "public_path": "assets/video/h_snowglobe_turbo8.mp4",
+        "bytes": 1527928,
+        "sha256": "59dff9fb10323e1cf69b185e0a738aace1125f5a2ac5f57e34d1926a4f04920d",
+        "prompt_id": "h_snowglobe",
+        "checkpoint": "minimax_h3_fl2v_turbo_8step_v1.0_768p_bf16.safetensors (HF lightx2v/Minimax-h3-Turbo)",
+        "steps": 8,
+        "note": "Reference column only -- reused from the existing published threeway comparison assets; no new evaluation was run against our 6-step arm."
+      },
+      "vdn_h3_8step": {
+        "source_path": "/data/home/sunsean/work/h3_8step_threeway_compare/results/h_snowglobe_vdn_h3_8step.mp4",
+        "public_path": "assets/video/h_snowglobe_vdn_h3_8step.mp4",
+        "bytes": 540727,
+        "sha256": "a1d99792c754b3f1f4fff198767f7c1bc67bb2c8d99eaeee9fe0c6c229e2c7e0",
+        "prompt_id": "h_snowglobe",
+        "checkpoint": "OpenVDN vdn-minimax-h3, stage-dmd-step-250",
+        "steps": 8,
+        "note": "Reference column only -- reused from the existing published threeway comparison assets; no new evaluation was run against our 6-step arm."
+      }
+    },
+    "h_argument": {
+      "ours_6step": {
+        "source_path": "/data/home/sunsean/work/h3_sft_dmd/outputs/eval_full/h_argument_phase4_c_gate350.mp4",
+        "public_path": "assets/video/h_argument_phase4_c_gate350.mp4",
+        "bytes": 815773,
+        "sha256": "de381aec60a4ac4bea6b6abd43c82adc68470c1bb8c7f4214bd793b91df1fbcc",
+        "prompt_id": "h_argument",
+        "checkpoint": "phase4_c_gate350.safetensors",
+        "steps": 6,
+        "note": "Our 6-step DMD checkpoint, current best Pareto point per PHASE4_GATE350_FULL14_AND_BENCHMARK.md."
+      },
+      "ours_prev_best_8step": {
+        "source_path": "/data/home/sunsean/work/h3_sft_dmd/outputs/eval_full/h_argument_phase3_c_gate250.mp4",
+        "public_path": "assets/video/h_argument_phase3_c_gate250.mp4",
+        "bytes": 795063,
+        "sha256": "bf9956b4b09890e49e2f5f5db9a229fa29bba938ed8d9d20034bfedff8b9735a",
+        "prompt_id": "h_argument",
+        "checkpoint": "phase3_c_gate250.safetensors",
+        "steps": 8,
+        "note": "Our previous best 8-step DMD checkpoint (NOT iter700/iter1000 -- those are separate DMD-student milestone checkpoints used elsewhere in this gallery, not this comparison's 8-step arm)."
+      },
+      "turbo8": {
+        "source_path": "/data/home/sunsean/work/h3_8step_threeway_compare/results/h_argument_turbo8.mp4",
+        "public_path": "assets/video/h_argument_turbo8.mp4",
+        "bytes": 869568,
+        "sha256": "a53299560f3193a2b7e2f2caf53c5032d44d71940ec1e899a81146e7668e757d",
+        "prompt_id": "h_argument",
+        "checkpoint": "minimax_h3_fl2v_turbo_8step_v1.0_768p_bf16.safetensors (HF lightx2v/Minimax-h3-Turbo)",
+        "steps": 8,
+        "note": "Reference column only -- reused from the existing published threeway comparison assets; no new evaluation was run against our 6-step arm."
+      },
+      "vdn_h3_8step": {
+        "source_path": "/data/home/sunsean/work/h3_8step_threeway_compare/results/h_argument_vdn_h3_8step.mp4",
+        "public_path": "assets/video/h_argument_vdn_h3_8step.mp4",
+        "bytes": 589507,
+        "sha256": "cb073a352ff4ccf08d6d05101a42e4ce63d965d20ff0e5da14232d9dec8583ca",
+        "prompt_id": "h_argument",
+        "checkpoint": "OpenVDN vdn-minimax-h3, stage-dmd-step-250",
+        "steps": 8,
+        "note": "Reference column only -- reused from the existing published threeway comparison assets; no new evaluation was run against our 6-step arm."
+      }
+    },
+    "h_train_window": {
+      "ours_6step": {
+        "source_path": "/data/home/sunsean/work/h3_sft_dmd/outputs/eval_full/h_train_window_phase4_c_gate350.mp4",
+        "public_path": "assets/video/h_train_window_phase4_c_gate350.mp4",
+        "bytes": 898749,
+        "sha256": "342a532399ccb3c3dffe346ef7d41dc306bc446a7473e703fd91daab7850e138",
+        "prompt_id": "h_train_window",
+        "checkpoint": "phase4_c_gate350.safetensors",
+        "steps": 6,
+        "note": "Our 6-step DMD checkpoint, current best Pareto point per PHASE4_GATE350_FULL14_AND_BENCHMARK.md."
+      },
+      "ours_prev_best_8step": {
+        "source_path": "/data/home/sunsean/work/h3_sft_dmd/outputs/eval_full/h_train_window_phase3_c_gate250.mp4",
+        "public_path": "assets/video/h_train_window_phase3_c_gate250.mp4",
+        "bytes": 864574,
+        "sha256": "0f8d60a9e72240d2527a1e8144cc242cac8001669cf134ff4449734fd2d4d25b",
+        "prompt_id": "h_train_window",
+        "checkpoint": "phase3_c_gate250.safetensors",
+        "steps": 8,
+        "note": "Our previous best 8-step DMD checkpoint (NOT iter700/iter1000 -- those are separate DMD-student milestone checkpoints used elsewhere in this gallery, not this comparison's 8-step arm)."
+      },
+      "turbo8": {
+        "source_path": "/data/home/sunsean/work/h3_8step_threeway_compare/results/h_train_window_turbo8.mp4",
+        "public_path": "assets/video/h_train_window_turbo8.mp4",
+        "bytes": 1144403,
+        "sha256": "dbab0d9765848ba5f8dd35f6b60499b7ab514eb8884eb3bce2240916867cd72b",
+        "prompt_id": "h_train_window",
+        "checkpoint": "minimax_h3_fl2v_turbo_8step_v1.0_768p_bf16.safetensors (HF lightx2v/Minimax-h3-Turbo)",
+        "steps": 8,
+        "note": "Reference column only -- reused from the existing published threeway comparison assets; no new evaluation was run against our 6-step arm."
+      },
+      "vdn_h3_8step": {
+        "source_path": "/data/home/sunsean/work/h3_8step_threeway_compare/results/h_train_window_vdn_h3_8step.mp4",
+        "public_path": "assets/video/h_train_window_vdn_h3_8step.mp4",
+        "bytes": 708806,
+        "sha256": "c3b79a0e1af11d2f897458d4fcf291cc1d185ab7ffca6f68427a3be35e19f3fc",
+        "prompt_id": "h_train_window",
+        "checkpoint": "OpenVDN vdn-minimax-h3, stage-dmd-step-250",
+        "steps": 8,
+        "note": "Reference column only -- reused from the existing published threeway comparison assets; no new evaluation was run against our 6-step arm."
+      }
+    }
+  },
+  "per_prompt_notes": {
+    "s_campfire_sparks": "Tie -- background richness preserved on both",
+    "s_gas_stove_flare": "Tie -- both excellent",
+    "s_incense_smoke_curl": "Tie -- both excellent",
+    "s_firework_burst": "Tie -- both excellent",
+    "s_building_demolition": "Tie -- both excellent",
+    "s_house_fire_window": "Tie -- both excellent",
+    "s_smoke_grenade_field": "Tie -- both excellent",
+    "s_volcano_eruption_distant": "Tie -- both excellent",
+    "n_water_balloon_splash": "Tie -- both show full rupture/deflation, comparably strong",
+    "n_domino_chain_fall": "Tie -- both excellent",
+    "n_glass_shatter_impact": "Tie -- both excellent",
+    "h_snowglobe": "Tie -- both excellent",
+    "h_argument": "Tie -- both fully photorealistic, no drift",
+    "h_train_window": "Tie -- both retain moderate camera-motion/parallax"
+  },
+  "result_summary": {
+    "scope_note": "This gallery build performed no new quality assessment. The tie/win/loss result below is reported verbatim from the historical AI screening pass (full-video review, not a human evaluation) documented in the source report at the time it was written.",
+    "score": "14/14 ties, 0 wins, 0 losses -- 6-step (gate350) vs previous best 8-step (gate250)",
+    "preserved_criteria": [
+      "water-balloon rupture (n_water_balloon_splash)",
+      "campfire/background richness (s_campfire_sparks)",
+      "train-window moderate camera-motion/parallax (h_train_window)",
+      "clean h_argument (no anime/style drift)"
+    ],
+    "no_new_failure_modes": true,
+    "source_report": "h3_sft_dmd/PHASE4_GATE350_FULL14_AND_BENCHMARK.md",
+    "caveat": "Ties are only claimed between our 6-step and our previous best 8-step. Turbo8 and VDN-H3 are reference columns shown for side-by-side viewing only -- no tie/win/loss claim is made against them in this artifact."
+  },
+  "timing": {
+    "source_report": "h3_sft_dmd/PHASE4_GATE350_FULL14_AND_BENCHMARK.md",
+    "harness": "same GPU (1x 80GB H100-class card), same harness (dmd_student_eval.py's make_pipe/generate, enable_auto_cpu_offload NOT disabled), sequential same-node run",
+    "measurement_basis": "single measurement per arm, not averaged (this offload harness sits at its ~70GB VRAM ceiling; repeated calls in-process OOM'd)",
+    "e2e_latency_seconds": {
+      "ours_6step": 138.9,
+      "ours_prev_best_8step": 147.11
+    },
+    "e2e_latency_delta": "8.21s / 5.6% lower E2E latency for the 6-step arm in this harness",
+    "denoising_steps": {
+      "ours_6step": 6,
+      "ours_prev_best_8step": 8
+    },
+    "denoising_step_reduction": "25% fewer denoising steps (NOT the same as 25% faster E2E -- this harness is offload-bound, not denoise-bound; see caveat)",
+    "peak_vram_gb": {
+      "ours_6step": 70.29,
+      "ours_prev_best_8step": 70.29
+    },
+    "caveat": "This is a same-GPU, same-harness research comparison, one measurement per arm (not averaged), CPU-offload bound -- not a denoise-only or production-serving benchmark, and not a promise of deployment-grade gains. The 25% step-count reduction is a real reduction in requested denoising steps but was not separately measured as an isolated per-step or fixed-overhead speedup -- no such breakdown is reported here. No speed numbers are reported here for Turbo8/VDN-H3 -- they were not re-measured in this same harness for this task and are omitted rather than presented out of context."
+  }
+}
