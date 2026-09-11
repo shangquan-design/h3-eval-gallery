@@ -1,0 +1,450 @@
+{
+  "generated_by": "h3-eval-gallery SGLang LoRA-conversion comparison build script (manual construction)",
+  "mode": "Demonstrates the effect of tools/convert_h3_dmd_lora_naming.py (hedra-labs/sglang branch sean/h3-8step-lora-preview) on real SGLang generation output, all 14 held-out prompts, same seeds/resolution/duration/steps/flow_shift as every other gallery page here.",
+  "prompts": [
+    "s_campfire_sparks",
+    "s_gas_stove_flare",
+    "s_incense_smoke_curl",
+    "s_firework_burst",
+    "s_building_demolition",
+    "s_house_fire_window",
+    "s_smoke_grenade_field",
+    "s_volcano_eruption_distant",
+    "n_water_balloon_splash",
+    "n_domino_chain_fall",
+    "n_glass_shatter_impact",
+    "h_snowglobe",
+    "h_argument",
+    "h_train_window"
+  ],
+  "columns": [
+    "sglang_broken",
+    "sglang_converted",
+    "diffusers_ref"
+  ],
+  "column_labels": {
+    "sglang_broken": "SGLang \u2014 ORIGINAL LoRA format (BROKEN CONTROL, not a candidate)",
+    "sglang_converted": "SGLang \u2014 converted LoRA (validated)",
+    "diffusers_ref": "Diffusers 8-step reference"
+  },
+  "clips": {
+    "s_campfire_sparks": {
+      "sglang_broken": {
+        "source_path": "/data/home/sunsean/work/h3_sglang_8step_preview/sglang_gen_full14_before/s_campfire_sparks_sglang_8step.mp4",
+        "public_path": "assets/video/s_campfire_sparks_sglang_broken_control.mp4",
+        "bytes": 1100647,
+        "sha256": "4ceefca70e5870ef1dba31271e16edb86bfc95b0790f7de1a7407bdde14da5c0",
+        "prompt_id": "s_campfire_sparks",
+        "checkpoint": "phase3_c_gate250.safetensors (ORIGINAL, unconverted key naming)",
+        "note": 8
+      },
+      "sglang_converted": {
+        "source_path": "/data/home/sunsean/work/h3_sglang_8step_preview/sglang_gen_full14/s_campfire_sparks_sglang_8step.mp4",
+        "public_path": "assets/video/s_campfire_sparks_sglang_converted.mp4",
+        "bytes": 1278560,
+        "sha256": "698274883cae8430381b06e5c5e06bc9e96fbdffb03656fc89d7bf12ff3d3ada",
+        "prompt_id": "s_campfire_sparks",
+        "checkpoint": "phase3_c_gate250.safetensors -> convert_h3_dmd_lora_naming.py output",
+        "note": 8
+      },
+      "diffusers_ref": {
+        "source_path": "/data/home/sunsean/work/h3_sft_dmd/outputs/eval_full/s_campfire_sparks_phase3_c_gate250.mp4",
+        "public_path": "assets/video/s_campfire_sparks_phase3_c_gate250.mp4",
+        "bytes": 1647941,
+        "sha256": "adb8a9fa26b3d078df793841013541215900f857bee865217bd04227cbfe0c02",
+        "prompt_id": "s_campfire_sparks",
+        "checkpoint": "phase3_c_gate250.safetensors (native Diffusers/PEFT loading)",
+        "note": 8
+      }
+    },
+    "s_gas_stove_flare": {
+      "sglang_broken": {
+        "source_path": "/data/home/sunsean/work/h3_sglang_8step_preview/sglang_gen_full14_before/s_gas_stove_flare_sglang_8step.mp4",
+        "public_path": "assets/video/s_gas_stove_flare_sglang_broken_control.mp4",
+        "bytes": 705711,
+        "sha256": "65f102b37719de86e2e3b835d451474e4fb846f697ad69a43b300ef5a474b481",
+        "prompt_id": "s_gas_stove_flare",
+        "checkpoint": "phase3_c_gate250.safetensors (ORIGINAL, unconverted key naming)",
+        "note": 8
+      },
+      "sglang_converted": {
+        "source_path": "/data/home/sunsean/work/h3_sglang_8step_preview/sglang_gen_full14/s_gas_stove_flare_sglang_8step.mp4",
+        "public_path": "assets/video/s_gas_stove_flare_sglang_converted.mp4",
+        "bytes": 828069,
+        "sha256": "bbd47535cb5536cb8f2b1412fb0228c6ef9129d0ce73d4a5bf6aef509e0dada8",
+        "prompt_id": "s_gas_stove_flare",
+        "checkpoint": "phase3_c_gate250.safetensors -> convert_h3_dmd_lora_naming.py output",
+        "note": 8
+      },
+      "diffusers_ref": {
+        "source_path": "/data/home/sunsean/work/h3_sft_dmd/outputs/eval_full/s_gas_stove_flare_phase3_c_gate250.mp4",
+        "public_path": "assets/video/s_gas_stove_flare_phase3_c_gate250.mp4",
+        "bytes": 1083710,
+        "sha256": "180ce80fdb48466b5d5ab1a1dd25820c0570f36c88def44437a4367a0900c57b",
+        "prompt_id": "s_gas_stove_flare",
+        "checkpoint": "phase3_c_gate250.safetensors (native Diffusers/PEFT loading)",
+        "note": 8
+      }
+    },
+    "s_incense_smoke_curl": {
+      "sglang_broken": {
+        "source_path": "/data/home/sunsean/work/h3_sglang_8step_preview/sglang_gen_full14_before/s_incense_smoke_curl_sglang_8step.mp4",
+        "public_path": "assets/video/s_incense_smoke_curl_sglang_broken_control.mp4",
+        "bytes": 258392,
+        "sha256": "a596f10174d3153d1dbd9ee9996c06c6f9a819c61e5ac023159817330b9c0c3d",
+        "prompt_id": "s_incense_smoke_curl",
+        "checkpoint": "phase3_c_gate250.safetensors (ORIGINAL, unconverted key naming)",
+        "note": 8
+      },
+      "sglang_converted": {
+        "source_path": "/data/home/sunsean/work/h3_sglang_8step_preview/sglang_gen_full14/s_incense_smoke_curl_sglang_8step.mp4",
+        "public_path": "assets/video/s_incense_smoke_curl_sglang_converted.mp4",
+        "bytes": 281705,
+        "sha256": "4f683a1a68ad1f256d8ce1c1f70e61033f3d110a09f911835b0ab75200482671",
+        "prompt_id": "s_incense_smoke_curl",
+        "checkpoint": "phase3_c_gate250.safetensors -> convert_h3_dmd_lora_naming.py output",
+        "note": 8
+      },
+      "diffusers_ref": {
+        "source_path": "/data/home/sunsean/work/h3_sft_dmd/outputs/eval_full/s_incense_smoke_curl_phase3_c_gate250.mp4",
+        "public_path": "assets/video/s_incense_smoke_curl_phase3_c_gate250.mp4",
+        "bytes": 378764,
+        "sha256": "80f625828d717849421c7fa99532b23ee51c299441be27f11f8b221a4ca070e1",
+        "prompt_id": "s_incense_smoke_curl",
+        "checkpoint": "phase3_c_gate250.safetensors (native Diffusers/PEFT loading)",
+        "note": 8
+      }
+    },
+    "s_firework_burst": {
+      "sglang_broken": {
+        "source_path": "/data/home/sunsean/work/h3_sglang_8step_preview/sglang_gen_full14_before/s_firework_burst_sglang_8step.mp4",
+        "public_path": "assets/video/s_firework_burst_sglang_broken_control.mp4",
+        "bytes": 695249,
+        "sha256": "609a4a69558bc7dd2c0366bd22c8cad12dc6abf98609eb03c19c0dc317edda8c",
+        "prompt_id": "s_firework_burst",
+        "checkpoint": "phase3_c_gate250.safetensors (ORIGINAL, unconverted key naming)",
+        "note": 8
+      },
+      "sglang_converted": {
+        "source_path": "/data/home/sunsean/work/h3_sglang_8step_preview/sglang_gen_full14/s_firework_burst_sglang_8step.mp4",
+        "public_path": "assets/video/s_firework_burst_sglang_converted.mp4",
+        "bytes": 1070662,
+        "sha256": "f56199374dbb6edc862df1461ae74e06b4e6dee966045858490567a7e1e76c5a",
+        "prompt_id": "s_firework_burst",
+        "checkpoint": "phase3_c_gate250.safetensors -> convert_h3_dmd_lora_naming.py output",
+        "note": 8
+      },
+      "diffusers_ref": {
+        "source_path": "/data/home/sunsean/work/h3_sft_dmd/outputs/eval_full/s_firework_burst_phase3_c_gate250.mp4",
+        "public_path": "assets/video/s_firework_burst_phase3_c_gate250.mp4",
+        "bytes": 1643270,
+        "sha256": "3c7efcadff419ab4456bf4557bcb42cdc8da700cc35f1b003a318a890ad80719",
+        "prompt_id": "s_firework_burst",
+        "checkpoint": "phase3_c_gate250.safetensors (native Diffusers/PEFT loading)",
+        "note": 8
+      }
+    },
+    "s_building_demolition": {
+      "sglang_broken": {
+        "source_path": "/data/home/sunsean/work/h3_sglang_8step_preview/sglang_gen_full14_before/s_building_demolition_sglang_8step.mp4",
+        "public_path": "assets/video/s_building_demolition_sglang_broken_control.mp4",
+        "bytes": 1327031,
+        "sha256": "4b35342d28800a0653617f396a0afcbec04d1fb270466747880f3a01fe1cd155",
+        "prompt_id": "s_building_demolition",
+        "checkpoint": "phase3_c_gate250.safetensors (ORIGINAL, unconverted key naming)",
+        "note": 8
+      },
+      "sglang_converted": {
+        "source_path": "/data/home/sunsean/work/h3_sglang_8step_preview/sglang_gen_full14/s_building_demolition_sglang_8step.mp4",
+        "public_path": "assets/video/s_building_demolition_sglang_converted.mp4",
+        "bytes": 1806492,
+        "sha256": "3fb9ee9cbfecaddf92fec91d83b5c4774f317406b17357fc82aa916576c880d9",
+        "prompt_id": "s_building_demolition",
+        "checkpoint": "phase3_c_gate250.safetensors -> convert_h3_dmd_lora_naming.py output",
+        "note": 8
+      },
+      "diffusers_ref": {
+        "source_path": "/data/home/sunsean/work/h3_sft_dmd/outputs/eval_full/s_building_demolition_phase3_c_gate250.mp4",
+        "public_path": "assets/video/s_building_demolition_phase3_c_gate250.mp4",
+        "bytes": 2460794,
+        "sha256": "0a3cf5e37b5ebb54c77bae8dec0a31dca4ac88f350176a644d6988df5eb8cb6b",
+        "prompt_id": "s_building_demolition",
+        "checkpoint": "phase3_c_gate250.safetensors (native Diffusers/PEFT loading)",
+        "note": 8
+      }
+    },
+    "s_house_fire_window": {
+      "sglang_broken": {
+        "source_path": "/data/home/sunsean/work/h3_sglang_8step_preview/sglang_gen_full14_before/s_house_fire_window_sglang_8step.mp4",
+        "public_path": "assets/video/s_house_fire_window_sglang_broken_control.mp4",
+        "bytes": 283785,
+        "sha256": "e352de85d7c78344a05ac9ef3f4fb558d8291a620e0c134840cea9183caada62",
+        "prompt_id": "s_house_fire_window",
+        "checkpoint": "phase3_c_gate250.safetensors (ORIGINAL, unconverted key naming)",
+        "note": 8
+      },
+      "sglang_converted": {
+        "source_path": "/data/home/sunsean/work/h3_sglang_8step_preview/sglang_gen_full14/s_house_fire_window_sglang_8step.mp4",
+        "public_path": "assets/video/s_house_fire_window_sglang_converted.mp4",
+        "bytes": 501293,
+        "sha256": "132141c80c7e4cf3caaaae4b4cdab93f75de43699c94f13db8799c65cc58c049",
+        "prompt_id": "s_house_fire_window",
+        "checkpoint": "phase3_c_gate250.safetensors -> convert_h3_dmd_lora_naming.py output",
+        "note": 8
+      },
+      "diffusers_ref": {
+        "source_path": "/data/home/sunsean/work/h3_sft_dmd/outputs/eval_full/s_house_fire_window_phase3_c_gate250.mp4",
+        "public_path": "assets/video/s_house_fire_window_phase3_c_gate250.mp4",
+        "bytes": 826683,
+        "sha256": "5dcd884b59638c3ba7dea99cb5bd788a8b42860cac4635c123a5cc073c7c18d2",
+        "prompt_id": "s_house_fire_window",
+        "checkpoint": "phase3_c_gate250.safetensors (native Diffusers/PEFT loading)",
+        "note": 8
+      }
+    },
+    "s_smoke_grenade_field": {
+      "sglang_broken": {
+        "source_path": "/data/home/sunsean/work/h3_sglang_8step_preview/sglang_gen_full14_before/s_smoke_grenade_field_sglang_8step.mp4",
+        "public_path": "assets/video/s_smoke_grenade_field_sglang_broken_control.mp4",
+        "bytes": 724705,
+        "sha256": "de2e16b82ad37075f050650d5a56636e7e2bff1d102fdfc3e28c6d65e74d3ff6",
+        "prompt_id": "s_smoke_grenade_field",
+        "checkpoint": "phase3_c_gate250.safetensors (ORIGINAL, unconverted key naming)",
+        "note": 8
+      },
+      "sglang_converted": {
+        "source_path": "/data/home/sunsean/work/h3_sglang_8step_preview/sglang_gen_full14/s_smoke_grenade_field_sglang_8step.mp4",
+        "public_path": "assets/video/s_smoke_grenade_field_sglang_converted.mp4",
+        "bytes": 1010656,
+        "sha256": "eeb719f674dd3a0d296713419a1d1413fe613e1d32d36f456cb9416c6e17f31f",
+        "prompt_id": "s_smoke_grenade_field",
+        "checkpoint": "phase3_c_gate250.safetensors -> convert_h3_dmd_lora_naming.py output",
+        "note": 8
+      },
+      "diffusers_ref": {
+        "source_path": "/data/home/sunsean/work/h3_sft_dmd/outputs/eval_full/s_smoke_grenade_field_phase3_c_gate250.mp4",
+        "public_path": "assets/video/s_smoke_grenade_field_phase3_c_gate250.mp4",
+        "bytes": 1548755,
+        "sha256": "8c748b6006f6d7fc983767a5fb20ee4e3f007a6cee5717c3748c3d92f03b4619",
+        "prompt_id": "s_smoke_grenade_field",
+        "checkpoint": "phase3_c_gate250.safetensors (native Diffusers/PEFT loading)",
+        "note": 8
+      }
+    },
+    "s_volcano_eruption_distant": {
+      "sglang_broken": {
+        "source_path": "/data/home/sunsean/work/h3_sglang_8step_preview/sglang_gen_full14_before/s_volcano_eruption_distant_sglang_8step.mp4",
+        "public_path": "assets/video/s_volcano_eruption_distant_sglang_broken_control.mp4",
+        "bytes": 523937,
+        "sha256": "77f49e86635c02f4fd386f8eec2d84a4140bd493da102ce1bbc99a9b6c2b8458",
+        "prompt_id": "s_volcano_eruption_distant",
+        "checkpoint": "phase3_c_gate250.safetensors (ORIGINAL, unconverted key naming)",
+        "note": 8
+      },
+      "sglang_converted": {
+        "source_path": "/data/home/sunsean/work/h3_sglang_8step_preview/sglang_gen_full14/s_volcano_eruption_distant_sglang_8step.mp4",
+        "public_path": "assets/video/s_volcano_eruption_distant_sglang_converted.mp4",
+        "bytes": 797548,
+        "sha256": "9e09963f3bf5f54f0a15252c7d56f80a76bcabf92251367fef6c6ca6e5fc6457",
+        "prompt_id": "s_volcano_eruption_distant",
+        "checkpoint": "phase3_c_gate250.safetensors -> convert_h3_dmd_lora_naming.py output",
+        "note": 8
+      },
+      "diffusers_ref": {
+        "source_path": "/data/home/sunsean/work/h3_sft_dmd/outputs/eval_full/s_volcano_eruption_distant_phase3_c_gate250.mp4",
+        "public_path": "assets/video/s_volcano_eruption_distant_phase3_c_gate250.mp4",
+        "bytes": 1172167,
+        "sha256": "8890eced9dc322151a90e5b8ab4588646bb40c408e709c80e3d84be4af8b3d80",
+        "prompt_id": "s_volcano_eruption_distant",
+        "checkpoint": "phase3_c_gate250.safetensors (native Diffusers/PEFT loading)",
+        "note": 8
+      }
+    },
+    "n_water_balloon_splash": {
+      "sglang_broken": {
+        "source_path": "/data/home/sunsean/work/h3_sglang_8step_preview/sglang_gen_full14_before/n_water_balloon_splash_sglang_8step.mp4",
+        "public_path": "assets/video/n_water_balloon_splash_sglang_broken_control.mp4",
+        "bytes": 1688588,
+        "sha256": "f4530922e37d912dece6ab6a14ac31a5b58fac933b504b0b20dd2042b248329c",
+        "prompt_id": "n_water_balloon_splash",
+        "checkpoint": "phase3_c_gate250.safetensors (ORIGINAL, unconverted key naming)",
+        "note": 8
+      },
+      "sglang_converted": {
+        "source_path": "/data/home/sunsean/work/h3_sglang_8step_preview/sglang_gen_full14/n_water_balloon_splash_sglang_8step.mp4",
+        "public_path": "assets/video/n_water_balloon_splash_sglang_converted.mp4",
+        "bytes": 2272244,
+        "sha256": "10fe6440f25e11f0bf3b06906a228be32b2a625a339a581d4c20edcc08a9a397",
+        "prompt_id": "n_water_balloon_splash",
+        "checkpoint": "phase3_c_gate250.safetensors -> convert_h3_dmd_lora_naming.py output",
+        "note": 8
+      },
+      "diffusers_ref": {
+        "source_path": "/data/home/sunsean/work/h3_sft_dmd/outputs/eval_full/n_water_balloon_splash_phase3_c_gate250.mp4",
+        "public_path": "assets/video/n_water_balloon_splash_phase3_c_gate250.mp4",
+        "bytes": 3200617,
+        "sha256": "1003bd7e517b2051e89f21ded933848cfe82f68a15f8892cb82d3fee6803223e",
+        "prompt_id": "n_water_balloon_splash",
+        "checkpoint": "phase3_c_gate250.safetensors (native Diffusers/PEFT loading)",
+        "note": 8
+      }
+    },
+    "n_domino_chain_fall": {
+      "sglang_broken": {
+        "source_path": "/data/home/sunsean/work/h3_sglang_8step_preview/sglang_gen_full14_before/n_domino_chain_fall_sglang_8step.mp4",
+        "public_path": "assets/video/n_domino_chain_fall_sglang_broken_control.mp4",
+        "bytes": 393904,
+        "sha256": "21d71ba4ea28f69aec00f58d92482f272a3ebf600cb378aadbf1014bab513c15",
+        "prompt_id": "n_domino_chain_fall",
+        "checkpoint": "phase3_c_gate250.safetensors (ORIGINAL, unconverted key naming)",
+        "note": 8
+      },
+      "sglang_converted": {
+        "source_path": "/data/home/sunsean/work/h3_sglang_8step_preview/sglang_gen_full14/n_domino_chain_fall_sglang_8step.mp4",
+        "public_path": "assets/video/n_domino_chain_fall_sglang_converted.mp4",
+        "bytes": 561880,
+        "sha256": "d6b0155113bbd764af303429929276e84d658fb41326ace7d5b7f6225cf4e383",
+        "prompt_id": "n_domino_chain_fall",
+        "checkpoint": "phase3_c_gate250.safetensors -> convert_h3_dmd_lora_naming.py output",
+        "note": 8
+      },
+      "diffusers_ref": {
+        "source_path": "/data/home/sunsean/work/h3_sft_dmd/outputs/eval_full/n_domino_chain_fall_phase3_c_gate250.mp4",
+        "public_path": "assets/video/n_domino_chain_fall_phase3_c_gate250.mp4",
+        "bytes": 825810,
+        "sha256": "1a87712965adae6cfd98efbfbab8c0083f0c9e2012dd5af01290c1abe38c99e3",
+        "prompt_id": "n_domino_chain_fall",
+        "checkpoint": "phase3_c_gate250.safetensors (native Diffusers/PEFT loading)",
+        "note": 8
+      }
+    },
+    "n_glass_shatter_impact": {
+      "sglang_broken": {
+        "source_path": "/data/home/sunsean/work/h3_sglang_8step_preview/sglang_gen_full14_before/n_glass_shatter_impact_sglang_8step.mp4",
+        "public_path": "assets/video/n_glass_shatter_impact_sglang_broken_control.mp4",
+        "bytes": 1562673,
+        "sha256": "e5575617085719e434a48bb1b9301c0b7994768cc11480f8c0b41f3746aa7dbf",
+        "prompt_id": "n_glass_shatter_impact",
+        "checkpoint": "phase3_c_gate250.safetensors (ORIGINAL, unconverted key naming)",
+        "note": 8
+      },
+      "sglang_converted": {
+        "source_path": "/data/home/sunsean/work/h3_sglang_8step_preview/sglang_gen_full14/n_glass_shatter_impact_sglang_8step.mp4",
+        "public_path": "assets/video/n_glass_shatter_impact_sglang_converted.mp4",
+        "bytes": 1982518,
+        "sha256": "60b6d02280bbe005210789d9e8ae7a0486bde9a781255282500db8977742eaa5",
+        "prompt_id": "n_glass_shatter_impact",
+        "checkpoint": "phase3_c_gate250.safetensors -> convert_h3_dmd_lora_naming.py output",
+        "note": 8
+      },
+      "diffusers_ref": {
+        "source_path": "/data/home/sunsean/work/h3_sft_dmd/outputs/eval_full/n_glass_shatter_impact_phase3_c_gate250.mp4",
+        "public_path": "assets/video/n_glass_shatter_impact_phase3_c_gate250.mp4",
+        "bytes": 2510867,
+        "sha256": "5012d1206876891450a3ed3260017ce357b8690ef84b8f1448a886c3d9770b20",
+        "prompt_id": "n_glass_shatter_impact",
+        "checkpoint": "phase3_c_gate250.safetensors (native Diffusers/PEFT loading)",
+        "note": 8
+      }
+    },
+    "h_snowglobe": {
+      "sglang_broken": {
+        "source_path": "/data/home/sunsean/work/h3_sglang_8step_preview/sglang_gen_full14_before/h_snowglobe_sglang_8step.mp4",
+        "public_path": "assets/video/h_snowglobe_sglang_broken_control.mp4",
+        "bytes": 489693,
+        "sha256": "44eeb9fcd0e128691e4a0cdae5afe99f0efb18e4f1ebcaf2bc4d06af7579fdfd",
+        "prompt_id": "h_snowglobe",
+        "checkpoint": "phase3_c_gate250.safetensors (ORIGINAL, unconverted key naming)",
+        "note": 8
+      },
+      "sglang_converted": {
+        "source_path": "/data/home/sunsean/work/h3_sglang_8step_preview/sglang_gen_full14/h_snowglobe_sglang_8step.mp4",
+        "public_path": "assets/video/h_snowglobe_sglang_converted.mp4",
+        "bytes": 800049,
+        "sha256": "46c24f7daedb6dc42c54b1f6a51933a4772914631bff70521f0c9a7544fd3113",
+        "prompt_id": "h_snowglobe",
+        "checkpoint": "phase3_c_gate250.safetensors -> convert_h3_dmd_lora_naming.py output",
+        "note": 8
+      },
+      "diffusers_ref": {
+        "source_path": "/data/home/sunsean/work/h3_sft_dmd/outputs/eval_full/h_snowglobe_phase3_c_gate250.mp4",
+        "public_path": "assets/video/h_snowglobe_phase3_c_gate250.mp4",
+        "bytes": 1140995,
+        "sha256": "a1c12c493075174fc622467b54d668814035bf5bedd6d536bd9f6bdde9fb5ce6",
+        "prompt_id": "h_snowglobe",
+        "checkpoint": "phase3_c_gate250.safetensors (native Diffusers/PEFT loading)",
+        "note": 8
+      }
+    },
+    "h_argument": {
+      "sglang_broken": {
+        "source_path": "/data/home/sunsean/work/h3_sglang_8step_preview/sglang_gen_full14_before/h_argument_sglang_8step.mp4",
+        "public_path": "assets/video/h_argument_sglang_broken_control.mp4",
+        "bytes": 460965,
+        "sha256": "19819115d75636802ebca51285bb838378312fc0899b5acfeec78a37da6a0bc8",
+        "prompt_id": "h_argument",
+        "checkpoint": "phase3_c_gate250.safetensors (ORIGINAL, unconverted key naming)",
+        "note": 8
+      },
+      "sglang_converted": {
+        "source_path": "/data/home/sunsean/work/h3_sglang_8step_preview/sglang_gen_full14/h_argument_sglang_8step.mp4",
+        "public_path": "assets/video/h_argument_sglang_converted.mp4",
+        "bytes": 537758,
+        "sha256": "0e6ceb3ce4e6c94bc79bdccda8facbef8fbadda6b3dba4c066f5988b849243de",
+        "prompt_id": "h_argument",
+        "checkpoint": "phase3_c_gate250.safetensors -> convert_h3_dmd_lora_naming.py output",
+        "note": 8
+      },
+      "diffusers_ref": {
+        "source_path": "/data/home/sunsean/work/h3_sft_dmd/outputs/eval_full/h_argument_phase3_c_gate250.mp4",
+        "public_path": "assets/video/h_argument_phase3_c_gate250.mp4",
+        "bytes": 795063,
+        "sha256": "bf9956b4b09890e49e2f5f5db9a229fa29bba938ed8d9d20034bfedff8b9735a",
+        "prompt_id": "h_argument",
+        "checkpoint": "phase3_c_gate250.safetensors (native Diffusers/PEFT loading)",
+        "note": 8
+      }
+    },
+    "h_train_window": {
+      "sglang_broken": {
+        "source_path": "/data/home/sunsean/work/h3_sglang_8step_preview/sglang_gen_full14_before/h_train_window_sglang_8step.mp4",
+        "public_path": "assets/video/h_train_window_sglang_broken_control.mp4",
+        "bytes": 707555,
+        "sha256": "47a4bf2c2d78473fa192f112a602d4c26018b50f879e0ccc18d11b16c780ddf1",
+        "prompt_id": "h_train_window",
+        "checkpoint": "phase3_c_gate250.safetensors (ORIGINAL, unconverted key naming)",
+        "note": 8
+      },
+      "sglang_converted": {
+        "source_path": "/data/home/sunsean/work/h3_sglang_8step_preview/sglang_gen_full14/h_train_window_sglang_8step.mp4",
+        "public_path": "assets/video/h_train_window_sglang_converted.mp4",
+        "bytes": 700919,
+        "sha256": "764cd3d2e2dd1aea77ff767d7be2ad7082776ca2819f8fcebbc993229ca2ba83",
+        "prompt_id": "h_train_window",
+        "checkpoint": "phase3_c_gate250.safetensors -> convert_h3_dmd_lora_naming.py output",
+        "note": 8
+      },
+      "diffusers_ref": {
+        "source_path": "/data/home/sunsean/work/h3_sft_dmd/outputs/eval_full/h_train_window_phase3_c_gate250.mp4",
+        "public_path": "assets/video/h_train_window_phase3_c_gate250.mp4",
+        "bytes": 864574,
+        "sha256": "0f8d60a9e72240d2527a1e8144cc242cac8001669cf134ff4449734fd2d4d25b",
+        "prompt_id": "h_train_window",
+        "checkpoint": "phase3_c_gate250.safetensors (native Diffusers/PEFT loading)",
+        "note": 8
+      }
+    }
+  },
+  "result_summary": {
+    "sglang_broken": "Direct SGLang load of the ORIGINAL LoRA format: incomplete binding -- 104/208 expected native LoRA targets never bind (all four attention projections silently dropped; only FFN projections apply). This column is a deliberately broken control illustrating the bug this PR fixes, not a deployment candidate.",
+    "sglang_converted": "Adapted/converted LoRA in SGLang: full binding -- 208/208 expected native LoRA targets bound, 0 value mismatches, max abs error 0.000e+00 (verified against sglang's own production loader, not a reimplementation).",
+    "diffusers_vs_converted": "Adapted SGLang vs. the frozen Diffusers 8-step reference: manual full-video review found no material differences across all 14 held-out prompts (visual quality, temporal continuity, motion/physics, identity/style stability, prompt adherence, frame count/duration, audio).",
+    "caveat": "All SGLang outputs probe at 107 frames vs. 106 for the Diffusers references, consistent with a muxer/container-level difference; no visible content-duration discrepancy was observed.",
+    "source_pr": "hedra-labs/sglang branch sean/h3-8step-lora-preview (not yet opened as a PR)",
+    "source_reports": [
+      "h3_sglang_8step_preview/repo/python/sglang/multimodal_gen/tools/convert_h3_dmd_lora_naming.py",
+      "h3_sglang_8step_preview/repo/python/sglang/multimodal_gen/tools/verify_h3_dmd_lora_conversion.py",
+      "h3_sglang_8step_preview/repo/examples/runtime/minimax_h3_8step_preview.md"
+    ]
+  }
+}
