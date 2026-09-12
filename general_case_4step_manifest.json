@@ -1,0 +1,157 @@
+{
+  "purpose": "Generalization spot-check: 12 prompts deliberately outside the fire/physics/impact training distribution, comparing our 4-step DMD LoRA (gate800) against LightX2V Turbo8 and OpenVDN VDN-H3 (both 8-step).",
+  "resolution": "1344x768, 24fps",
+  "frame_count_note": "VDN outputs probe at 107 frames; gate800/turbo8 outputs probe at 106 frames -- consistent with the same muxer/container-level cosmetic difference already documented for the sglang-vs-diffusers comparison; not a content-duration issue.",
+  "summary": {
+    "gate800_vs_turbo8": {
+      "wins": 2,
+      "losses": 2,
+      "ties": 8
+    },
+    "gate800_vs_vdn_h3": {
+      "wins": 5,
+      "losses": 1,
+      "ties": 6
+    },
+    "overall": "gate800 is roughly on par with Turbo8 and slightly ahead of VDN-H3 on this 12-prompt qualitative spot-check. gate800 is not claimed to be globally better than either baseline.",
+    "caveat": "Qualitative generalization check on 12 clips across three different distillation efforts at different step counts (4 vs 8) -- not a rigorous benchmark."
+  },
+  "per_prompt_verdicts": {
+    "g_two_friends_cafe_chat": {
+      "vs_turbo8": "tie",
+      "vs_vdn_h3": "vdn"
+    },
+    "g_city_street_walk": {
+      "vs_turbo8": "tie",
+      "vs_vdn_h3": "tie"
+    },
+    "g_dog_park_play": {
+      "vs_turbo8": "tie",
+      "vs_vdn_h3": "tie"
+    },
+    "g_kitchen_chopping_veg": {
+      "vs_turbo8": "gate800",
+      "vs_vdn_h3": "gate800"
+    },
+    "g_jogger_park_path": {
+      "vs_turbo8": "tie",
+      "vs_vdn_h3": "gate800"
+    },
+    "g_cyclist_road": {
+      "vs_turbo8": "tie",
+      "vs_vdn_h3": "tie"
+    },
+    "g_train_window_countryside": {
+      "vs_turbo8": "turbo8",
+      "vs_vdn_h3": "tie"
+    },
+    "g_living_room_reading": {
+      "vs_turbo8": "tie",
+      "vs_vdn_h3": "gate800"
+    },
+    "g_mountain_landscape_pan": {
+      "vs_turbo8": "tie",
+      "vs_vdn_h3": "tie"
+    },
+    "g_hands_pouring_coffee": {
+      "vs_turbo8": "turbo8",
+      "vs_vdn_h3": "tie"
+    },
+    "g_office_typing": {
+      "vs_turbo8": "gate800",
+      "vs_vdn_h3": "gate800"
+    },
+    "g_market_stall_browsing": {
+      "vs_turbo8": "tie",
+      "vs_vdn_h3": "gate800"
+    }
+  },
+  "prompts": [
+    {
+      "id": "g_two_friends_cafe_chat",
+      "category": "general_human_interaction",
+      "seed": 4101,
+      "prompt": "integrated_multimodal_description: [Shot 1] Medium two-shot, static camera, daytime cafe interior. Two friends sit across a small wooden table, one leaning in and gesturing with both hands while talking, the other smiling and nodding, coffee cups between them.\noverall_soundscape: Warm conversational chatter, occasional laughter, faint background cafe murmur, the clink of a cup on a saucer.\nnon_diegetic_music: Soft, upbeat acoustic guitar, low in the mix."
+    },
+    {
+      "id": "g_city_street_walk",
+      "category": "general_camera_motion",
+      "seed": 4102,
+      "prompt": "integrated_multimodal_description: [Shot 1] Smooth handheld tracking shot from behind, following a person walking down a busy city sidewalk past storefronts, other pedestrians passing in both directions, daylight.\noverall_soundscape: City ambience -- footsteps, distant traffic, overlapping passerby chatter, a car horn in the distance.\nnon_diegetic_music: None."
+    },
+    {
+      "id": "g_dog_park_play",
+      "category": "general_animal_motion",
+      "seed": 4103,
+      "prompt": "integrated_multimodal_description: [Shot 1] Static wide shot, sunny park lawn. A medium-sized dog runs across the grass chasing a thrown tennis ball, catches up to it, and bounds back toward the camera with the ball in its mouth, tail wagging.\noverall_soundscape: Panting, paws thudding on grass, a distant human voice calling the dog's name, birdsong.\nnon_diegetic_music: None."
+    },
+    {
+      "id": "g_kitchen_chopping_veg",
+      "category": "general_object_interaction",
+      "seed": 4104,
+      "prompt": "integrated_multimodal_description: [Shot 1] Close-up, static camera, overhead-angled, kitchen counter. A pair of hands steadily chops carrots on a wooden cutting board with a kitchen knife, pushing the sliced pieces aside between cuts.\noverall_soundscape: Rhythmic chopping on wood, occasional faint kitchen background hum.\nnon_diegetic_music: Light, relaxed instrumental."
+    },
+    {
+      "id": "g_jogger_park_path",
+      "category": "general_human_motion",
+      "seed": 4105,
+      "prompt": "integrated_multimodal_description: [Shot 1] Static medium-wide shot, tree-lined park path, morning light. A jogger in athletic clothing runs along the path from background to foreground, arms pumping naturally, passing out of frame.\noverall_soundscape: Steady rhythmic footfalls, light breathing, rustling leaves overhead, distant birdsong.\nnon_diegetic_music: None."
+    },
+    {
+      "id": "g_cyclist_road",
+      "category": "general_human_motion",
+      "seed": 4106,
+      "prompt": "integrated_multimodal_description: [Shot 1] Static wide shot, quiet paved road beside a field, daytime. A cyclist pedals steadily along the road from one side of the frame to the other, wheels spinning, jacket rippling slightly in the wind.\noverall_soundscape: Steady whir of bicycle tires on pavement, faint chain clicking, a light breeze.\nnon_diegetic_music: None."
+    },
+    {
+      "id": "g_train_window_countryside",
+      "category": "general_camera_motion",
+      "seed": 4107,
+      "prompt": "integrated_multimodal_description: [Shot 1] Smooth lateral tracking shot from inside a moving passenger train, camera positioned at a window seat looking out through the glass as a countryside landscape of golden wheat fields, a distant farmhouse, and scattered trees streams by continuously.\noverall_soundscape: A steady rhythmic clack of wheels on rails, faint train engine hum, a soft gust of wind at the window seal.\nnon_diegetic_music: Gentle, wistful acoustic guitar melody."
+    },
+    {
+      "id": "g_living_room_reading",
+      "category": "general_indoor_lifestyle",
+      "seed": 4108,
+      "prompt": "integrated_multimodal_description: [Shot 1] Static medium shot, cozy living room, soft afternoon light through a window. A person sits curled up on a couch reading a paperback book, occasionally turning a page and shifting their posture slightly.\noverall_soundscape: Near silence, a faint page-turn rustle, quiet room tone, a distant ticking clock.\nnon_diegetic_music: Sparse, mellow piano."
+    },
+    {
+      "id": "g_mountain_landscape_pan",
+      "category": "general_landscape",
+      "seed": 4109,
+      "prompt": "integrated_multimodal_description: [Shot 1] Slow static-mounted panning shot, golden-hour light, sweeping across a mountain valley with a winding river below, forested slopes, and distant snow-capped peaks.\noverall_soundscape: Light wind, a faint distant bird call, near silence otherwise.\nnon_diegetic_music: Low, expansive ambient orchestral swell."
+    },
+    {
+      "id": "g_hands_pouring_coffee",
+      "category": "general_object_interaction",
+      "seed": 4110,
+      "prompt": "integrated_multimodal_description: [Shot 1] Close-up, static camera, kitchen counter. A hand tilts a coffee pot and pours a steady stream of coffee into a ceramic mug, steam rising as the mug fills near to the brim.\noverall_soundscape: A steady trickling pour, a soft ceramic clink as the pot is set back down.\nnon_diegetic_music: None."
+    },
+    {
+      "id": "g_office_typing",
+      "category": "general_indoor_lifestyle",
+      "seed": 4111,
+      "prompt": "integrated_multimodal_description: [Shot 1] Medium shot, static camera, home office. A person sits at a desk typing on a laptop keyboard, occasionally glancing at the screen and pausing to think before continuing to type.\noverall_soundscape: Steady keyboard clacking, a faint mouse click, quiet room ambience.\nnon_diegetic_music: None."
+    },
+    {
+      "id": "g_market_stall_browsing",
+      "category": "general_human_interaction",
+      "seed": 4112,
+      "prompt": "integrated_multimodal_description: [Shot 1] Static medium shot, outdoor farmers market stall, daytime. A customer picks up a piece of fruit from a wooden crate, turns it over inspecting it, then sets it into a hand basket while the vendor behind the stall watches and smiles.\noverall_soundscape: Ambient market chatter, distant overlapping voices, a faint clink of produce being handled.\nnon_diegetic_music: None."
+    }
+  ],
+  "arms": {
+    "gate800": {
+      "label": "Our 4-step (gate800)",
+      "source": "phase5_lora_snapshots/phase5_c_gate800.safetensors (h3_8step_threeway_compare/scripts/gen_eval.py --num-steps 4 --video-flow-shift 6.0)"
+    },
+    "turbo8": {
+      "label": "LightX2V Turbo8",
+      "source": "public_turbo/minimax_h3_fl2v_turbo_8step_v1.0_768p_bf16.safetensors (h3_8step_threeway_compare/scripts/gen_eval.py --num-steps 8 --video-flow-shift 6.0, auto-detected LoRA scale)"
+    },
+    "vdn": {
+      "label": "VDN-H3 8-step",
+      "source": "openvdn_compare checkpoint=ckpts/stage-dmd-step-250, config=configs/inference/8nfe.yaml, VDN_OFFLOAD_MODE=shard2 (2-GPU weight-sharded), num_frames=107, warmup_steps=2"
+    }
+  }
+}
