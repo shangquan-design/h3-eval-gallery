@@ -1,0 +1,94 @@
+{
+  "purpose": "English-vs-Arabic prompt visual comparison, ad-hoc request (Michael Loh, Slack: 'Can someone try H3 using Arabic?'). Same 12 general-case prompts and seeds, current best checkpoint (phase5_c_gate800), once in English (existing runs) and once translated into Arabic. Visual comparison only -- no automated verdicts or quality claims.",
+  "rows": [
+    {
+      "id": "g_two_friends_cafe_chat",
+      "category": "general_human_interaction",
+      "seed": 4101,
+      "prompt_en": "integrated_multimodal_description: [Shot 1] Medium two-shot, static camera, daytime cafe interior. Two friends sit across a small wooden table, one leaning in and gesturing with both hands while talking, the other smiling and nodding, coffee cups between them.\noverall_soundscape: Warm conversational chatter, occasional laughter, faint background cafe murmur, the clink of a cup on a saucer.\nnon_diegetic_music: Soft, upbeat acoustic guitar, low in the mix.",
+      "prompt_ar": "الوصف المتعدد الوسائط المتكامل: [اللقطة 1] لقطة ثنائية متوسطة، كاميرا ثابتة، داخل مقهى في النهار. يجلس صديقان حول طاولة خشبية صغيرة، أحدهما ينحني للأمام ويشير بكلتا يديه أثناء الحديث، والآخر يبتسم ويومئ برأسه، وفنجانا قهوة بينهما.\nالمشهد الصوتي العام: أحاديث دافئة، ضحكات متقطعة، همهمة خافتة في خلفية المقهى، صوت ارتطام الفنجان بالصحن.\nالموسيقى غير الحوارية: عزف غيتار أكوستيك هادئ ومفعم بالحيوية، منخفض في المزيج الصوتي."
+    },
+    {
+      "id": "g_city_street_walk",
+      "category": "general_camera_motion",
+      "seed": 4102,
+      "prompt_en": "integrated_multimodal_description: [Shot 1] Smooth handheld tracking shot from behind, following a person walking down a busy city sidewalk past storefronts, other pedestrians passing in both directions, daylight.\noverall_soundscape: City ambience -- footsteps, distant traffic, overlapping passerby chatter, a car horn in the distance.\nnon_diegetic_music: None.",
+      "prompt_ar": "الوصف المتعدد الوسائط المتكامل: [اللقطة 1] لقطة تتبع سلسة محمولة باليد من الخلف، تتبع شخصًا يمشي على رصيف مدينة مزدحم أمام واجهات المحلات، مع مارّة آخرين يعبرون في الاتجاهين، في وضح النهار.\nالمشهد الصوتي العام: أجواء المدينة -- وقع خطوات، ضجيج مرور بعيد، أحاديث متداخلة للمارة، صوت بوق سيارة من بعيد.\nالموسيقى غير الحوارية: لا يوجد."
+    },
+    {
+      "id": "g_dog_park_play",
+      "category": "general_animal_motion",
+      "seed": 4103,
+      "prompt_en": "integrated_multimodal_description: [Shot 1] Static wide shot, sunny park lawn. A medium-sized dog runs across the grass chasing a thrown tennis ball, catches up to it, and bounds back toward the camera with the ball in its mouth, tail wagging.\noverall_soundscape: Panting, paws thudding on grass, a distant human voice calling the dog's name, birdsong.\nnon_diegetic_music: None.",
+      "prompt_ar": "الوصف المتعدد الوسائط المتكامل: [اللقطة 1] لقطة عريضة ثابتة، عشب حديقة مشمس. كلب متوسط الحجم يركض عبر العشب ملاحقًا كرة تنس مقذوفة، يلحق بها، ثم يعدو عائدًا نحو الكاميرا والكرة في فمه وذيله يهتز.\nالمشهد الصوتي العام: لهاث، وقع مخالب على العشب، صوت إنسان بعيد ينادي اسم الكلب، تغريد عصافير.\nالموسيقى غير الحوارية: لا يوجد."
+    },
+    {
+      "id": "g_kitchen_chopping_veg",
+      "category": "general_object_interaction",
+      "seed": 4104,
+      "prompt_en": "integrated_multimodal_description: [Shot 1] Close-up, static camera, overhead-angled, kitchen counter. A pair of hands steadily chops carrots on a wooden cutting board with a kitchen knife, pushing the sliced pieces aside between cuts.\noverall_soundscape: Rhythmic chopping on wood, occasional faint kitchen background hum.\nnon_diegetic_music: Light, relaxed instrumental.",
+      "prompt_ar": "الوصف المتعدد الوسائط المتكامل: [اللقطة 1] لقطة مقربة، كاميرا ثابتة بزاوية علوية، سطح مطبخ. يدان تقطعان الجزر بثبات على لوح تقطيع خشبي بسكين مطبخ، وتدفعان القطع المقطعة جانبًا بين كل قطعة وأخرى.\nالمشهد الصوتي العام: صوت تقطيع إيقاعي على الخشب، همهمة خافتة متقطعة في خلفية المطبخ.\nالموسيقى غير الحوارية: مقطوعة آلية خفيفة ومريحة."
+    },
+    {
+      "id": "g_jogger_park_path",
+      "category": "general_human_motion",
+      "seed": 4105,
+      "prompt_en": "integrated_multimodal_description: [Shot 1] Static medium-wide shot, tree-lined park path, morning light. A jogger in athletic clothing runs along the path from background to foreground, arms pumping naturally, passing out of frame.\noverall_soundscape: Steady rhythmic footfalls, light breathing, rustling leaves overhead, distant birdsong.\nnon_diegetic_music: None.",
+      "prompt_ar": "الوصف المتعدد الوسائط المتكامل: [اللقطة 1] لقطة متوسطة عريضة ثابتة، ممر حديقة تصطف على جانبيه الأشجار، ضوء الصباح. عدّاء يرتدي ملابس رياضية يركض على طول الممر من الخلفية نحو المقدمة، ذراعاه تتحركان بشكل طبيعي، ثم يخرج من الإطار.\nالمشهد الصوتي العام: وقع خطوات إيقاعي منتظم، تنفس خفيف، حفيف أوراق الشجر في الأعلى، تغريد عصافير بعيد.\nالموسيقى غير الحوارية: لا يوجد."
+    },
+    {
+      "id": "g_cyclist_road",
+      "category": "general_human_motion",
+      "seed": 4106,
+      "prompt_en": "integrated_multimodal_description: [Shot 1] Static wide shot, quiet paved road beside a field, daytime. A cyclist pedals steadily along the road from one side of the frame to the other, wheels spinning, jacket rippling slightly in the wind.\noverall_soundscape: Steady whir of bicycle tires on pavement, faint chain clicking, a light breeze.\nnon_diegetic_music: None.",
+      "prompt_ar": "الوصف المتعدد الوسائط المتكامل: [اللقطة 1] لقطة عريضة ثابتة، طريق معبّد هادئ بجانب حقل، في النهار. دراج يدوس على دراجته بثبات عبر الطريق من جانب الإطار إلى الجانب الآخر، والعجلات تدور، وسترته ترفرف قليلًا مع الريح.\nالمشهد الصوتي العام: أزيز منتظم لإطارات الدراجة على الرصيف، صوت خفيف لطقطقة السلسلة، نسيم خفيف.\nالموسيقى غير الحوارية: لا يوجد."
+    },
+    {
+      "id": "g_train_window_countryside",
+      "category": "general_camera_motion",
+      "seed": 4107,
+      "prompt_en": "integrated_multimodal_description: [Shot 1] Smooth lateral tracking shot from inside a moving passenger train, camera positioned at a window seat looking out through the glass as a countryside landscape of golden wheat fields, a distant farmhouse, and scattered trees streams by continuously.\noverall_soundscape: A steady rhythmic clack of wheels on rails, faint train engine hum, a soft gust of wind at the window seal.\nnon_diegetic_music: Gentle, wistful acoustic guitar melody.",
+      "prompt_ar": "الوصف المتعدد الوسائط المتكامل: [اللقطة 1] لقطة تتبع جانبية سلسة من داخل قطار ركاب متحرك، الكاميرا في مقعد بجانب النافذة تنظر عبر الزجاج بينما يتدفق مشهد ريفي من حقول قمح ذهبية، ومزرعة بعيدة، وأشجار متناثرة بشكل مستمر.\nالمشهد الصوتي العام: صوت طقطقة إيقاعي منتظم للعجلات على القضبان، همهمة خافتة لمحرك القطار، هبة ريح لطيفة عند حافة النافذة.\nالموسيقى غير الحوارية: لحن غيتار أكوستيك رقيق وحالم."
+    },
+    {
+      "id": "g_living_room_reading",
+      "category": "general_indoor_lifestyle",
+      "seed": 4108,
+      "prompt_en": "integrated_multimodal_description: [Shot 1] Static medium shot, cozy living room, soft afternoon light through a window. A person sits curled up on a couch reading a paperback book, occasionally turning a page and shifting their posture slightly.\noverall_soundscape: Near silence, a faint page-turn rustle, quiet room tone, a distant ticking clock.\nnon_diegetic_music: Sparse, mellow piano.",
+      "prompt_ar": "الوصف المتعدد الوسائط المتكامل: [اللقطة 1] لقطة متوسطة ثابتة، غرفة معيشة دافئة، ضوء عصر خافت يتسلل عبر نافذة. شخص يجلس منكمشًا على أريكة يقرأ كتابًا ورقيًا، يقلب صفحة بين الحين والآخر ويغيّر وضعيته قليلًا.\nالمشهد الصوتي العام: شبه صمت، حفيف خافت لتقليب الصفحات، نغمة هدوء الغرفة، صوت بعيد لتكتكة ساعة.\nالموسيقى غير الحوارية: عزف بيانو متناثر وهادئ."
+    },
+    {
+      "id": "g_mountain_landscape_pan",
+      "category": "general_landscape",
+      "seed": 4109,
+      "prompt_en": "integrated_multimodal_description: [Shot 1] Slow static-mounted panning shot, golden-hour light, sweeping across a mountain valley with a winding river below, forested slopes, and distant snow-capped peaks.\noverall_soundscape: Light wind, a faint distant bird call, near silence otherwise.\nnon_diegetic_music: Low, expansive ambient orchestral swell.",
+      "prompt_ar": "الوصف المتعدد الوسائط المتكامل: [اللقطة 1] لقطة بانورامية بطيئة على حامل ثابت، ضوء الساعة الذهبية، تمسح واديًا جبليًا فيه نهر متعرج بالأسفل، ومنحدرات مكسوة بالغابات، وقمم بعيدة مغطاة بالثلوج.\nالمشهد الصوتي العام: ريح خفيفة، صوت طائر بعيد وخافت، وشبه صمت فيما عدا ذلك.\nالموسيقى غير الحوارية: تصاعد أوركسترالي هادئ وواسع النطاق."
+    },
+    {
+      "id": "g_hands_pouring_coffee",
+      "category": "general_object_interaction",
+      "seed": 4110,
+      "prompt_en": "integrated_multimodal_description: [Shot 1] Close-up, static camera, kitchen counter. A hand tilts a coffee pot and pours a steady stream of coffee into a ceramic mug, steam rising as the mug fills near to the brim.\noverall_soundscape: A steady trickling pour, a soft ceramic clink as the pot is set back down.\nnon_diegetic_music: None.",
+      "prompt_ar": "الوصف المتعدد الوسائط المتكامل: [اللقطة 1] لقطة مقربة، كاميرا ثابتة، سطح مطبخ. يد تميل إبريق قهوة وتصب تيارًا منتظمًا من القهوة في كوب خزفي، والبخار يتصاعد بينما يمتلئ الكوب حتى يقارب الحافة.\nالمشهد الصوتي العام: صوت انسكاب منتظم ورقيق، صوت خزفي خفيف عند إعادة وضع الإبريق.\nالموسيقى غير الحوارية: لا يوجد."
+    },
+    {
+      "id": "g_office_typing",
+      "category": "general_indoor_lifestyle",
+      "seed": 4111,
+      "prompt_en": "integrated_multimodal_description: [Shot 1] Medium shot, static camera, home office. A person sits at a desk typing on a laptop keyboard, occasionally glancing at the screen and pausing to think before continuing to type.\noverall_soundscape: Steady keyboard clacking, a faint mouse click, quiet room ambience.\nnon_diegetic_music: None.",
+      "prompt_ar": "الوصف المتعدد الوسائط المتكامل: [اللقطة 1] لقطة متوسطة، كاميرا ثابتة، مكتب منزلي. شخص يجلس عند مكتب يكتب على لوحة مفاتيح حاسوب محمول، ينظر أحيانًا إلى الشاشة ويتوقف للتفكير قبل أن يواصل الكتابة.\nالمشهد الصوتي العام: طقطقة منتظمة للوحة المفاتيح، نقرة خافتة للفأرة، أجواء هادئة للغرفة.\nالموسيقى غير الحوارية: لا يوجد."
+    },
+    {
+      "id": "g_market_stall_browsing",
+      "category": "general_human_interaction",
+      "seed": 4112,
+      "prompt_en": "integrated_multimodal_description: [Shot 1] Static medium shot, outdoor farmers market stall, daytime. A customer picks up a piece of fruit from a wooden crate, turns it over inspecting it, then sets it into a hand basket while the vendor behind the stall watches and smiles.\noverall_soundscape: Ambient market chatter, distant overlapping voices, a faint clink of produce being handled.\nnon_diegetic_music: None.",
+      "prompt_ar": "الوصف المتعدد الوسائط المتكامل: [اللقطة 1] لقطة متوسطة ثابتة، كشك سوق مزارعين في الهواء الطلق، نهارًا. زبون يلتقط قطعة فاكهة من صندوق خشبي، يقلبها فاحصًا إياها، ثم يضعها في سلة يدوية بينما يراقبه البائع خلف الكشك مبتسمًا.\nالمشهد الصوتي العام: ضجيج سوق محيط، أصوات متداخلة بعيدة، صوت خافت لتحريك المنتجات.\nالموسيقى غير الحوارية: لا يوجد."
+    }
+  ],
+  "source_paths": {
+    "checkpoint": "phase5_lora_snapshots/phase5_c_gate800.safetensors (h3_8step_threeway_compare/scripts/gen_eval.py --num-steps 4 --video-flow-shift 6.0)",
+    "english_prompts": "/data/home/sunsean/work/h3_sglang_8step_preview/prompts_general_case12.json",
+    "arabic_prompts": "/data/home/sunsean/work/prompts_general_case12_arabic.json"
+  }
+}
