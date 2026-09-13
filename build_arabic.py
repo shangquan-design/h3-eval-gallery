@@ -1,8 +1,12 @@
 #!/usr/bin/env python3
 """Build arabic.html + manifest, matching general_case_4step.html's style/pattern.
 Ad-hoc request (Michael Loh, Slack): "Can someone try H3 using Arabic?" Same 12
-general-case prompts/seeds, current best checkpoint (gate800), English (existing
-runs) vs Arabic (translated). Visual comparison only -- no verdicts/quality claims.
+general-case prompts/seeds. 3 columns: our 4-step (gate800) English, our 4-step
+(gate800) Arabic, and dense/base H3 (no LoRA, ~50-step teacher) Arabic -- the
+third column exists to show whether an audio artifact observed on the Arabic
+column (unwanted loud/vocal-sounding audio even on prompts calling for near-
+silence) is already present in the stock base model. Visual comparison only --
+no verdicts/quality claims.
 """
 import html
 import json
@@ -26,6 +30,7 @@ for pid, cat, seed, en_prompt, ar_prompt in PROMPTS:
         f'<label><input type="radio" name="audio-{row_id}" value="mute" checked> Mute all</label>'
         f'<label><input type="radio" name="audio-{row_id}" value="en"> English</label>'
         f'<label><input type="radio" name="audio-{row_id}" value="ar"> Arabic</label>'
+        f'<label><input type="radio" name="audio-{row_id}" value="dense_ar"> Dense (base H3) Arabic</label>'
     )
     en_html = html.escape(en_prompt).replace("\n", "<br>")
     ar_html = html.escape(ar_prompt).replace("\n", "<br>")
@@ -40,27 +45,39 @@ for pid, cat, seed, en_prompt, ar_prompt in PROMPTS:
         f'<button type="button" class="row-restart">⟲ Restart</button>'
         f'<span class="row-audio-label">Audio:</span>'
         f'<span class="row-audio" role="radiogroup" aria-label="Choose audio source">{audio_opts}</span></div>'
-        f'<div class="row two">'
-        f'<div class="cell"><span class="arm-label en">English prompt</span>'
+        f'<div class="row three">'
+        f'<div class="cell"><span class="arm-label en">English prompt (our 4-step)</span>'
         f'<video controls playsinline preload="none" data-arm="en" src="assets/video/{pid}_our4step_gate800.mp4" muted></video></div>'
-        f'<div class="cell"><span class="arm-label ar">Arabic prompt</span>'
+        f'<div class="cell"><span class="arm-label ar">Arabic prompt (our 4-step)</span>'
         f'<video controls playsinline preload="none" data-arm="ar" src="assets/video/{pid}_ar_gate800_arabic.mp4" muted></video></div>'
+        f'<div class="cell"><span class="arm-label dense">Arabic prompt (Dense/base H3, no LoRA, ~50-step)</span>'
+        f'<video controls playsinline preload="none" data-arm="dense_ar" src="assets/video/{pid}_ar_dense_archeck.mp4" muted></video></div>'
         f'</div></div></section>'
     )
 
 manifest = {
     "purpose": "English-vs-Arabic prompt visual comparison, ad-hoc request (Michael Loh, "
                "Slack: 'Can someone try H3 using Arabic?'). Same 12 general-case prompts "
-               "and seeds, current best checkpoint (phase5_c_gate800), once in English "
-               "(existing runs) and once translated into Arabic. Visual comparison only -- "
-               "no automated verdicts or quality claims.",
+               "and seeds. Column 1: our 4-step (phase5_c_gate800) English. Column 2: our "
+               "4-step (phase5_c_gate800) Arabic. Column 3: dense/base H3 (no LoRA, ~50-step "
+               "teacher) Arabic -- included to check whether an audio artifact noticed on "
+               "column 2 (unwanted loud/vocal-sounding audio even on prompts explicitly "
+               "calling for near-silence) is already present in the stock base model rather "
+               "than introduced by DMD distillation. Measured via ffmpeg volumedetect/"
+               "silencedetect on a few prompts: Arabic clips ran consistently louder with "
+               "fewer/no silent stretches than their English counterparts, in both our "
+               "4-step checkpoint and the dense base model alike. Visual comparison only -- "
+               "no automated verdicts or quality claims beyond that measurement.",
     "rows": [
         {"id": pid, "category": cat, "seed": seed, "prompt_en": en_p, "prompt_ar": ar_p}
         for pid, cat, seed, en_p, ar_p in PROMPTS
     ],
     "source_paths": {
-        "checkpoint": "phase5_lora_snapshots/phase5_c_gate800.safetensors "
+        "our_4step_checkpoint": "phase5_lora_snapshots/phase5_c_gate800.safetensors "
                       "(h3_8step_threeway_compare/scripts/gen_eval.py --num-steps 4 --video-flow-shift 6.0)",
+        "dense_base_model": "dmd_student_eval.py --arm base (no LoRA, ~50 diffusion steps, "
+                             "video_flow_shift=12.0 base default) -- same harness/settings "
+                             "used for every other 'dense' clip on this site",
         "english_prompts": EN_PROMPTS_JSON,
         "arabic_prompts": AR_PROMPTS_JSON,
     },
@@ -71,7 +88,7 @@ with open("arabic_manifest.json", "w") as f:
 html_out = f"""<!doctype html><html lang="en"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>MiniMax-H3 English vs Arabic Prompt Comparison</title><style>
-:root{{color-scheme:light dark;--bg:#0e0f12;--panel:#17191d;--panel2:#1e2126;--text:#e8e8ea;--muted:#9aa0aa;--accent:#5fb0ff;--en:#5fb0ff;--ar:#ff9f5f;--border:#2b2f36;--nav-h:46px;}}
+:root{{color-scheme:light dark;--bg:#0e0f12;--panel:#17191d;--panel2:#1e2126;--text:#e8e8ea;--muted:#9aa0aa;--accent:#5fb0ff;--en:#5fb0ff;--ar:#ff9f5f;--dense:#c98bff;--border:#2b2f36;--nav-h:46px;}}
 *{{box-sizing:border-box}}
 html{{-webkit-text-size-adjust:100%;text-size-adjust:100%}}
 body{{margin:0;background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;line-height:1.4;overflow-x:hidden}}
@@ -97,8 +114,10 @@ h3.prompt-id .cat{{color:var(--muted);font-weight:400;font-size:.8rem}}
 .arm-label{{font-weight:700;font-size:.82rem;letter-spacing:.03em;text-transform:uppercase;padding:3px 10px;border-radius:6px;display:inline-block;margin-bottom:6px}}
 .arm-label.en{{background:rgba(95,176,255,.15);color:var(--en);border:1px solid rgba(95,176,255,.4)}}
 .arm-label.ar{{background:rgba(255,159,95,.15);color:var(--ar);border:1px solid rgba(255,159,95,.4)}}
+.arm-label.dense{{background:rgba(201,139,255,.15);color:var(--dense);border:1px solid rgba(201,139,255,.4)}}
 .row{{display:grid;gap:14px}}
 .row.two{{grid-template-columns:repeat(auto-fit,minmax(320px,1fr))}}
+.row.three{{grid-template-columns:repeat(auto-fit,minmax(280px,1fr))}}
 .cell{{background:var(--panel2);border:1px solid var(--border);border-radius:8px;padding:10px;min-width:0}}
 video{{width:100%;max-width:100%;border-radius:6px;background:#000;display:block}}
 .row-controls{{display:flex;flex-wrap:wrap;align-items:center;gap:10px;margin-bottom:10px;padding:8px 10px;background:var(--panel2);border:1px solid var(--border);border-radius:8px;font-size:.8rem}}
@@ -131,16 +150,20 @@ footer code{{color:var(--text)}}
 </style></head>
 <body>
 <header class="page"><h1>MiniMax-H3: English vs Arabic prompt comparison</h1>
-<p>Ad-hoc check (Slack request: "Can someone try H3 using Arabic?"). Our 4-step (gate800),
-same 12 general-case prompts and seeds as the <a href="general_case_4step.html">general-case
-gallery</a>, run once with the original English prompt and once with an Arabic translation.
-Rows play/pause/restart together. This page is for visual comparison only &mdash; no
-automated verdicts or quality claims.</p>
+<p>Ad-hoc check (Slack request: "Can someone try H3 using Arabic?"). Same 12 general-case
+prompts and seeds as the <a href="general_case_4step.html">general-case gallery</a>, three
+columns: our 4-step (gate800) with the original English prompt, our 4-step (gate800) with an
+Arabic translation, and the dense/base H3 model (no LoRA, ~50-step teacher) with the same
+Arabic translation. The third column was added after noticing the Arabic column tends to have
+noticeably louder/more continuous audio than English even on prompts that call for near-silence
+&mdash; it's there to show that pattern also shows up on the un-distilled base model, not just
+our 4-step checkpoint. Rows play/pause/restart together. This page is for visual comparison
+only &mdash; no automated verdicts or quality claims.</p>
 <div class="links"><a href="general_case_4step.html">General-case 4-step gallery</a> <a href="4step.html">4-step gallery (physics prompts)</a> <a href="index.html">All galleries</a></div>
 </header>
 <nav class="toc">{toc}</nav>
 <main>
-<div class="summary-box">Visual comparison only. No automated scoring or win/loss verdicts are made on this page &mdash; judge from the videos themselves.</div>
+<div class="summary-box">Visual comparison only. No automated scoring or win/loss verdicts are made on this page &mdash; judge from the videos themselves. The audio-loudness observation on the Arabic columns is based on ffmpeg volumedetect/silencedetect measurements (see manifest), not a formal listening evaluation.</div>
 {"".join(sections)}
 </main>
 <footer>Manifest: <a href="arabic_manifest.json">arabic_manifest.json</a> (exact source paths, full English + Arabic prompt text for every clip).</footer>

@@ -1,5 +1,5 @@
 {
-  "purpose": "English-vs-Arabic prompt visual comparison, ad-hoc request (Michael Loh, Slack: 'Can someone try H3 using Arabic?'). Same 12 general-case prompts and seeds, current best checkpoint (phase5_c_gate800), once in English (existing runs) and once translated into Arabic. Visual comparison only -- no automated verdicts or quality claims.",
+  "purpose": "English-vs-Arabic prompt visual comparison, ad-hoc request (Michael Loh, Slack: 'Can someone try H3 using Arabic?'). Same 12 general-case prompts and seeds. Column 1: our 4-step (phase5_c_gate800) English. Column 2: our 4-step (phase5_c_gate800) Arabic. Column 3: dense/base H3 (no LoRA, ~50-step teacher) Arabic -- included to check whether an audio artifact noticed on column 2 (unwanted loud/vocal-sounding audio even on prompts explicitly calling for near-silence) is already present in the stock base model rather than introduced by DMD distillation. Measured via ffmpeg volumedetect/silencedetect on a few prompts: Arabic clips ran consistently louder with fewer/no silent stretches than their English counterparts, in both our 4-step checkpoint and the dense base model alike. Visual comparison only -- no automated verdicts or quality claims beyond that measurement.",
   "rows": [
     {
       "id": "g_two_friends_cafe_chat",
@@ -87,7 +87,8 @@
     }
   ],
   "source_paths": {
-    "checkpoint": "phase5_lora_snapshots/phase5_c_gate800.safetensors (h3_8step_threeway_compare/scripts/gen_eval.py --num-steps 4 --video-flow-shift 6.0)",
+    "our_4step_checkpoint": "phase5_lora_snapshots/phase5_c_gate800.safetensors (h3_8step_threeway_compare/scripts/gen_eval.py --num-steps 4 --video-flow-shift 6.0)",
+    "dense_base_model": "dmd_student_eval.py --arm base (no LoRA, ~50 diffusion steps, video_flow_shift=12.0 base default) -- same harness/settings used for every other 'dense' clip on this site",
     "english_prompts": "/data/home/sunsean/work/h3_sglang_8step_preview/prompts_general_case12.json",
     "arabic_prompts": "/data/home/sunsean/work/prompts_general_case12_arabic.json"
   }
