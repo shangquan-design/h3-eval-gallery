@@ -1,0 +1,286 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Hedra H3 4-step vs Fal H3 Max — Samsung Benchmark</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@600;700&family=JetBrains+Mono:wght@400;600&family=Source+Sans+3:wght@400;600&display=swap">
+<style>
+:root{
+  --bg:#F4F7F8; --surface:#FFFFFF; --ink:#10202B; --muted:#5E6E79; --rule:#D5DEE3;
+  --accent:#0B6E7A; --accent-soft:#E2F0F1; --pending:#9A6A12; --pending-soft:#F6EEDC;
+  --good:#1E7A4C; --bad:#A33A2E;
+  --display:"Archivo","Helvetica Neue",Arial,sans-serif;
+  --body:"Source Sans 3","Segoe UI",system-ui,sans-serif;
+  --mono:"JetBrains Mono",ui-monospace,"SFMono-Regular",Menlo,monospace;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#0D161C; --surface:#13212A; --ink:#E6EEF2; --muted:#93A5B0; --rule:#24343E;
+    --accent:#4FB3BF; --accent-soft:#16333A; --pending:#D9A441; --pending-soft:#3A2F17;
+    --good:#5CC48E; --bad:#E07A6C; color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#0D161C; --surface:#13212A; --ink:#E6EEF2; --muted:#93A5B0; --rule:#24343E;
+  --accent:#4FB3BF; --accent-soft:#16333A; --pending:#D9A441; --pending-soft:#3A2F17;
+  --good:#5CC48E; --bad:#E07A6C; color-scheme:dark;
+}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font:16px/1.55 var(--body);padding-inline:20px;padding-block:40px 64px}
+.wrap{max-width:1080px;margin:0 auto;display:flex;flex-direction:column;gap:48px}
+h1,h2,h3{font-family:var(--display);text-wrap:balance;margin:0;line-height:1.15}
+h1{font-size:clamp(28px,4vw,40px);font-weight:700;letter-spacing:-0.01em}
+h2{font-size:22px;font-weight:600}
+h3{font-size:16px;font-weight:600}
+p{margin:0;max-width:68ch}
+.eyebrow{font:600 12px/1 var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--accent)}
+header{display:flex;flex-direction:column;gap:14px}
+.header-links{display:flex;flex-wrap:wrap;gap:8px 16px;font-size:13px}.header-links a{color:var(--accent);text-decoration:none}.header-links a:hover{text-decoration:underline}
+.toc{position:sticky;top:0;z-index:20;display:flex;gap:7px;overflow-x:auto;padding:10px 0;background:color-mix(in srgb,var(--bg) 94%,transparent);backdrop-filter:blur(10px)}
+.toc a{flex:0 0 auto;color:var(--muted);text-decoration:none;font-size:12px;padding:5px 10px;border:1px solid var(--rule);border-radius:999px;background:var(--surface)}.toc a:hover{color:var(--accent);border-color:var(--accent)}
+.verdict{font-size:18px;max-width:72ch}
+.verdict strong{color:var(--accent)}
+section{display:flex;flex-direction:column;gap:16px}
+.lede{color:var(--muted)}
+.scroll{overflow-x:auto;border:1px solid var(--rule);border-radius:6px;background:var(--surface)}
+table{border-collapse:collapse;width:100%;font-size:14.5px}
+th,td{padding:10px 12px;text-align:left;vertical-align:top;border-bottom:1px solid var(--rule)}
+thead th{font:600 11.5px/1.3 var(--mono);letter-spacing:.05em;text-transform:uppercase;color:var(--muted);background:var(--bg);white-space:nowrap}
+tbody tr:last-child td{border-bottom:0}
+td.num,th.num{text-align:right;font-family:var(--mono);font-variant-numeric:tabular-nums;white-space:nowrap}
+td .sub{display:block;color:var(--muted);font-size:12.5px;font-family:var(--body)}
+td.num .sub{font-family:var(--mono)}
+.sys{font-weight:600}
+tr.pending td{color:var(--muted)}
+.pill{display:inline-block;font:600 11px/1 var(--mono);letter-spacing:.05em;text-transform:uppercase;padding:4px 7px;border-radius:999px;white-space:nowrap}
+.pill.pend{background:var(--pending-soft);color:var(--pending)}
+.pill.meas{background:var(--accent-soft);color:var(--accent)}
+.best{color:var(--accent);font-weight:600}
+.pos{color:var(--good)} .neg{color:var(--bad)}
+.callouts{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:16px}
+.callout{background:var(--surface);border:1px solid var(--rule);border-radius:6px;padding:16px 18px;display:flex;flex-direction:column;gap:6px}
+.callout .k{font:600 12px/1.2 var(--mono);color:var(--muted);text-transform:uppercase;letter-spacing:.05em}
+.callout .v{font:600 26px/1.1 var(--mono);font-variant-numeric:tabular-nums}
+.callout p{font-size:14.5px;color:var(--muted)}
+.pairs{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:20px}
+.gallery{display:flex;flex-direction:column;gap:20px}
+.video-row{display:grid;grid-template-columns:minmax(230px,.72fr) repeat(2,minmax(300px,1fr));border:1px solid var(--rule);border-radius:9px;background:var(--surface);overflow:hidden}
+.prompt-cell{padding:18px;background:var(--bg);border-right:1px solid var(--rule);display:flex;flex-direction:column;gap:9px}
+.prompt-cell h3{font-size:18px}.prompt-cell details{font-size:13px;color:var(--muted)}
+.prompt-cell summary{cursor:pointer;font-weight:600;color:var(--ink);margin-bottom:6px}
+.prompt-cell details p{margin:0}.prompt-cell .note{margin-top:auto;border-top:1px solid var(--rule);padding-top:9px;font-size:13px;color:var(--muted)}
+.video-cell{padding:14px}.video-cell+.video-cell{border-left:1px solid var(--rule)}
+.video-label{display:flex;justify-content:space-between;gap:8px;font-size:13px;font-weight:600;margin-bottom:8px}.video-label span:last-child{font:400 11px var(--mono);color:var(--muted)}
+video{display:block;width:100%;aspect-ratio:16/9;object-fit:contain;background:#07131b;border-radius:5px}
+.sync-controls{display:flex;flex-wrap:wrap;gap:7px;margin-top:4px}.sync-controls button,.sync-controls select{font:600 12px var(--body);color:var(--ink);background:var(--surface);border:1px solid var(--rule);border-radius:999px;padding:6px 10px;cursor:pointer}.sync-controls button:hover,.sync-controls select:hover{border-color:var(--accent)}
+figure{margin:0;display:flex;flex-direction:column;gap:8px}
+figure img{width:100%;height:auto;border-radius:4px;border:1px solid var(--rule);display:block}
+figcaption{font-size:14px;color:var(--muted)}
+figcaption b{color:var(--ink);font-weight:600}
+.lr{font:600 11px/1 var(--mono);letter-spacing:.05em;text-transform:uppercase;color:var(--muted);display:flex;justify-content:space-between}
+.notes{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:12px 32px}
+.notes p{font-size:14.5px;color:var(--muted)}
+.notes p b{color:var(--ink)}
+hr{border:0;border-top:1px solid var(--rule);margin:0}
+@media (max-width:900px){.video-row{grid-template-columns:1fr 1fr}.prompt-cell{grid-column:1/-1;border-right:0;border-bottom:1px solid var(--rule)}}
+@media (max-width:600px){body{padding-inline:16px}.video-row{grid-template-columns:1fr}.video-cell+.video-cell{border-left:0;border-top:1px solid var(--rule)}th,td{padding:8px 9px}}
+</style>
+</head>
+<body>
+
+<div class="wrap">
+
+<header>
+  <span class="eyebrow">Samsung physics / water benchmark · pilot10 · 2026-09-25</span>
+  <h1>Hedra H3 4-step vs Fal H3 Max — Samsung Benchmark</h1>
+  <p class="verdict"><strong>3.72 s vs 6.18 s</strong> matched-length wall-clock: approximately 40% lower end-to-end latency for Hedra on 8×H100. Serving shows no measurable VBench regression. Fal remains faster on reported model-only inference. MI355X target-hardware validation is pending.</p>
+  <div class="header-links"><a href="index.html">← All galleries</a><a href="#gallery">Playable comparisons</a><a href="#method">Methodology</a></div>
+</header>
+
+<nav class="toc" aria-label="Page sections"><a href="#summary">Summary</a><a href="#latency">Latency</a><a href="#quality">Quality</a><a href="#gallery">Video gallery</a><a href="#native">Native latency</a><a href="#method">Method</a></nav>
+
+<section id="summary">
+  <h2>Summary</h2>
+  <div class="scroll">
+  <table>
+    <thead><tr>
+      <th>System</th><th>Hardware</th><th class="num">Output</th><th>Resolution</th>
+      <th class="num">Wall latency</th><th class="num">Wall, per 5 s output</th>
+      <th class="num">Model inference</th><th class="num">Inference / 5 s</th><th class="num">VBench</th><th class="num">CLIP</th>
+    </tr></thead>
+    <tbody>
+      <tr>
+        <td class="sys">Hedra H3 4-step <span class="pill meas">measured</span></td>
+        <td>8× NVIDIA H100 80 GB</td>
+        <td class="num">5.17 s<span class="sub">124 f @ 24</span></td><td>1344×768</td>
+        <td class="num best">3.72 s<span class="sub">3.67–3.79</span></td>
+        <td class="num best">3.60 s</td>
+        <td class="num">3.16 s</td><td class="num">3.05 s</td>
+        <td class="num best">0.8244<span class="sub">native serving arm</span></td><td class="num">0.3241<span class="sub">native serving arm</span></td>
+      </tr>
+      <tr>
+        <td class="sys">Fal H3 Max API</td>
+        <td>Fal-hosted (not disclosed)</td>
+        <td class="num">5.17 s<span class="sub">124 f @ 24</span></td><td>1344×768 (768P, 16:9)</td>
+        <td class="num">6.18 s<span class="sub">6.18–6.21</span></td>
+        <td class="num">5.98 s</td>
+        <td class="num best">2.66 s</td><td class="num best">2.57 s</td>
+        <td class="num">0.7960</td><td class="num best">0.3335</td>
+      </tr>
+      <tr class="pending">
+        <td class="sys">Hedra H3 4-step <span class="pill pend">pending</span></td>
+        <td>8× AMD MI355X</td>
+        <td class="num">pending</td><td>1344×768</td>
+        <td class="num">—</td><td class="num">—</td><td class="num">—</td><td class="num">—</td><td class="num">—</td><td class="num">—</td>
+      </tr>
+    </tbody>
+  </table>
+  </div>
+  <p class="lede">Medians over the same 10 water/physics prompts and seeds. Wall latency is client-measured request-to-finished-MP4 on a warm server; Fal is API wall-clock. Fal prompt expansion was explicitly disabled. Quality cells for Hedra use the canonical optimized serving arm (107 frames); the supplementary matched-length arm scored 0.8253 VBench / 0.3247 CLIP. “Per 5 s output” scales linearly by clip length.</p>
+</section>
+
+<section id="latency">
+  <h2>Latency, raw and duration-normalized</h2>
+  <div class="callouts">
+    <div class="callout"><span class="k">Wall, matched 5.17 s clip</span><span class="v">3.72 s <span style="color:var(--muted);font-size:16px">vs 6.18 s</span></span><p>Measured at Fal's exact output length. 40% lower than Fal's API wall-clock.</p></div>
+    <div class="callout"><span class="k">Model inference, matched clip</span><span class="v">3.16 s <span style="color:var(--muted);font-size:16px">vs 2.66 s</span></span><p>Fal's reported <code>timings.inference</code> is 0.5 s lower. We do not claim a model-only speed advantage.</p></div>
+    <div class="callout"><span class="k">Native clip, 4.46 s</span><span class="v">3.12 s <span style="color:var(--muted);font-size:16px">wall</span></span><p>2.63 s model inference. Normalizing to 5 s gives 3.50 s wall and 2.95 s inference.</p></div>
+  </div>
+  <div class="scroll">
+  <table>
+    <thead><tr><th>Where the time goes, 8×H100, native clip</th><th class="num">Seconds</th><th>Notes</th></tr></thead>
+    <tbody>
+      <tr><td>Text encoding</td><td class="num">0.07</td><td>Qwen3-VL conditioner, sharded over 8 GPUs</td></tr>
+      <tr><td>Diffusion transformer, 3 forward passes</td><td class="num">1.85</td><td>4-step schedule: 4 sigma points, 3 model evaluations; Ulysses-8 sequence parallel</td></tr>
+      <tr><td>Video + audio decode</td><td class="num">0.65</td><td>VAE resident on GPU, tiled over 8 GPUs</td></tr>
+      <tr><td>MP4 encode (H.264 + AAC)</td><td class="num">0.45</td><td>Included in wall latency, excluded from model inference</td></tr>
+      <tr><td>HTTP and queueing</td><td class="num">&lt;0.05</td><td></td></tr>
+    </tbody>
+  </table>
+  </div>
+</section>
+
+<section id="quality">
+  <h2>Quality: serving optimization did not change quality</h2>
+  <p class="lede">Same checkpoint and 4-step schedule. The original single-GPU evaluation outputs and the optimized 8-GPU serving outputs were scored in the same VBench and CLIP run as Fal H3 Max. Rescoring the original files reproduced the earlier scores exactly.</p>
+  <div class="scroll">
+  <table>
+    <thead><tr><th>Metric</th><th class="num">Hedra, 8×H100 serving</th><th class="num">Hedra, original eval</th><th class="num">Serving − original<span class="sub">95% CI</span></th><th class="num">Fal H3 Max</th><th class="num">Hedra − Fal<span class="sub">95% CI</span></th></tr></thead>
+    <tbody>
+      <tr><td>VBench, 5-dim mean</td><td class="num">0.8244</td><td class="num">0.8258</td><td class="num">−0.0014<span class="sub">−0.0045 … +0.0014</span></td><td class="num">0.7960</td><td class="num pos">+0.0284<span class="sub">+0.016 … +0.045 · 10/10 prompts</span></td></tr>
+      <tr><td>Imaging quality</td><td class="num">0.701</td><td class="num">0.707</td><td class="num">−0.006<span class="sub">−0.013 … 0.000</span></td><td class="num">0.640</td><td class="num pos">+0.061</td></tr>
+      <tr><td>Aesthetic quality</td><td class="num">0.587</td><td class="num">0.591</td><td class="num">−0.004<span class="sub">−0.015 … +0.005</span></td><td class="num">0.538</td><td class="num pos">+0.049</td></tr>
+      <tr><td>Subject consistency</td><td class="num">0.900</td><td class="num">0.901</td><td class="num">−0.001<span class="sub">−0.007 … +0.004</span></td><td class="num">0.871</td><td class="num pos">+0.029</td></tr>
+      <tr><td>Background consistency</td><td class="num">0.947</td><td class="num">0.943</td><td class="num">+0.004<span class="sub">+0.001 … +0.007</span></td><td class="num">0.941</td><td class="num">+0.005</td></tr>
+      <tr><td>Motion smoothness</td><td class="num">0.988</td><td class="num">0.987</td><td class="num">+0.001<span class="sub">0.000 … +0.001</span></td><td class="num">0.991</td><td class="num neg">−0.003</td></tr>
+      <tr><td>CLIP score</td><td class="num">0.324</td><td class="num">0.322</td><td class="num">+0.002<span class="sub">−0.004 … +0.007</span></td><td class="num">0.334</td><td class="num neg">−0.009<span class="sub">−0.022 … +0.003</span></td></tr>
+    </tbody>
+  </table>
+  </div>
+  <p class="lede">n = 10 prompts, paired by prompt and seed; CIs are paired bootstrap. Outputs are the same scenes and motion as the original evaluation, with fine detail differing at the level a mathematically equivalent weight change also produces (19.6 dB PSNR).</p>
+</section>
+
+<section id="gallery">
+  <h2>Playable water showcase</h2>
+  <p class="lede">Same original prompt for both systems. Hedra is always left; Fal is always right. Select play on either original MP4 for a direct comparison.</p>
+  <div class="gallery">
+    <article class="video-row">
+      <div class="prompt-cell"><span class="eyebrow">01 · Kayak water jet</span><h3>Subject, propulsion, wake, and environment</h3><details open><summary>Exact prompt</summary><p>The video captures a person navigating a red kayak equipped with a large, circular water jet propulsion system on a calm river. The individual is wearing a helmet and a life jacket, indicating safety precautions. The kayak moves steadily across the water, creating ripples and small splashes around it. As the kayak progresses, the camera pans to reveal a picturesque landscape featuring lush green trees lining the riverbanks and a bridge in the distance. The sky above is clear with a few scattered clouds, suggesting a sunny day. The overall scene conveys a sense of adventure and tranquility, with the person enjoying a leisurely ride through the serene environment.</p></details><div class="note">Watch the paddler, jet, wake, and riverbank continuity.</div></div>
+      <div class="video-cell"><div class="video-label"><span>Hedra H3 4-step</span><span>8× H100</span></div><video controls playsinline preload="metadata"><source src="assets/video/samsung_benchmark/novel_kayak_water_jet__hedra_h3_4step_8xH100.mp4" type="video/mp4"></video></div>
+      <div class="video-cell"><div class="video-label"><span>Fal H3 Max</span><span>Fal hosted</span></div><video controls playsinline preload="metadata"><source src="assets/video/samsung_benchmark/novel_kayak_water_jet__fal_h3max.mp4" type="video/mp4"></video></div>
+    </article>
+    <article class="video-row">
+      <div class="prompt-cell"><span class="eyebrow">02 · Surfer wave pool</span><h3>Complex subject–water interaction</h3><details open><summary>Exact prompt</summary><p>The video captures an exhilarating moment of a surfer riding a wave in what appears to be a controlled environment, possibly a wave pool or a similar setup designed for surfing practice. The surfer, dressed in black swim trunks, is skillfully maneuvering on a white surfboard adorned with colorful accents. The wave, a deep blue with white foam at its crest, curls beautifully around the surfer, showcasing the dynamic motion of the water. The surfer maintains a crouched position, leaning into the wave with precision, demonstrating control and balance. As the sequence progresses, the surfer executes a sharp turn, causing the board to tilt dramatically, sending a spray of water into the air. The background reveals a sandy beach-like setting with some structures visible in the distance, suggesting a recreational or training facility. The lighting is bright, indicating a sunny day, enhancing the vivid colors of the scene.</p></details><div class="note">Watch pose, board contact, wave curl, and spray.</div></div>
+      <div class="video-cell"><div class="video-label"><span>Hedra H3 4-step</span><span>8× H100</span></div><video controls playsinline preload="metadata"><source src="assets/video/samsung_benchmark/novel_surfer_wave_pool__hedra_h3_4step_8xH100.mp4" type="video/mp4"></video></div>
+      <div class="video-cell"><div class="video-label"><span>Fal H3 Max</span><span>Fal hosted</span></div><video controls playsinline preload="metadata"><source src="assets/video/samsung_benchmark/novel_surfer_wave_pool__fal_h3max.mp4" type="video/mp4"></video></div>
+    </article>
+    <article class="video-row">
+      <div class="prompt-cell"><span class="eyebrow">03 · Ocean waves</span><h3>Surf, foam, shoreline, and camera motion</h3><details open><summary>Exact prompt</summary><p>The video captures a serene beach scene under a dynamic sky. The ocean waves gently crash onto the sandy shore, creating white foam that spreads across the sand. The water is a vibrant turquoise, transitioning to deeper blue further out. The sky above is filled with large, fluffy clouds that vary in shades of gray and white, suggesting an overcast day. As the video progresses, the camera slowly pans from left to right, revealing more of the expansive beach and the endless horizon where the sea meets the sky. The overall atmosphere is calm and tranquil, with no visible animals or people, emphasizing the natural beauty of the coastal landscape.</p></details><div class="note">Watch breaking surf, foam run-up, horizon, and pan consistency.</div></div>
+      <div class="video-cell"><div class="video-label"><span>Hedra H3 4-step</span><span>8× H100</span></div><video controls playsinline preload="metadata"><source src="assets/video/samsung_benchmark/novel_ocean_waves_shore__hedra_h3_4step_8xH100.mp4" type="video/mp4"></video></div>
+      <div class="video-cell"><div class="video-label"><span>Fal H3 Max</span><span>Fal hosted</span></div><video controls playsinline preload="metadata"><source src="assets/video/samsung_benchmark/novel_ocean_waves_shore__fal_h3max.mp4" type="video/mp4"></video></div>
+    </article>
+    <article class="video-row">
+      <div class="prompt-cell"><span class="eyebrow">04 · Pour over ice</span><h3>Fluid motion, bubbles, refraction, and contact</h3><details open><summary>Exact prompt</summary><p>The video captures a dynamic scene of a glass being filled with a golden liquid, likely a beverage such as iced tea or cola, against a soft, light background. The liquid is poured from above at a steady pace, creating a smooth, flowing stream that cascades into the glass. As the liquid enters, it splashes gently over ice cubes already present in the glass, causing ripples and bubbles to form on the surface. The ice cubes are partially submerged, and their edges are visible through the clarity of the liquid. The background is softly lit with a gradient of light, giving the scene a serene and inviting atmosphere. The camera remains stationary throughout the sequence, focusing closely on the glass and the pouring action, emphasizing the fluid motion and the interaction between the liquid and the ice. The overall effect is one of refreshing coolness and a sense of enjoyment associated with a cold drink.</p></details><div class="note">Watch stream, ice geometry, liquid level, bubbles, and refraction.</div></div>
+      <div class="video-cell"><div class="video-label"><span>Hedra H3 4-step</span><span>8× H100</span></div><video controls playsinline preload="metadata"><source src="assets/video/samsung_benchmark/novel_pour_glass_ice__hedra_h3_4step_8xH100.mp4" type="video/mp4"></video></div>
+      <div class="video-cell"><div class="video-label"><span>Fal H3 Max</span><span>Fal hosted</span></div><video controls playsinline preload="metadata"><source src="assets/video/samsung_benchmark/novel_pour_glass_ice__fal_h3max.mp4" type="video/mp4"></video></div>
+    </article>
+  </div>
+</section>
+
+<hr>
+
+<section id="native">
+  <h2>Native Hedra latency</h2>
+  <p class="lede">Shown separately from the matched-length primary comparison.</p>
+  <div class="scroll"><table>
+    <thead><tr><th>System</th><th>Hardware</th><th class="num">Output duration</th><th class="num">Wall latency</th><th class="num">Wall / 5 s</th><th class="num">Model inference</th><th class="num">Inference / 5 s</th></tr></thead>
+    <tbody><tr><td class="sys">Hedra H3 4-step</td><td>8× NVIDIA H100 80 GB</td><td class="num">4.46 s<span class="sub">107 f @ 24 fps</span></td><td class="num best">3.12 s</td><td class="num">3.50 s</td><td class="num">2.63 s</td><td class="num">2.95 s</td></tr></tbody>
+  </table></div>
+</section>
+
+<section>
+  <h2>Held back · internal review</h2>
+  <div class="callouts">
+    <div class="callout"><span class="k">Water balloon</span><p>Hedra has a large VBench lead, but Fal bursts the balloon more convincingly. Kept out of the main gallery.</p></div>
+    <div class="callout"><span class="k">Asphalt spray</span><p>Fal's hose and spray are more coherent. Kept out of the main gallery.</p></div>
+    <div class="callout"><span class="k">Why include these notes?</span><p>They are useful counter-examples and keep the review balanced; aggregate metrics do not replace visual judgment.</p></div>
+  </div>
+</section>
+
+<section id="method">
+  <h2>Method</h2>
+  <div class="notes">
+    <p><b>Model.</b> Hedra's physics DMD LoRA on MiniMax-H3, bf16, LoRA merged into the weights. Native 4-step schedule (sigmas 1, 0.923, 0.75, 0), no classifier-free guidance, no prompt rewriting.</p>
+    <p><b>Serving.</b> One persistent server per configuration, all models resident on GPU, Ulysses-8 sequence parallelism. The first request after startup is treated as warmup; all reported requests are warm.</p>
+    <p><b>Prompts.</b> 10 water and fluid-physics prompts with fixed seeds, identical text and seeds for Hedra and Fal. Fal called with <code>prompt_expansion_mode=disabled</code>, 768P, 16:9, duration 5.</p>
+    <p><b>Output.</b> MP4, H.264 video with AAC stereo audio at 32 kHz. Hedra encodes with x264 veryfast at CRF 21.</p>
+    <p><b>Model inference.</b> Hedra: server-side time from request start to decoded frames, before MP4 encoding. Fal: <code>timings.inference</code> as returned by the API; its exact scope is not documented.</p>
+    <p><b>MI355.</b> Same checkpoint, schedule, prompts and settings; the run package is ready. Results will replace the pending row.</p>
+  </div>
+</section>
+
+<section>
+  <h2>Evidence & target hardware</h2>
+  <div class="notes">
+    <p><b>Canonical evidence.</b> The benchmark report, raw latency results, score aggregates, and checksums are retained in the internal benchmark workspace. They are not mirrored to this public gallery.</p>
+    <p><b>Video provenance.</b> This page uses the verified Hedra 8×H100 and Fal H3 Max originals selected for the four-row showcase; no new inference was run for publication.</p>
+    <p><b>8× MI355X.</b> <span class="pill pend">pending target-hardware validation</span> No MI355X number has been measured or inferred. The internal ready-to-run package remains available for the target-hardware pass.</p>
+  </div>
+</section>
+
+</div>
+<script>
+(function(){
+  document.querySelectorAll('.video-row').forEach(function(row){
+    var videos=Array.prototype.slice.call(row.querySelectorAll('video'));
+    if(videos.length!==2)return;
+    videos[0].dataset.arm='hedra';videos[1].dataset.arm='fal';
+    videos.forEach(function(v){v.muted=true});
+    var controls=document.createElement('div');
+    controls.className='sync-controls';
+    controls.innerHTML='<button type="button" class="sync-play">▶ Play row</button><button type="button" class="sync-restart">↺ Restart</button><select aria-label="Audio source"><option value="mute">Mute all</option><option value="hedra">Hedra audio</option><option value="fal">Fal audio</option></select>';
+    row.querySelector('.prompt-cell').appendChild(controls);
+    var play=controls.querySelector('.sync-play'),restart=controls.querySelector('.sync-restart'),audio=controls.querySelector('select'),syncing=false;
+    function setTime(t){videos.forEach(function(v){if(Math.abs(v.currentTime-t)>.04){try{v.currentTime=t}catch(e){}}})}
+    function playing(){return videos.some(function(v){return !v.paused&&!v.ended})}
+    function label(){play.textContent=playing()?'⏸ Pause row':'▶ Play row'}
+    function playAll(){videos.forEach(function(v){var p=v.play();if(p&&p.catch)p.catch(function(){})})}
+    function pauseAll(){videos.forEach(function(v){v.pause()})}
+    play.addEventListener('click',function(){syncing=true;if(playing())pauseAll();else{setTime(videos[0].currentTime);playAll()}setTimeout(function(){syncing=false;label()},80)});
+    restart.addEventListener('click',function(){var was=playing();syncing=true;setTime(0);if(was)playAll();else pauseAll();setTimeout(function(){syncing=false;label()},80)});
+    audio.addEventListener('change',function(){videos.forEach(function(v){v.muted=audio.value==='mute'||v.dataset.arm!==audio.value})});
+    videos.forEach(function(v){
+      v.addEventListener('play',function(){if(syncing)return;syncing=true;setTime(v.currentTime);playAll();setTimeout(function(){syncing=false;label()},80)});
+      v.addEventListener('pause',function(){if(syncing)return;syncing=true;pauseAll();setTimeout(function(){syncing=false;label()},80)});
+      v.addEventListener('seeked',function(){if(syncing)return;syncing=true;setTime(v.currentTime);setTimeout(function(){syncing=false},80)});
+      v.addEventListener('timeupdate',function(){if(syncing)return;var t=v.currentTime;videos.forEach(function(o){if(o!==v&&Math.abs(o.currentTime-t)>.18){try{o.currentTime=t}catch(e){}}})});
+      v.addEventListener('ended',label);
+    });
+  });
+})();
+</script>
+</body>
+</html>
