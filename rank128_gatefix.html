@@ -1,0 +1,137 @@
+<!doctype html><html><head><meta charset="utf-8">
+<title>DMPDD Rank128/LR1e-4 Gate-Fix Gallery</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Work+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+:root{
+  --bg:#0d0f12; --panel:#15181c; --panel-2:#1a1e23; --ink:#ecebe6; --ink-muted:#8b9199;
+  --border:#262b31; --accent:#e8a33d; --accent-soft:#2a2114; --good:#6fae84; --good-soft:#17241c;
+  --fix:#6fa8dc; --fix-soft:#132431;
+  --mono:'IBM Plex Mono',ui-monospace,Menlo,monospace; --display:'Fraunces',Georgia,serif; --body:'Work Sans',system-ui,sans-serif;
+  color-scheme: dark;
+}
+@media (prefers-color-scheme: light){
+  :root:not([data-theme="dark"]){
+    --bg:#f7f6f3; --panel:#ffffff; --panel-2:#f1efe9; --ink:#1c1b19; --ink-muted:#6b6862;
+    --border:#e4e1da; --accent:#b5651d; --accent-soft:#f3e3d2; --good:#3c6e4a; --good-soft:#e3eee5;
+    --fix:#1f5fa8; --fix-soft:#e2edf7;
+    color-scheme: light;
+  }
+}
+*{box-sizing:border-box;}
+body{margin:0; background:var(--bg); color:var(--ink); font-family:var(--body);}
+.wrap{max-width:1180px; margin:0 auto; padding:40px 16px 70px;}
+h1{font-family:var(--display); font-weight:600; font-size:clamp(26px,3.6vw,38px); margin:0 0 10px; letter-spacing:-0.01em;}
+.sub{color:var(--ink-muted); font-size:15px; max-width:72ch; line-height:1.6; margin:0;}
+.methodology{margin-top:16px; font-family:var(--mono); font-size:12px; color:var(--ink-muted); line-height:1.7; border-left:2px solid var(--border); padding-left:14px;}
+.methodology b{color:var(--ink);}
+.category{margin-top:48px;}
+.category-head{display:flex; align-items:baseline; gap:12px; margin-bottom:16px; border-bottom:1px solid var(--border); padding-bottom:10px;}
+.category-head h2{font-family:var(--display); font-weight:600; font-size:20px; margin:0;}
+.category-head .count{font-family:var(--mono); font-size:12px; color:var(--ink-muted);}
+.card{background:var(--panel); border:1px solid var(--border); border-radius:12px; padding:18px 20px; margin-top:14px;}
+.card-head{display:flex; align-items:baseline; justify-content:space-between; gap:10px; flex-wrap:wrap; margin-bottom:4px;}
+.scenario{font-size:16px; font-weight:600;}
+.badge{font-family:var(--mono); font-size:11px; color:var(--good); background:var(--good-soft); border:1px solid var(--border); padding:2px 9px; border-radius:999px; white-space:nowrap;}
+.prompt{font-size:13px; color:var(--ink-muted); font-style:italic; margin:0 0 14px; line-height:1.5;}
+.trip{display:grid; grid-template-columns:0.7fr 1fr 1fr 1fr; gap:12px;}
+.cell{min-width:0;}
+.cell img, .cell video{width:100%; max-width:100%; display:block; border-radius:8px; background:#000; aspect-ratio:16/9; object-fit:cover;}
+.cell .label{font-family:var(--mono); font-size:10.5px; color:var(--ink-muted); text-align:center; margin-top:6px; letter-spacing:0.02em; text-transform:uppercase;}
+.cell.trained .label{color:var(--accent);}
+.cell.gatefix .label{color:var(--fix);}
+@media (max-width:900px){ .trip{grid-template-columns:1fr 1fr; } }
+@media (max-width:480px){ .trip{grid-template-columns:1fr; } }
+.footnote{margin-top:40px; font-size:12.5px; color:var(--ink-muted); line-height:1.7; border-top:1px solid var(--border); padding-top:16px; max-width:80ch;}
+.footnote a{color:var(--accent);}
+</style></head>
+<body>
+<div class="wrap">
+  <h1>Does more weight change show up on screen?</h1>
+  <p class="sub">DMPDD (ref2va, MiniMax-H3 base) at checkpoint-2000 with LoRA rank 128 and LR 1e-4, compared with the untrained original on 30 held-out ref2va prompts. A fourth column adds the confirmed gate-fix retrain (v2, see footnote).</p>
+
+  <div class="methodology">
+    <b>Reading the grid:</b> reference image, then original, then the rank128/LR1e-4 checkpoint, then the same recipe retrained with a gate-specific, 100x-smaller learning rate.
+  </div>
+
+  <div id="categories"></div>
+
+  <div class="footnote">
+    <b>Why this run:</b> earlier runs at rank 64 / LR 2e-5 barely moved the weights. Raising rank and LR to the production recipe gives a much larger change, and it stays stable: no collapse or broken anatomy across all 30 prompts.
+    <br><br>
+    <b>Gate-fix column, v2 (confirmed working):</b> rank128/LR1e-4 had a subtle mid-clip darkening/flicker (most visible around 1s and 4s in some clips), traced to <code>to_gate_compress</code> (VSA's compression-compensation gate) being excluded from the LoRA's target modules. A first attempt (v1) added the gate to the LoRA at the <em>same</em> rank/LR as everything else -- a direct weight-diff showed it drifting 68-178% relative to its base value (two orders of magnitude more than attn.to_q), and it actually made the darkening worse by the final checkpoint, even though an early checkpoint had looked clean (just not enough total training yet to show it). v2 gives the gate its own learning rate, 100x smaller (1e-6) than the main 1e-4, via a small addition to the training framework (per-parameter-group learning rates). Verified on the full 2000-step run: 15/16 previously-affected prompts show no brightness dip at all; the one remaining case (train speeding) is a normal motion-blur frame, not the darkening artifact.
+    <br><br>
+    Originally published as a <a href="https://claude.ai/artifact/54kcX1KKKc27uni3RLpakL" target="_blank">Claude Artifact</a>; this page republishes the same content with all videos hosted here.
+  </div>
+</div>
+
+<script>
+const DATA = [
+  {cat:"Everyday scenes", items:[
+    {name:"person swimming in ocean", prompt:"a person swimming in ocean", slug:"rank128_swimming"},
+    {name:"presentation to colleagues", prompt:"a person giving a presentation to a room full of colleagues", slug:"rank128_presentation"},
+    {name:"washing the dishes", prompt:"a person washing the dishes", slug:"rank128_washing_dishes"},
+    {name:"eating a burger", prompt:"a person eating a burger", slug:"rank128_eating_burger"},
+    {name:"walking in a snowstorm", prompt:"a person walking in the snowstorm", slug:"rank128_walking_snowstorm"},
+    {name:"balloon rupture", prompt:"Balloon full of water exploding in extreme slow motion.", slug:"rank128_balloon_rupture"},
+    {name:"turquoise water splash", prompt:"Splash of turquoise water in extreme slow motion, alpha channel included.", slug:"rank128_turquoise_splash"},
+    {name:"ice cream melting", prompt:"an ice cream is melting on the table.", slug:"rank128_ice_cream_melting"},
+    {name:"space shuttle launch", prompt:"A space shuttle launching into orbit, with flames and smoke billowing out from the engines.", slug:"rank128_space_shuttle"},
+    {name:"tornado over a glowing city", prompt:"An epic tornado attacking above a glowing city at night, the tornado is made of smoke.", slug:"rank128_tornado_city"},
+  ]},
+  {cat:"Fire &amp; smoke", items:[
+    {name:"campfire, snowy forest", prompt:"Campfire at night in a snowy forest with starry sky in the background.", slug:"rank128_campfire_forest"},
+    {name:"panda playing guitar by campfire", prompt:"A happy fuzzy panda playing guitar nearby a campfire, snow mountain in the background.", slug:"rank128_panda_campfire"},
+    {name:"ashtray, smoke close-up", prompt:"Ashtray full of butts on table, smoke flowing on black background, close-up", slug:"rank128_ashtray_smoke"},
+  ]},
+  {cat:"Explosions &amp; surreal composites", items:[
+    {name:"corgi's head as nebula explosion", prompt:"A corgi's head depicted as an explosion of a nebula.", slug:"rank128_corgi_nebula"},
+    {name:"lightning striking the Eiffel Tower", prompt:"A lightning striking atop of eiffel tower, dark clouds in the sky.", slug:"rank128_lightning_eiffel"},
+    {name:"fireworks", prompt:"Fireworks.", slug:"rank128_fireworks"},
+    {name:"astronaut riding a horse in space", prompt:"An astronaut is riding a horse in the space in a photorealistic style.", slug:"rank128_astronaut_horse"},
+    {name:"giant robot, cyberpunk Beijing", prompt:"A super cool giant robot in Cyberpunk Beijing", slug:"rank128_robot_cyberpunk"},
+  ]},
+  {cat:"Fast animal &amp; vehicle motion", items:[
+    {name:"horse galloping", prompt:"a horse galloping across an open field", slug:"rank128_horse_galloping"},
+    {name:"elephant spraying water", prompt:"an elephant spraying itself with water using its trunk to cool down", slug:"rank128_elephant_spray"},
+    {name:"dog running happily", prompt:"a dog running happily", slug:"rank128_dog_running"},
+    {name:"cow drinking from a river", prompt:"a cow bending down to drink water from a river", slug:"rank128_cow_drinking"},
+    {name:"motorcycle accelerating", prompt:"a motorcycle accelerating to gain speed", slug:"rank128_motorcycle_accel"},
+    {name:"airplane taking off", prompt:"an airplane taking off", slug:"rank128_airplane_takeoff"},
+    {name:"train speeding down the tracks", prompt:"a train speeding down the tracks", slug:"rank128_train_speeding"},
+    {name:"bigfoot in a snowstorm", prompt:"A bigfoot walking in the snowstorm.", slug:"rank128_bigfoot_snowstorm"},
+  ]},
+  {cat:"Fluid dynamics &amp; fine detail", items:[
+    {name:"ink swirling in water", prompt:"Motion colour drop in water, ink swirling in water, colourful ink in water, abstraction fancy dream cloud of ink.", slug:"rank128_ink_swirl"},
+    {name:"grapes on a rotating table", prompt:"Close up of grapes on a rotating table.", slug:"rank128_grapes_rotating"},
+    {name:"coffee beans falling, macro slo-mo", prompt:"Macro slo-mo. Slow motion cropped closeup of roasted coffee beans falling into an empty bowl.", slug:"rank128_coffee_beans"},
+    {name:"vampire makeup, face close-up", prompt:"Vampire makeup face of beautiful girl, red contact lenses.", slug:"rank128_vampire_makeup"},
+  ]},
+];
+
+const root = document.getElementById('categories');
+DATA.forEach(group => {
+  const section = document.createElement('div');
+  section.className = 'category';
+  section.innerHTML = `<div class="category-head"><h2>${group.cat}</h2><span class="count">${group.items.length} scenario${group.items.length>1?'s':''}</span></div>`;
+  const cardsWrap = document.createElement('div');
+  group.items.forEach(d => {
+    const card = document.createElement('div');
+    card.className = 'card';
+    card.innerHTML = `
+      <div class="card-head"><span class="scenario">${d.name}</span><span class="badge">clean</span></div>
+      <p class="prompt">&ldquo;${d.prompt}&rdquo;</p>
+      <div class="trip">
+        <div class="cell"><img src="assets/image/${d.slug}_ref.png" alt="reference" loading="lazy"><div class="label">Reference (ref2va)</div></div>
+        <div class="cell"><video src="assets/video/${d.slug}_orig.mp4" controls preload="metadata" muted playsinline></video><div class="label">Original</div></div>
+        <div class="cell trained"><video src="assets/video/${d.slug}_trained.mp4" controls preload="metadata" muted playsinline></video><div class="label">Rank128 / LR1e-4</div></div>
+        <div class="cell gatefix"><video src="assets/video/${d.slug}_gatefix.mp4" controls preload="metadata" muted playsinline></video><div class="label">+ Gate fix v2</div></div>
+      </div>
+    `;
+    cardsWrap.appendChild(card);
+  });
+  section.appendChild(cardsWrap);
+  root.appendChild(section);
+});
+</script>
+
+</body></html>

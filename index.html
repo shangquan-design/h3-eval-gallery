@@ -20,6 +20,7 @@ footer a{color:var(--accent)}
 <h1>MiniMax-H3 8-step Eval Gallery</h1>
 <p class="sub">Reused stored evaluation videos only. No new inference was run.</p>
 <div class="links">
+<a class="card" href="rank128_gatefix.html"><div class="title">DMPDD rank128/LR1e-4 gate-fix gallery</div><div class="desc">30 held-out ref2va prompts, 4-way comparison (reference / original / rank128-LR1e-4 / gate-fix v2). Traces and fixes a mid-clip darkening artifact caused by a VSA compression gate not co-adapting with the rest of the LoRA; confirmed clean on the full 2000-step retrain.</div></a>
 <a class="card" href="samsung_benchmark.html"><div class="title">Hedra H3 4-step vs Fal H3 Max — Samsung Benchmark</div><div class="desc">Executive benchmark summary with matched-length latency, quality preservation, and four synchronized playable water-physics comparisons. Hedra: 3.72 s vs Fal: 6.18 s wall-clock at 5.17 s output; MI355X validation pending.</div></a>
 <a class="card" href="physics_iq_samsung.html"><div class="title">Hedra H3 · Samsung + Physics-IQ benchmark</div><div class="desc">Merged serving-speed and physics-fidelity view: matched-length latency, Terrance's 8-step Physics-IQ study, and our separate 4-step follow-up.</div></a>
 <a class="card" href="samsung_benchmark_mi355x.html"><div class="title">Samsung Benchmark · H100 vs MI355X</div><div class="desc">Target-hardware validation with MI355X latency tables and 10 matched-length playable outputs.</div></a>
