@@ -61,6 +61,8 @@ h1{font-family:var(--display); font-weight:600; font-size:clamp(26px,3.6vw,38px)
     <b>Gate-fix column, v2 (confirmed working):</b> rank128/LR1e-4 had a subtle mid-clip darkening/flicker (most visible around 1s and 4s in some clips), traced to <code>to_gate_compress</code> (VSA's compression-compensation gate) being excluded from the LoRA's target modules. A first attempt (v1) added the gate to the LoRA at the <em>same</em> rank/LR as everything else -- a direct weight-diff showed it drifting 68-178% relative to its base value (two orders of magnitude more than attn.to_q), and it actually made the darkening worse by the final checkpoint, even though an early checkpoint had looked clean (just not enough total training yet to show it). v2 gives the gate its own learning rate, 100x smaller (1e-6) than the main 1e-4, via a small addition to the training framework (per-parameter-group learning rates). Verified on the full 2000-step run: 15/16 previously-affected prompts show no brightness dip at all; the one remaining case (train speeding) is a normal motion-blur frame, not the darkening artifact.
     <br><br>
     Originally published as a <a href="https://claude.ai/artifact/54kcX1KKKc27uni3RLpakL" target="_blank">Claude Artifact</a>; this page republishes the same content with all videos hosted here.
+    <br><br>
+    See also the <a href="fl2va_firstchunkfix.html">FL2VA first-chunk collapse fix</a> page: a separate, unrelated-model investigation (FL2VA, not this page's ref2va) into a different mid-clip failure mode, currently at an early/unconfirmed stage.
   </div>
 </div>
 

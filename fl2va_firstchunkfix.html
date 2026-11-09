@@ -1,0 +1,104 @@
+<!doctype html><html><head><meta charset="utf-8">
+<title>FL2VA First-Chunk Collapse Fix (early result)</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Work+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+:root{
+  --bg:#0d0f12; --panel:#15181c; --panel-2:#1a1e23; --ink:#ecebe6; --ink-muted:#8b9199;
+  --border:#262b31; --accent:#e8a33d; --accent-soft:#2a2114; --good:#6fae84; --good-soft:#17241c;
+  --bad:#d97066; --bad-soft:#2c1a18; --fix:#6fa8dc; --fix-soft:#132431;
+  --mono:'IBM Plex Mono',ui-monospace,Menlo,monospace; --display:'Fraunces',Georgia,serif; --body:'Work Sans',system-ui,sans-serif;
+  color-scheme: dark;
+}
+@media (prefers-color-scheme: light){
+  :root:not([data-theme="dark"]){
+    --bg:#f7f6f3; --panel:#ffffff; --panel-2:#f1efe9; --ink:#1c1b19; --ink-muted:#6b6862;
+    --border:#e4e1da; --accent:#b5651d; --accent-soft:#f3e3d2; --good:#3c6e4a; --good-soft:#e3eee5;
+    --bad:#a8402f; --bad-soft:#f6e5e2; --fix:#1f5fa8; --fix-soft:#e2edf7;
+    color-scheme: light;
+  }
+}
+*{box-sizing:border-box;}
+body{margin:0; background:var(--bg); color:var(--ink); font-family:var(--body);}
+.wrap{max-width:1180px; margin:0 auto; padding:40px 16px 70px;}
+h1{font-family:var(--display); font-weight:600; font-size:clamp(26px,3.6vw,38px); margin:0 0 10px; letter-spacing:-0.01em;}
+.sub{color:var(--ink-muted); font-size:15px; max-width:76ch; line-height:1.6; margin:0;}
+.status{display:inline-block; font-family:var(--mono); font-size:11.5px; color:var(--accent); background:var(--accent-soft); border:1px solid var(--border); padding:3px 10px; border-radius:999px; margin-bottom:16px;}
+.methodology{margin-top:20px; font-family:var(--mono); font-size:12px; color:var(--ink-muted); line-height:1.7; border-left:2px solid var(--border); padding-left:14px;}
+.methodology b{color:var(--ink);}
+.section{margin-top:48px;}
+.section-head{display:flex; align-items:baseline; gap:12px; margin-bottom:16px; border-bottom:1px solid var(--border); padding-bottom:10px;}
+.section-head h2{font-family:var(--display); font-weight:600; font-size:20px; margin:0;}
+.card{background:var(--panel); border:1px solid var(--border); border-radius:12px; padding:18px 20px; margin-top:14px;}
+.card-head{display:flex; align-items:baseline; justify-content:space-between; gap:10px; flex-wrap:wrap; margin-bottom:4px;}
+.scenario{font-size:16px; font-weight:600;}
+.prompt{font-size:13px; color:var(--ink-muted); font-style:italic; margin:0 0 14px; line-height:1.5;}
+.pair{display:grid; grid-template-columns:1fr 1fr; gap:16px;}
+.cell{min-width:0;}
+.cell video{width:100%; max-width:100%; display:block; border-radius:8px; background:#000; aspect-ratio:16/9; object-fit:cover;}
+.cell .label{font-family:var(--mono); font-size:11px; text-align:center; margin-top:8px; letter-spacing:0.02em; text-transform:uppercase;}
+.cell.bad .label{color:var(--bad);}
+.cell.fix .label{color:var(--fix);}
+@media (max-width:700px){ .pair{grid-template-columns:1fr; } }
+.strip-row{display:grid; grid-template-columns:repeat(5,1fr); gap:8px; margin-top:10px;}
+.strip-row img{width:100%; border-radius:6px; display:block; background:#000;}
+.strip-label{font-family:var(--mono); font-size:10px; color:var(--ink-muted); text-align:center; margin-top:4px;}
+.strip-wrap{margin-top:18px;}
+.strip-wrap .which{font-family:var(--mono); font-size:11px; letter-spacing:0.02em; text-transform:uppercase; margin-bottom:6px;}
+.strip-wrap.bad .which{color:var(--bad);}
+.strip-wrap.fix .which{color:var(--fix);}
+.footnote{margin-top:40px; font-size:12.5px; color:var(--ink-muted); line-height:1.7; border-top:1px solid var(--border); padding-top:16px; max-width:84ch;}
+.footnote a{color:var(--accent);}
+.footnote code{font-family:var(--mono); background:var(--panel-2); padding:1px 5px; border-radius:4px; font-size:11.5px;}
+</style></head>
+<body>
+<div class="wrap">
+  <h1>Does upweighting the first chunk's loss fix FL2VA's mid-clip collapse?</h1>
+  <div class="status">Early result &middot; 75-step test checkpoint, not a production recipe yet</div>
+  <p class="sub">FL2VA (keyframe-to-video, MiniMax-H3 base) has a reproducible mid-clip collapse: generated video hallucinates into an unrelated "clutter of small 2D objects" visual family (photo-collage, barcodes, cards) starting around frame&nbsp;15, right after the first-keyframe condition. This page tests one candidate fix: upweighting the DMD loss 3x on the leading 5 latent frames of the generated video (matching the video VAE's own chunk size) &mdash; the region immediately following the first keyframe.</p>
+
+  <div class="methodology">
+    <b>Setup:</b> same prompt, keyframes, seed (12345), and training iteration (75 steps) for both columns below &mdash; only the loss shape differs. <b>Baseline</b> is the unmodified recipe's checkpoint-75 (already shown to collapse at this iteration). <b>Fix</b> is the same recipe plus <code>first_chunk_loss_weight=3.0</code>, <code>first_chunk_latent_frames=5</code>.
+  </div>
+
+  <div class="section">
+    <div class="section-head"><h2>solid_ball_block_fall (Physics-IQ scenario)</h2></div>
+    <div class="card">
+      <div class="card-head"><span class="scenario">grabber tools release a ball and a block onto pillows</span></div>
+      <p class="prompt">&ldquo;Two pillows on a table and two grabber tools hanging above them from which a brown tennis ball and an orange block are suspended. The grabber tools let go of the ball and block. Static shot with no camera movement.&rdquo;</p>
+      <div class="pair">
+        <div class="cell bad"><video src="assets/video/fl2va_firstchunk_baseline_ball_block.mp4" controls preload="metadata" muted playsinline></video><div class="label">Baseline (unfixed), checkpoint-75</div></div>
+        <div class="cell fix"><video src="assets/video/fl2va_firstchunk_fix_ball_block.mp4" controls preload="metadata" muted playsinline></video><div class="label">+ First-chunk loss fix, checkpoint-75</div></div>
+      </div>
+
+      <div class="strip-wrap bad">
+        <div class="which">Baseline &mdash; frames 1 / 15 / 30 / 60 / 105</div>
+        <div class="strip-row">
+          <img src="assets/image/fl2va_firstchunk_baseline_f001.jpg" loading="lazy">
+          <img src="assets/image/fl2va_firstchunk_baseline_f015.jpg" loading="lazy">
+          <img src="assets/image/fl2va_firstchunk_baseline_f030.jpg" loading="lazy">
+          <img src="assets/image/fl2va_firstchunk_baseline_f060.jpg" loading="lazy">
+          <img src="assets/image/fl2va_firstchunk_baseline_f105.jpg" loading="lazy">
+        </div>
+      </div>
+      <div class="strip-wrap fix">
+        <div class="which">Fix &mdash; frames 1 / 15 / 30 / 60 / 105</div>
+        <div class="strip-row">
+          <img src="assets/image/fl2va_firstchunk_fix_f001.jpg" loading="lazy">
+          <img src="assets/image/fl2va_firstchunk_fix_f015.jpg" loading="lazy">
+          <img src="assets/image/fl2va_firstchunk_fix_f030.jpg" loading="lazy">
+          <img src="assets/image/fl2va_firstchunk_fix_f060.jpg" loading="lazy">
+          <img src="assets/image/fl2va_firstchunk_fix_f105.jpg" loading="lazy">
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="footnote">
+    <b>What this shows:</b> at frame&nbsp;15 the baseline collapses into an ornate wallpaper-like pattern with garbled text overlay, and stays corrupted through at least frame&nbsp;60 &mdash; only recovering near the very end, pulled back by the <code>last</code> keyframe anchor. The fix shows no collapse at any sampled frame (1, 15, 30, 60, 105): the scene, pillows, and grabber tools stay visually correct throughout.
+    <br><br>
+    <b>Why this is early, not conclusive:</b> both checkpoints are from only 75 training steps (out of the usual 250-400 budget), chosen deliberately to test cheaply &mdash; checkpoint-75 of the original unfixed run already showed this exact collapse, so it doesn't require full training to check. At this early stage neither video shows real physical motion yet (the ball and block stay suspended in both). This page will be updated once the fix is retrained to the full step budget and checked for (a) the collapse staying gone at convergence and (b) no regression in motion quality.
+    <br><br>
+    <b>Root-cause context:</b> the collapse was isolated through a sequence of ablations (not VSA/gate-related, not seed-dependent across 5 seeds, not scenario-specific across 3 unrelated clips, not dependent on the <code>last</code> keyframe anchor being present) to a genuine undertraining gap in the chunk right after the <code>first</code> keyframe condition &mdash; which lines up with the video VAE's own chunk-decode boundary (<code>tokens_chunk_size=5</code> latent frames). See the related <a href="rank128_gatefix.html">DMPDD rank128/LR1e-4 gate-fix gallery</a> for a separate, already-confirmed fix in the ref2va line of work.
+  </div>
+</div>
+</body></html>
