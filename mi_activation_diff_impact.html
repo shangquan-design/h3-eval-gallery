@@ -51,7 +51,7 @@ table.ranks th{color:var(--ink-muted); font-weight:500;}
 <body>
 <div class="wrap">
   <h1>Where does Ref2VA's identity-consistency gain live?</h1>
-  <div class="status">Exploratory &middot; correlational, not yet a causal test &middot; no training involved</div>
+  <div class="status">Exploratory &middot; one case, causal patch test confirmed &middot; no training involved</div>
   <p class="sub">A mechanistic-interpretability-style probe, in the spirit of locating specific layers/heads responsible for a learned behavior without any retraining. Test case: the one clean, already-documented before/after contrast we have -- the <code>ref2va_physics_sft_v1</code> teacher's "impact_collision_breaking" (skidding car) example, where the base model loses the car's identity mid-clip and the trained teacher holds it (see the handoff report's section&nbsp;4).</p>
 
   <div class="methodology">
@@ -89,9 +89,32 @@ table.ranks th{color:var(--ink-muted); font-weight:500;}
   <div class="footnote">
     <b>Reading the chart:</b> divergence is clearly concentrated in the back third of the network (L30&ndash;L49), rising almost monotonically from L0 through L27&ndash;28 and then jumping. This is not as narrow as a 2&ndash;3-head circuit, but a genuinely informative, consistent-across-steps pattern (6 denoising steps, 0/4/9/14/19/24, all agree on the ranking) -- a much more concentrated signal than "every layer differs about equally," which was the other plausible outcome.
     <br><br>
-    <b>What this is NOT yet:</b> a causal demonstration. This measures how much a matched-input forward pass differs given the teacher's LoRA weights vs base weights at each block -- it does not yet show that patching only L30&ndash;L49's LoRA deltas into base H3 and regenerating reproduces the identity-consistency gain end to end. That's the natural next step, and it stays entirely non-training (no gradient updates, just copying LoRA-adapted weights into a subset of blocks and running inference) -- same causal standard as a clamp-and-regenerate MI result.
-    <br><br>
     Full per-block, per-step data: <a href="assets/data/mi_impact_block_diffs.json">block_diffs.json</a> (300 rows, 50 blocks &times; 6 steps).
+  </div>
+
+  <div class="section">
+    <div class="section-head"><h2>Causal test: does patching just those layers reproduce the gain?</h2></div>
+    <div class="methodology">
+      Non-training patch test: load base H3, apply the teacher's LoRA weights to <b>only</b> a chosen subset of blocks (everything else -- including token_refiner -- stays pure base), regenerate the identical skidding case (same seed/prompt/reference), and check whether the car's identity holds. Two subsets tested: the top-5 blocks by activation diff (L33, L34, L35, L48, L49) and the full back third (L30&ndash;L49, 20 blocks).
+    </div>
+    <div class="card">
+      <div class="card-head"><span class="scenario">Top-5 highest-diff blocks only (L33/34/35/48/49)</span><span class="badge" style="color:var(--bad);background:var(--bad-soft);border-color:var(--border);font-family:var(--mono);font-size:11px;padding:2px 9px;border-radius:999px;">artifact persists</span></div>
+      <div class="pair" style="grid-template-columns:1fr;max-width:480px;">
+        <div class="cell bad"><video src="assets/video/mi_impact_patch_top5.mp4" controls preload="metadata" muted playsinline></video><div class="label">Base + LoRA on L33/34/35/48/49 only</div></div>
+      </div>
+      <p class="prompt" style="margin-top:10px;">The hallucinated motorcycle-helmet driver is still there at ~t=3.0s and ~t=3.5s, same as plain base H3. The 5 highest-individual-diff blocks are <b>not sufficient</b> on their own.</p>
+    </div>
+    <div class="card">
+      <div class="card-head"><span class="scenario">Full back third (L30&ndash;L49, 20 blocks)</span><span class="badge" style="color:var(--good);background:var(--good-soft);border-color:var(--border);font-family:var(--mono);font-size:11px;padding:2px 9px;border-radius:999px;">matches teacher quality</span></div>
+      <div class="pair" style="grid-template-columns:1fr;max-width:480px;">
+        <div class="cell fix"><video src="assets/video/mi_impact_patch_back20.mp4" controls preload="metadata" muted playsinline></video><div class="label">Base + LoRA on L30-L49 only</div></div>
+      </div>
+      <p class="prompt" style="margin-top:10px;">No helmet, no hallucinated detail at any checked timestamp (0.2/1.0/1.5/2.0/2.5/3.0/3.5/4.0s) -- driver and livery stay coherent, matching the full teacher's quality, with everything before L30 left at base weights.</p>
+    </div>
+  </div>
+
+  <div class="footnote">
+    <b>What this shows:</b> the identity-consistency circuit for this case is not a narrow 2&ndash;5-layer thing, even though the raw activation-diff ranking has a handful of standout individual layers -- the gain needs the broader ~20-layer span to manifest, not just its biggest-diff members. That's a real, if less flashy, result: redundant/distributed computation across the back third, not a sparse circuit. This <i>is</i> the causal half of the test (non-training throughout: no gradient updates anywhere, just which LoRA-adapted blocks are active at inference time), done on one case -- it isn't yet a general claim about identity-consistency circuits in this model.
   </div>
 </div>
 </body></html>
