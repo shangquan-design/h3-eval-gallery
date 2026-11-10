@@ -58,11 +58,13 @@ h1{font-family:var(--display); font-weight:600; font-size:clamp(26px,3.6vw,38px)
   <div class="category">
     <div class="category-head"><h2>Darkening fix, side-by-side (6 clearest cases)</h2></div>
     <div class="methodology">
-      <b>How these 6 were picked:</b> per-frame grayscale-mean brightness curves for all 30 prompts, comparing the pre-fix checkpoint (rank128/LR1e-4) against the gate-fix v2 checkpoint. Ranked by how much the largest local brightness dip shrinks between the two -- these 6 show the biggest, cleanest improvement (content-driven brightness changes, e.g. explosions/fireworks that darken in both versions, don't count).
+      <b>How these 6 were picked:</b> per-frame grayscale-mean brightness curves for all 30 prompts, comparing the pre-fix checkpoint (rank128/LR1e-4) against the gate-fix v2 checkpoint, keeping only clips with a genuine brief dip-and-recover shape (not a slow fade-in/fade-out, and not content that's naturally darkening in both versions, e.g. explosions/fireworks). Ranked by how much that dip shrinks after the fix; these 6 show the cleanest before/after contrast.
+      <br><br>
+      <b>Playback:</b> each clip plays at 0.3x speed for ~0.8s around its own darkening moment (boxed in red on the "Before" row only -- the "+ Gate fix" row has no dip there to box), then resumes normal speed.
     </div>
     <div class="card">
       <video src="assets/video/gatefix_v2_darkening_comparison_3x6.mp4" controls preload="metadata" muted playsinline style="width:100%;border-radius:8px;background:#000;"></video>
-      <p class="prompt" style="margin-top:10px;">Left to right: cow drinking from a river, giant robot (cyberpunk Beijing), airplane taking off, balloon rupture, grapes on a rotating table, corgi's head as a nebula explosion.</p>
+      <p class="prompt" style="margin-top:10px;">Left to right: cow drinking from a river, giant robot (cyberpunk Beijing), balloon rupture, space shuttle launch, grapes on a rotating table, turquoise water splash.</p>
     </div>
   </div>
 
