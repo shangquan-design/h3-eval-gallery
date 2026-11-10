@@ -51,7 +51,7 @@ table.ranks th{color:var(--ink-muted); font-weight:500;}
 <body>
 <div class="wrap">
   <h1>Where does Ref2VA's identity-consistency gain live?</h1>
-  <div class="status">Exploratory &middot; causal patch test + steering-vector test, mixed results &middot; no training involved</div>
+  <div class="status">Exploratory &middot; causal patch test + steering-vector test (2/3 cases) &middot; no training involved</div>
   <p class="sub">A mechanistic-interpretability-style probe, in the spirit of locating specific layers/heads responsible for a learned behavior without any retraining. Main test case: the <code>ref2va_physics_sft_v1</code> teacher's "impact_collision_breaking" (skidding car) example, where the base model loses the car's identity mid-clip and the trained teacher holds it (see the handoff report's section&nbsp;4) -- one instance of a pattern that shows up repeatedly across ref2va training campaigns (see below).</p>
 
   <div class="methodology">
@@ -105,8 +105,16 @@ table.ranks th{color:var(--ink-muted); font-weight:500;}
         <div class="cell bad"><video src="assets/video/steer_paper_in_water.mp4" controls preload="metadata" muted playsinline></video><div class="label">Base H3 + steering vector (no LoRA)</div></div>
       </div>
     </div>
+    <div class="card">
+      <div class="card-head"><span class="scenario">roll-in-box</span><span class="badge" style="color:var(--good);background:var(--good-soft);border-color:var(--border);font-family:var(--mono);font-size:11px;padding:2px 9px;border-radius:999px;">steering fixes it</span></div>
+      <p class="prompt">A different kind of drift again: the prompt says "static shot with no camera movement," and base H3 ignores that -- it opens on a correct wide shot matching the reference, then zooms in steadily over the clip until it's an extreme close-up by the end, with the ball looking like it's clipping through the box's wall at that scale. The same L30-L49 steering vector (built fresh from this case's own teacher-vs-base diff), applied to a zero-LoRA base model, holds the camera at the reference's framing for the whole clip -- ball correctly inside the box throughout, no zoom drift.</p>
+      <div class="pair">
+        <div class="cell bad"><video src="assets/video/physiq_roll-in-box_base.mp4" controls preload="metadata" muted playsinline></video><div class="label">Base H3 (plain)</div></div>
+        <div class="cell fix"><video src="assets/video/steer_roll_in_box.mp4" controls preload="metadata" muted playsinline></video><div class="label">Base H3 + steering vector (no LoRA)</div></div>
+      </div>
+    </div>
     <div class="methodology">
-      <b>Reading this split result:</b> scene/identity drift (the model wandering off what the reference frame actually shows) looks additive -- a single fixed direction, injected into a model that has never seen a single trained weight, is enough to suppress it cleanly, with no side effects visible across the whole clip. Physical dynamics (will a light object float or sink, does an object's motion stay continuous) does not reduce to the same simple direction: not only does the buoyancy error persist, the steering vector changes <i>where in the sequence</i> the incoherence shows up (base: object frozen mid-air, then an abrupt cut to sunk; steered: a tool that should release and move away instead just vanishes) rather than removing it. Consistent with the earlier hypothesis that identity-consistency-style behaviors are more tractable for this kind of MI intervention than genuine physical/temporal reasoning -- but the physics case is a reshuffled failure, not a clean non-effect.
+      scene/composition drift (the model wandering off what the reference frame actually shows -- whether that's hallucinating a different scene entirely, as in duck-static, or silently violating "no camera movement," as in roll-in-box) looks additive: a single fixed direction, injected into a model that has never seen a single trained weight, is enough to suppress it cleanly in both cases, with no side effects visible across the whole clip. Physical dynamics (will a light object float or sink, does an object's motion stay continuous) does not reduce to the same simple direction: not only does the buoyancy error persist in paper-in-water, the steering vector changes <i>where in the sequence</i> the incoherence shows up (base: object frozen mid-air, then an abrupt cut to sunk; steered: a tool that should release and move away instead just vanishes) rather than removing it. Consistent with the earlier hypothesis that identity-consistency/composition-style behaviors are more tractable for this kind of MI intervention than genuine physical/temporal reasoning -- but the physics case is a reshuffled failure, not a clean non-effect. 2 of 3 tested cases fixed cleanly by the same recipe; the exception is specifically the one that's actually about physics, not framing.
     </div>
   </div>
 
