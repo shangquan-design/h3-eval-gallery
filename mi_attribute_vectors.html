@@ -1,0 +1,134 @@
+<!doctype html><html><head><meta charset="utf-8">
+<title>Non-training attribute control: gravity, camera, brightness, quality</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Work+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+:root{
+  --bg:#0d0f12; --panel:#15181c; --panel-2:#1a1e23; --ink:#ecebe6; --ink-muted:#8b9199;
+  --border:#262b31; --accent:#e8a33d; --accent-soft:#2a2114; --good:#6fae84; --good-soft:#17241c;
+  --bad:#d97066; --bad-soft:#2c1a18; --fix:#6fa8dc; --fix-soft:#132431;
+  --mono:'IBM Plex Mono',ui-monospace,Menlo,monospace; --display:'Fraunces',Georgia,serif; --body:'Work Sans',system-ui,sans-serif;
+  color-scheme: dark;
+}
+@media (prefers-color-scheme: light){
+  :root:not([data-theme="dark"]){
+    --bg:#f7f6f3; --panel:#ffffff; --panel-2:#f1efe9; --ink:#1c1b19; --ink-muted:#6b6862;
+    --border:#e4e1da; --accent:#b5651d; --accent-soft:#f3e3d2; --good:#3c6e4a; --good-soft:#e3eee5;
+    --bad:#a8402f; --bad-soft:#f6e5e2; --fix:#1f5fa8; --fix-soft:#e2edf7;
+    color-scheme: light;
+  }
+}
+*{box-sizing:border-box;}
+body{margin:0; background:var(--bg); color:var(--ink); font-family:var(--body);}
+.wrap{max-width:1180px; margin:0 auto; padding:40px 16px 70px;}
+h1{font-family:var(--display); font-weight:600; font-size:clamp(26px,3.6vw,38px); margin:0 0 10px; letter-spacing:-0.01em;}
+.sub{color:var(--ink-muted); font-size:15px; max-width:76ch; line-height:1.6; margin:0;}
+.status{display:inline-block; font-family:var(--mono); font-size:11.5px; color:var(--accent); background:var(--accent-soft); border:1px solid var(--border); padding:3px 10px; border-radius:999px; margin-bottom:16px;}
+.methodology{margin-top:20px; font-family:var(--mono); font-size:12px; color:var(--ink-muted); line-height:1.7; border-left:2px solid var(--border); padding-left:14px;}
+.methodology b{color:var(--ink);}
+.section{margin-top:48px;}
+.section-head{display:flex; align-items:baseline; gap:12px; margin-bottom:16px; border-bottom:1px solid var(--border); padding-bottom:10px;}
+.section-head h2{font-family:var(--display); font-weight:600; font-size:20px; margin:0;}
+.card{background:var(--panel); border:1px solid var(--border); border-radius:12px; padding:18px 20px; margin-top:14px;}
+.card-head{display:flex; align-items:baseline; justify-content:space-between; gap:10px; flex-wrap:wrap; margin-bottom:4px;}
+.scenario{font-size:16px; font-weight:600;}
+.prompt{font-size:13px; color:var(--ink-muted); font-style:italic; margin:0 0 14px; line-height:1.5;}
+.pair{display:grid; grid-template-columns:1fr 1fr; gap:16px;}
+.cell{min-width:0;}
+.cell video, .cell img{width:100%; max-width:100%; display:block; border-radius:8px; background:#000; }
+.cell video{aspect-ratio:1344/768; object-fit:cover;}
+.cell .label{font-family:var(--mono); font-size:11px; text-align:center; margin-top:8px; letter-spacing:0.02em; text-transform:uppercase;}
+.cell.bad .label{color:var(--bad);}
+.cell.fix .label{color:var(--good);}
+@media (max-width:700px){ .pair{grid-template-columns:1fr; } }
+.badge{color:var(--accent);background:var(--accent-soft);border:1px solid var(--border);font-family:var(--mono);font-size:11px;padding:2px 9px;border-radius:999px;}
+.footnote{margin-top:40px; font-size:12.5px; color:var(--ink-muted); line-height:1.7; border-top:1px solid var(--border); padding-top:16px; max-width:84ch;}
+.footnote a{color:var(--accent);}
+.footnote code{font-family:var(--mono); background:var(--panel-2); padding:1px 5px; border-radius:4px; font-size:11.5px;}
+</style></head>
+<body>
+<div class="wrap">
+  <h1>Non-training attribute control: gravity, camera, brightness, quality</h1>
+  <div class="status">In progress &middot; source-pair sanity clips only so far, no steered/verdict results yet &middot; no training, no LoRA anywhere</div>
+  <p class="sub">A pivot from the case-by-case steering vectors on <a href="mi_activation_diff_impact.html">the earlier page</a>, which each extracted a direction as teacher-minus-base on <i>one specific clip</i> -- tangled up with that clip's own content. Here the direction is built from <b>prompt-contrastive pairs across multiple different scenes</b>, on base H3 alone (zero LoRA, zero trained checkpoints, construction included), then averaged into a single generic direction meant to transfer to a held-out scene regardless of its own content.</p>
+
+  <div class="methodology">
+    <b>Method:</b> for each of 3 source scenes (duck-falls-in-box, potato-in-water, domino-in-juice), run base H3 twice with the identical seed and reference image, changing only the prompt along one attribute axis (e.g. "falls continuously under gravity" vs. "stays suspended, never falls"). Hook every transformer block in both runs, record each block's real output (mean over packed-sequence rows) at 7 representative denoising steps, diff the two runs, and average over all steps and all 3 scenes into one direction per block. Apply that direction to blocks L30&ndash;L49 (the span established in the earlier page's causal test) on a <i>fresh</i> base H3, generating a 4th, held-out scene from its own neutral prompt -- no attribute language added -- to see whether the direction can push the output even though nothing in the prompt asked for it.
+  </div>
+  <div class="methodology">
+    <b>Status:</b> the jobs building these 4 directions (gravity, camera motion, brightness, visual quality) are still running. What's below are the <b>source-pair sanity clips</b> completed so far -- i.e. the two contrastive generations each direction is being built from, uploaded as they land. No steered/held-out result, no verdict, for any attribute yet. This page will be updated once each direction is built and the held-out test is checked with dense frame sampling and quantitative pixel-level tracking, per the correction on the earlier page.
+  </div>
+
+  <div class="section">
+    <div class="section-head"><h2>Gravity</h2><span class="badge">building &middot; 2/3 source scenes done</span></div>
+    <p class="prompt">Clause A: "falls immediately and continuously, accelerating downward under gravity, until it lands or submerges." Clause B: "does not fall at all; stays suspended in place and hovers motionlessly."</p>
+    <div class="card">
+      <div class="card-head"><span class="scenario">duck-falls-in-box</span></div>
+      <div class="pair">
+        <div class="cell"><video src="assets/video/attr_gravity_duck_falls_in_box_fall.mp4" controls preload="metadata" muted playsinline></video><div class="label">A: falls</div></div>
+        <div class="cell"><video src="assets/video/attr_gravity_duck_falls_in_box_float.mp4" controls preload="metadata" muted playsinline></video><div class="label">B: floats</div></div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-head"><span class="scenario">potato-in-water</span></div>
+      <div class="pair">
+        <div class="cell"><video src="assets/video/attr_gravity_potato_in_water_fall.mp4" controls preload="metadata" muted playsinline></video><div class="label">A: falls</div></div>
+        <div class="cell"><video src="assets/video/attr_gravity_potato_in_water_float.mp4" controls preload="metadata" muted playsinline></video><div class="label">B: floats</div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-head"><h2>Camera motion</h2><span class="badge">building &middot; 1/3 source scenes done</span></div>
+    <p class="prompt">Clause A: "camera moves and pans dynamically throughout the shot, tracking the action with smooth, continuous camera movement." Clause B: "static shot with no camera movement whatsoever, completely locked off."</p>
+    <div class="card">
+      <div class="card-head"><span class="scenario">duck-falls-in-box</span></div>
+      <div class="pair">
+        <div class="cell"><video src="assets/video/attr_camera_duck_falls_in_box_A.mp4" controls preload="metadata" muted playsinline></video><div class="label">A: moving camera</div></div>
+        <div class="cell"><video src="assets/video/attr_camera_duck_falls_in_box_B.mp4" controls preload="metadata" muted playsinline></video><div class="label">B: static camera</div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-head"><h2>Brightness</h2><span class="badge">building &middot; 1-2/3 source scenes done</span></div>
+    <p class="prompt">Clause A: "brightly lit, overexposed, with strong bright light filling the frame." Clause B: "dimly lit, dark and underexposed, with very low light."</p>
+    <div class="card">
+      <div class="card-head"><span class="scenario">duck-falls-in-box</span></div>
+      <div class="pair">
+        <div class="cell"><video src="assets/video/attr_brightness_duck_falls_in_box_A.mp4" controls preload="metadata" muted playsinline></video><div class="label">A: bright</div></div>
+        <div class="cell"><video src="assets/video/attr_brightness_duck_falls_in_box_B.mp4" controls preload="metadata" muted playsinline></video><div class="label">B: dim</div></div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-head"><span class="scenario">potato-in-water</span></div>
+      <div class="pair">
+        <div class="cell"><video src="assets/video/attr_brightness_potato_in_water_A.mp4" controls preload="metadata" muted playsinline></video><div class="label">A: bright</div></div>
+        <div class="cell" style="display:flex;align-items:center;justify-content:center;color:var(--ink-muted);font-family:var(--mono);font-size:12px;">B: dim &mdash; still generating</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-head"><h2>Visual quality</h2><span class="badge">building &middot; 1-2/3 source scenes done</span></div>
+    <p class="prompt">Clause A: "sharp, crisp, high quality, professional cinematic footage, highly detailed." Clause B: "blurry, low quality, grainy, out of focus, poor compression artifacts."</p>
+    <div class="card">
+      <div class="card-head"><span class="scenario">duck-falls-in-box</span></div>
+      <div class="pair">
+        <div class="cell"><video src="assets/video/attr_quality_duck_falls_in_box_A.mp4" controls preload="metadata" muted playsinline></video><div class="label">A: sharp/high quality</div></div>
+        <div class="cell"><video src="assets/video/attr_quality_duck_falls_in_box_B.mp4" controls preload="metadata" muted playsinline></video><div class="label">B: blurry/low quality</div></div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-head"><span class="scenario">potato-in-water</span></div>
+      <div class="pair">
+        <div class="cell"><video src="assets/video/attr_quality_potato_in_water_A.mp4" controls preload="metadata" muted playsinline></video><div class="label">A: sharp/high quality</div></div>
+        <div class="cell" style="display:flex;align-items:center;justify-content:center;color:var(--ink-muted);font-family:var(--mono);font-size:12px;">B: blurry &mdash; still generating</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="footnote">
+    Held-out test scene (not yet run for any attribute): <code>paper-fall-water</code>, its own neutral prompt, no attribute language added &mdash; same scene used in the gravity test on <a href="mi_activation_diff_impact.html">the earlier page</a>. Scripts: <code>mi_gravity_attribute_vector.py</code>, <code>mi_attribute_vector.py &lt;attribute&gt;</code>. All generations: base <code>MiniMax-H3</code>, seed 1431, 768&times;1344, 107 frames, 30 steps, no LoRA loaded in any phase.
+  </div>
+</div>
+</body></html>
