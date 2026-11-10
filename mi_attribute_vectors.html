@@ -26,21 +26,28 @@ h1{font-family:var(--display); font-weight:600; font-size:clamp(26px,3.6vw,38px)
 .methodology{margin-top:20px; font-family:var(--mono); font-size:12px; color:var(--ink-muted); line-height:1.7; border-left:2px solid var(--border); padding-left:14px;}
 .methodology b{color:var(--ink);}
 .section{margin-top:48px;}
-.section-head{display:flex; align-items:baseline; gap:12px; margin-bottom:16px; border-bottom:1px solid var(--border); padding-bottom:10px;}
+.section-head{display:flex; align-items:baseline; gap:12px; margin-bottom:16px; border-bottom:1px solid var(--border); padding-bottom:10px; flex-wrap:wrap;}
 .section-head h2{font-family:var(--display); font-weight:600; font-size:20px; margin:0;}
 .card{background:var(--panel); border:1px solid var(--border); border-radius:12px; padding:18px 20px; margin-top:14px;}
 .card-head{display:flex; align-items:baseline; justify-content:space-between; gap:10px; flex-wrap:wrap; margin-bottom:4px;}
 .scenario{font-size:16px; font-weight:600;}
 .prompt{font-size:13px; color:var(--ink-muted); font-style:italic; margin:0 0 14px; line-height:1.5;}
 .pair{display:grid; grid-template-columns:1fr 1fr; gap:16px;}
+.trio{display:grid; grid-template-columns:1fr 1fr 1fr; gap:16px;}
 .cell{min-width:0;}
 .cell video, .cell img{width:100%; max-width:100%; display:block; border-radius:8px; background:#000; }
 .cell video{aspect-ratio:1344/768; object-fit:cover;}
 .cell .label{font-family:var(--mono); font-size:11px; text-align:center; margin-top:8px; letter-spacing:0.02em; text-transform:uppercase;}
 .cell.bad .label{color:var(--bad);}
 .cell.fix .label{color:var(--good);}
-@media (max-width:700px){ .pair{grid-template-columns:1fr; } }
+@media (max-width:700px){ .pair, .trio{grid-template-columns:1fr; } }
 .badge{color:var(--accent);background:var(--accent-soft);border:1px solid var(--border);font-family:var(--mono);font-size:11px;padding:2px 9px;border-radius:999px;}
+.badge.bad{color:var(--bad);background:var(--bad-soft);}
+.badge.good{color:var(--good);background:var(--good-soft);}
+table.metrics{width:100%; border-collapse:collapse; font-family:var(--mono); font-size:12px; margin:16px 0;}
+table.metrics th, table.metrics td{text-align:left; padding:6px 10px; border-bottom:1px solid var(--border);}
+table.metrics th{color:var(--ink-muted); font-weight:500;}
+table.metrics td.bad{color:var(--bad);}
 .footnote{margin-top:40px; font-size:12.5px; color:var(--ink-muted); line-height:1.7; border-top:1px solid var(--border); padding-top:16px; max-width:84ch;}
 .footnote a{color:var(--accent);}
 .footnote code{font-family:var(--mono); background:var(--panel-2); padding:1px 5px; border-radius:4px; font-size:11.5px;}
@@ -48,87 +55,120 @@ h1{font-family:var(--display); font-weight:600; font-size:clamp(26px,3.6vw,38px)
 <body>
 <div class="wrap">
   <h1>Non-training attribute control: gravity, camera, brightness, quality</h1>
-  <div class="status">In progress &middot; source-pair sanity clips only so far, no steered/verdict results yet &middot; no training, no LoRA anywhere</div>
-  <p class="sub">A pivot from the case-by-case steering vectors on <a href="mi_activation_diff_impact.html">the earlier page</a>, which each extracted a direction as teacher-minus-base on <i>one specific clip</i> -- tangled up with that clip's own content. Here the direction is built from <b>prompt-contrastive pairs across multiple different scenes</b>, on base H3 alone (zero LoRA, zero trained checkpoints, construction included), then averaged into a single generic direction meant to transfer to a held-out scene regardless of its own content.</p>
+  <div class="status">Negative result &middot; raw vector magnitude breaks generation for 3/4 attributes &middot; no training, no LoRA anywhere</div>
+  <p class="sub">A pivot from the case-by-case steering vectors on <a href="mi_activation_diff_impact.html">the earlier page</a>, which each extracted a direction as teacher-minus-base on <i>one specific clip</i> -- tangled up with that clip's own content. Here the direction is built from <b>prompt-contrastive pairs across 3 different scenes</b>, on base H3 alone (zero LoRA, zero trained checkpoints, construction included), averaged into one generic direction, then tested on a 4th held-out scene's own neutral prompt. Checked with dense frame sampling and quantitative pixel metrics, not a sparse eyeball check, per the correction on the earlier page.</p>
 
   <div class="methodology">
-    <b>Method:</b> for each of 3 source scenes (duck-falls-in-box, potato-in-water, domino-in-juice), run base H3 twice with the identical seed and reference image, changing only the prompt along one attribute axis (e.g. "falls continuously under gravity" vs. "stays suspended, never falls"). Hook every transformer block in both runs, record each block's real output (mean over packed-sequence rows) at 7 representative denoising steps, diff the two runs, and average over all steps and all 3 scenes into one direction per block. Apply that direction to blocks L30&ndash;L49 (the span established in the earlier page's causal test) on a <i>fresh</i> base H3, generating a 4th, held-out scene from its own neutral prompt -- no attribute language added -- to see whether the direction can push the output even though nothing in the prompt asked for it.
+    <b>Method:</b> for each of 3 source scenes (duck-falls-in-box, potato-in-water, domino-in-juice), run base H3 twice with the identical seed and reference image, changing only the prompt along one attribute axis. Hook every transformer block in both runs, record each block's real output (mean over packed-sequence rows) at 7 representative denoising steps, diff the two runs, average over all steps and all 3 scenes into one direction per block. Add that direction to blocks L30&ndash;L49 (the span established in the earlier page's causal test) on a <i>fresh</i> base H3, generating a held-out 4th scene (<code>paper-fall-water</code>) from its own neutral prompt -- no attribute language added.
   </div>
-  <div class="methodology">
-    <b>Status:</b> the jobs building these 4 directions (gravity, camera motion, brightness, visual quality) are still running. What's below are the <b>source-pair sanity clips</b> completed so far -- i.e. the two contrastive generations each direction is being built from, uploaded as they land. No steered/held-out result, no verdict, for any attribute yet. This page will be updated once each direction is built and the held-out test is checked with dense frame sampling and quantitative pixel-level tracking, per the correction on the earlier page.
+  <div class="methodology" style="border-left-color:var(--bad);">
+    <b>Result: this doesn't work at raw magnitude.</b> Unlike the earlier page's per-case vectors -- built from a teacher/base <i>replay</i> on the literal same input, which isolates one block's weight-difference effect and stays small -- these vectors are built from two <i>independently sampled</i> generations that diverge in content within a few steps. The diff this produces is a much larger, noisier signal (whole-trajectory divergence, not one block's isolated effect), and adding it unscaled, every step, to 20 blocks compounds it further. Quantitative check (brightness, Laplacian sharpness, and mean optical-flow magnitude across 14 evenly-sampled frames, vs. the unsteered baseline) below.
   </div>
+
+  <table class="metrics">
+    <tr><th>variant</th><th>brightness (0-255)</th><th>sharpness (Laplacian var)</th><th>frame-to-frame motion</th><th>visual result</th></tr>
+    <tr><td>baseline (no steering)</td><td>108.6</td><td>89.6</td><td>0.67</td><td>known failure: paper stays frozen at the tongs, jump-cuts to the bowl near the last frame</td></tr>
+    <tr><td>+ gravity vector</td><td>130.6</td><td class="bad">13.5 (&minus;85%)</td><td>0.45</td><td>still frozen at the tongs the whole clip -- not fixed, image just gets blurrier</td></tr>
+    <tr><td>+ brightness vector</td><td class="bad">251.3</td><td class="bad">0.2</td><td>0.00</td><td>blown out to a near-blank white frame, no visible content</td></tr>
+    <tr><td>+ quality vector</td><td>104.3</td><td class="bad">1193 (13x)</td><td class="bad">27.95</td><td>generation collapses into a repeating diagonal stripe pattern</td></tr>
+    <tr><td>+ camera vector</td><td class="bad">44.6 (&minus;59%)</td><td class="bad">555 (6x)</td><td class="bad">8.95 (13x)</td><td>generation collapses into pure color static/noise</td></tr>
+  </table>
 
   <div class="section">
-    <div class="section-head"><h2>Gravity</h2><span class="badge">building &middot; 2/3 source scenes done</span></div>
+    <div class="section-head"><h2>Gravity</h2><span class="badge bad">held-out: no fix, degraded</span></div>
     <p class="prompt">Clause A: "falls immediately and continuously, accelerating downward under gravity, until it lands or submerges." Clause B: "does not fall at all; stays suspended in place and hovers motionlessly."</p>
-    <div class="card">
-      <div class="card-head"><span class="scenario">duck-falls-in-box</span></div>
-      <div class="pair">
-        <div class="cell"><video src="assets/video/attr_gravity_duck_falls_in_box_fall.mp4" controls preload="metadata" muted playsinline></video><div class="label">A: falls</div></div>
-        <div class="cell"><video src="assets/video/attr_gravity_duck_falls_in_box_float.mp4" controls preload="metadata" muted playsinline></video><div class="label">B: floats</div></div>
-      </div>
+    <div class="trio">
+      <div class="card" style="grid-column:1/-1;padding:0;background:none;border:none;"><div class="pair">
+        <div class="cell bad"><video src="assets/video/attr_paperfallwater_baseline.mp4" controls preload="metadata" muted playsinline></video><div class="label">held-out: baseline (no steering)</div></div>
+        <div class="cell bad"><video src="assets/video/attr_gravity_steered_result.mp4" controls preload="metadata" muted playsinline></video><div class="label">held-out: + gravity vector</div></div>
+      </div></div>
     </div>
-    <div class="card">
-      <div class="card-head"><span class="scenario">potato-in-water</span></div>
-      <div class="pair">
-        <div class="cell"><video src="assets/video/attr_gravity_potato_in_water_fall.mp4" controls preload="metadata" muted playsinline></video><div class="label">A: falls</div></div>
-        <div class="cell"><video src="assets/video/attr_gravity_potato_in_water_float.mp4" controls preload="metadata" muted playsinline></video><div class="label">B: floats</div></div>
-      </div>
-    </div>
+    <div class="card"><div class="card-head"><span class="scenario">source: duck-falls-in-box</span></div><div class="pair">
+      <div class="cell"><video src="assets/video/attr_gravity_duck_falls_in_box_fall.mp4" controls preload="metadata" muted playsinline></video><div class="label">A: falls</div></div>
+      <div class="cell"><video src="assets/video/attr_gravity_duck_falls_in_box_float.mp4" controls preload="metadata" muted playsinline></video><div class="label">B: floats</div></div>
+    </div></div>
+    <div class="card"><div class="card-head"><span class="scenario">source: potato-in-water</span></div><div class="pair">
+      <div class="cell"><video src="assets/video/attr_gravity_potato_in_water_fall.mp4" controls preload="metadata" muted playsinline></video><div class="label">A: falls</div></div>
+      <div class="cell"><video src="assets/video/attr_gravity_potato_in_water_float.mp4" controls preload="metadata" muted playsinline></video><div class="label">B: floats</div></div>
+    </div></div>
+    <div class="card"><div class="card-head"><span class="scenario">source: domino-in-juice</span></div><div class="pair">
+      <div class="cell"><video src="assets/video/attr_gravity_domino_in_juice_fall.mp4" controls preload="metadata" muted playsinline></video><div class="label">A: falls</div></div>
+      <div class="cell"><video src="assets/video/attr_gravity_domino_in_juice_float.mp4" controls preload="metadata" muted playsinline></video><div class="label">B: floats</div></div>
+    </div></div>
   </div>
 
   <div class="section">
-    <div class="section-head"><h2>Camera motion</h2><span class="badge">building &middot; 1/3 source scenes done</span></div>
+    <div class="section-head"><h2>Camera motion</h2><span class="badge bad">held-out: generation collapse</span></div>
     <p class="prompt">Clause A: "camera moves and pans dynamically throughout the shot, tracking the action with smooth, continuous camera movement." Clause B: "static shot with no camera movement whatsoever, completely locked off."</p>
-    <div class="card">
-      <div class="card-head"><span class="scenario">duck-falls-in-box</span></div>
-      <div class="pair">
-        <div class="cell"><video src="assets/video/attr_camera_duck_falls_in_box_A.mp4" controls preload="metadata" muted playsinline></video><div class="label">A: moving camera</div></div>
-        <div class="cell"><video src="assets/video/attr_camera_duck_falls_in_box_B.mp4" controls preload="metadata" muted playsinline></video><div class="label">B: static camera</div></div>
-      </div>
-    </div>
+    <div class="card"><div class="pair">
+      <div class="cell bad"><video src="assets/video/attr_paperfallwater_baseline.mp4" controls preload="metadata" muted playsinline></video><div class="label">held-out: baseline (no steering)</div></div>
+      <div class="cell bad"><video src="assets/video/attr_camera_steered_result.mp4" controls preload="metadata" muted playsinline></video><div class="label">held-out: + camera vector &mdash; pure noise</div></div>
+    </div></div>
+    <div class="card"><div class="card-head"><span class="scenario">source: duck-falls-in-box</span></div><div class="pair">
+      <div class="cell"><video src="assets/video/attr_camera_duck_falls_in_box_A.mp4" controls preload="metadata" muted playsinline></video><div class="label">A: moving camera</div></div>
+      <div class="cell"><video src="assets/video/attr_camera_duck_falls_in_box_B.mp4" controls preload="metadata" muted playsinline></video><div class="label">B: static camera</div></div>
+    </div></div>
+    <div class="card"><div class="card-head"><span class="scenario">source: potato-in-water</span></div><div class="pair">
+      <div class="cell"><video src="assets/video/attr_camera_potato_in_water_A.mp4" controls preload="metadata" muted playsinline></video><div class="label">A: moving camera</div></div>
+      <div class="cell"><video src="assets/video/attr_camera_potato_in_water_B.mp4" controls preload="metadata" muted playsinline></video><div class="label">B: static camera</div></div>
+    </div></div>
+    <div class="card"><div class="card-head"><span class="scenario">source: domino-in-juice</span></div><div class="pair">
+      <div class="cell"><video src="assets/video/attr_camera_domino_in_juice_A.mp4" controls preload="metadata" muted playsinline></video><div class="label">A: moving camera</div></div>
+      <div class="cell"><video src="assets/video/attr_camera_domino_in_juice_B.mp4" controls preload="metadata" muted playsinline></video><div class="label">B: static camera</div></div>
+    </div></div>
   </div>
 
   <div class="section">
-    <div class="section-head"><h2>Brightness</h2><span class="badge">building &middot; 1-2/3 source scenes done</span></div>
+    <div class="section-head"><h2>Brightness</h2><span class="badge bad">held-out: blown out to blank</span></div>
     <p class="prompt">Clause A: "brightly lit, overexposed, with strong bright light filling the frame." Clause B: "dimly lit, dark and underexposed, with very low light."</p>
-    <div class="card">
-      <div class="card-head"><span class="scenario">duck-falls-in-box</span></div>
-      <div class="pair">
-        <div class="cell"><video src="assets/video/attr_brightness_duck_falls_in_box_A.mp4" controls preload="metadata" muted playsinline></video><div class="label">A: bright</div></div>
-        <div class="cell"><video src="assets/video/attr_brightness_duck_falls_in_box_B.mp4" controls preload="metadata" muted playsinline></video><div class="label">B: dim</div></div>
-      </div>
-    </div>
-    <div class="card">
-      <div class="card-head"><span class="scenario">potato-in-water</span></div>
-      <div class="pair">
-        <div class="cell"><video src="assets/video/attr_brightness_potato_in_water_A.mp4" controls preload="metadata" muted playsinline></video><div class="label">A: bright</div></div>
-        <div class="cell" style="display:flex;align-items:center;justify-content:center;color:var(--ink-muted);font-family:var(--mono);font-size:12px;">B: dim &mdash; still generating</div>
-      </div>
-    </div>
+    <div class="card"><div class="pair">
+      <div class="cell bad"><video src="assets/video/attr_paperfallwater_baseline.mp4" controls preload="metadata" muted playsinline></video><div class="label">held-out: baseline (no steering)</div></div>
+      <div class="cell bad"><video src="assets/video/attr_brightness_steered_result.mp4" controls preload="metadata" muted playsinline></video><div class="label">held-out: + brightness vector &mdash; blank white</div></div>
+    </div></div>
+    <div class="card"><div class="card-head"><span class="scenario">source: duck-falls-in-box</span></div><div class="pair">
+      <div class="cell"><video src="assets/video/attr_brightness_duck_falls_in_box_A.mp4" controls preload="metadata" muted playsinline></video><div class="label">A: bright</div></div>
+      <div class="cell"><video src="assets/video/attr_brightness_duck_falls_in_box_B.mp4" controls preload="metadata" muted playsinline></video><div class="label">B: dim</div></div>
+    </div></div>
+    <div class="card"><div class="card-head"><span class="scenario">source: potato-in-water</span></div><div class="pair">
+      <div class="cell"><video src="assets/video/attr_brightness_potato_in_water_A.mp4" controls preload="metadata" muted playsinline></video><div class="label">A: bright</div></div>
+      <div class="cell"><video src="assets/video/attr_brightness_potato_in_water_B.mp4" controls preload="metadata" muted playsinline></video><div class="label">B: dim</div></div>
+    </div></div>
+    <div class="card"><div class="card-head"><span class="scenario">source: domino-in-juice</span></div><div class="pair">
+      <div class="cell"><video src="assets/video/attr_brightness_domino_in_juice_A.mp4" controls preload="metadata" muted playsinline></video><div class="label">A: bright</div></div>
+      <div class="cell"><video src="assets/video/attr_brightness_domino_in_juice_B.mp4" controls preload="metadata" muted playsinline></video><div class="label">B: dim</div></div>
+    </div></div>
   </div>
 
   <div class="section">
-    <div class="section-head"><h2>Visual quality</h2><span class="badge">building &middot; 1-2/3 source scenes done</span></div>
+    <div class="section-head"><h2>Visual quality</h2><span class="badge bad">held-out: generation collapse</span></div>
     <p class="prompt">Clause A: "sharp, crisp, high quality, professional cinematic footage, highly detailed." Clause B: "blurry, low quality, grainy, out of focus, poor compression artifacts."</p>
-    <div class="card">
-      <div class="card-head"><span class="scenario">duck-falls-in-box</span></div>
-      <div class="pair">
-        <div class="cell"><video src="assets/video/attr_quality_duck_falls_in_box_A.mp4" controls preload="metadata" muted playsinline></video><div class="label">A: sharp/high quality</div></div>
-        <div class="cell"><video src="assets/video/attr_quality_duck_falls_in_box_B.mp4" controls preload="metadata" muted playsinline></video><div class="label">B: blurry/low quality</div></div>
-      </div>
-    </div>
-    <div class="card">
-      <div class="card-head"><span class="scenario">potato-in-water</span></div>
-      <div class="pair">
-        <div class="cell"><video src="assets/video/attr_quality_potato_in_water_A.mp4" controls preload="metadata" muted playsinline></video><div class="label">A: sharp/high quality</div></div>
-        <div class="cell" style="display:flex;align-items:center;justify-content:center;color:var(--ink-muted);font-family:var(--mono);font-size:12px;">B: blurry &mdash; still generating</div>
-      </div>
+    <div class="card"><div class="pair">
+      <div class="cell bad"><video src="assets/video/attr_paperfallwater_baseline.mp4" controls preload="metadata" muted playsinline></video><div class="label">held-out: baseline (no steering)</div></div>
+      <div class="cell bad"><video src="assets/video/attr_quality_steered_result.mp4" controls preload="metadata" muted playsinline></video><div class="label">held-out: + quality vector &mdash; stripe artifact</div></div>
+    </div></div>
+    <div class="card"><div class="card-head"><span class="scenario">source: duck-falls-in-box</span></div><div class="pair">
+      <div class="cell"><video src="assets/video/attr_quality_duck_falls_in_box_A.mp4" controls preload="metadata" muted playsinline></video><div class="label">A: sharp/high quality</div></div>
+      <div class="cell"><video src="assets/video/attr_quality_duck_falls_in_box_B.mp4" controls preload="metadata" muted playsinline></video><div class="label">B: blurry/low quality</div></div>
+    </div></div>
+    <div class="card"><div class="card-head"><span class="scenario">source: potato-in-water</span></div><div class="pair">
+      <div class="cell"><video src="assets/video/attr_quality_potato_in_water_A.mp4" controls preload="metadata" muted playsinline></video><div class="label">A: sharp/high quality</div></div>
+      <div class="cell"><video src="assets/video/attr_quality_potato_in_water_B.mp4" controls preload="metadata" muted playsinline></video><div class="label">B: blurry/low quality</div></div>
+    </div></div>
+    <div class="card"><div class="card-head"><span class="scenario">source: domino-in-juice</span></div><div class="pair">
+      <div class="cell"><video src="assets/video/attr_quality_domino_in_juice_A.mp4" controls preload="metadata" muted playsinline></video><div class="label">A: sharp/high quality</div></div>
+      <div class="cell"><video src="assets/video/attr_quality_domino_in_juice_B.mp4" controls preload="metadata" muted playsinline></video><div class="label">B: blurry/low quality</div></div>
+    </div></div>
+  </div>
+
+  <div class="section">
+    <div class="section-head"><h2>Next step</h2></div>
+    <div class="methodology">
+      The saved <code>.pt</code> vector files (one per attribute) aren't invalidated by this -- the diagnosis is <b>magnitude</b>, not direction. The planned follow-up: re-run Phase B only (no need to rebuild the vectors) at several fixed fractions of the current magnitude (e.g. 0.05x, 0.1x, 0.25x, 0.5x) to find where each direction stops breaking generation and starts producing a visible, controllable effect -- directly testing whether these directions can work as a continuous dial once scaled correctly.
     </div>
   </div>
 
   <div class="footnote">
-    Held-out test scene (not yet run for any attribute): <code>paper-fall-water</code>, its own neutral prompt, no attribute language added &mdash; same scene used in the gravity test on <a href="mi_activation_diff_impact.html">the earlier page</a>. Scripts: <code>mi_gravity_attribute_vector.py</code>, <code>mi_attribute_vector.py &lt;attribute&gt;</code>. All generations: base <code>MiniMax-H3</code>, seed 1431, 768&times;1344, 107 frames, 30 steps, no LoRA loaded in any phase.
+    Held-out test scene: <code>paper-fall-water</code>, its own neutral prompt, no attribute language added. Quantitative metrics: mean pixel brightness, Laplacian-of-grayscale variance (sharpness), and mean Farneback optical-flow magnitude between consecutive sampled frames -- all computed over 14 evenly-spaced frames per clip. Scripts: <code>mi_gravity_attribute_vector.py</code>, <code>mi_attribute_vector.py &lt;attribute&gt;</code>. All generations: base <code>MiniMax-H3</code>, seed 1431, 768&times;1344, 107 frames, 30 steps, no LoRA loaded in any phase.
   </div>
 </div>
 </body></html>
