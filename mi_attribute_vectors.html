@@ -161,10 +161,44 @@ table.metrics td.bad{color:var(--bad);}
   </div>
 
   <div class="section">
-    <div class="section-head"><h2>Next step</h2></div>
+    <div class="section-head"><h2>Magnitude sweep (in progress)</h2><span class="badge">3/4 scales per attribute so far</span></div>
     <div class="methodology">
-      The saved <code>.pt</code> vector files (one per attribute) aren't invalidated by this -- the diagnosis is <b>magnitude</b>, not direction. The planned follow-up: re-run Phase B only (no need to rebuild the vectors) at several fixed fractions of the current magnitude (e.g. 0.05x, 0.1x, 0.25x, 0.5x) to find where each direction stops breaking generation and starts producing a visible, controllable effect -- directly testing whether these directions can work as a continuous dial once scaled correctly.
+      Re-ran Phase B only (same saved <code>.pt</code> vectors, no rebuild) at small fixed fractions of the original magnitude. Quantitative check vs. the unsteered baseline (brightness 108.6, sharpness 89.6, motion 0.67):
     </div>
+    <table class="metrics">
+      <tr><th>variant</th><th>brightness</th><th>sharpness</th><th>motion</th><th>reading</th></tr>
+      <tr><td>gravity &times;0.05</td><td>108.9</td><td>102.6</td><td>0.61</td><td>coherent, ~matches baseline -- barely any visible effect yet</td></tr>
+      <tr><td>gravity &times;0.1</td><td>110.2</td><td>90.8</td><td>0.63</td><td>coherent, ~matches baseline -- same, no clear fall improvement visible</td></tr>
+      <tr><td>brightness &times;0.02</td><td class="bad">198.7</td><td>124.7</td><td>0.75</td><td>visibly brighter/paler, content still intact -- looks like a real, controlled partial effect</td></tr>
+      <tr><td>brightness &times;0.05</td><td class="bad">248.8</td><td class="bad">16.1</td><td>0.49</td><td>already blown out -- the usable range is narrow, under 0.05</td></tr>
+      <tr><td>camera &times;0.02</td><td>102.4</td><td>136.9</td><td>0.74</td><td>coherent, motion barely above baseline</td></tr>
+      <tr><td>camera &times;0.05</td><td>87.3</td><td>224.4</td><td>0.88</td><td>coherent, motion only ~30% above baseline -- not yet a visible pan</td></tr>
+      <tr><td>quality &times;0.02</td><td>109.0</td><td>111.7</td><td>0.60</td><td>coherent, close to baseline sharpness</td></tr>
+      <tr><td>quality &times;0.1</td><td>110.2</td><td>198.2</td><td>0.66</td><td>coherent, sharpness ~2.2x baseline, no visible noise -- a real but subtle effect</td></tr>
+    </table>
+    <div class="methodology">
+      <b>Reading so far:</b> dropping below ~0.1-0.25x of the raw magnitude reliably avoids the collapse (confirms magnitude, not direction, was the problem). But for 3 of 4 attributes (gravity, camera, quality) the visible/behavioral effect at these same safe scales is weak to negligible -- frame grids at these scales still show the same known baseline failure (paper frozen at the tongs). <b>Brightness is the one attribute with a clear, visible, non-destructive effect already at 0.02x</b> -- noticeably paler/brighter while the scene stays intact -- though it saturates fast (already blown out by 0.05x). Still running: gravity &times;0.5, camera/brightness/quality &times;0.2, to map the narrow band (if any) where effect is visible and generation stays intact.
+    </div>
+    <div class="card"><div class="card-head"><span class="scenario">gravity</span></div><div class="trio">
+      <div class="cell"><video src="assets/video/attr_gravity_scale0.05.mp4" controls preload="metadata" muted playsinline></video><div class="label">&times;0.05</div></div>
+      <div class="cell"><video src="assets/video/attr_gravity_scale0.1.mp4" controls preload="metadata" muted playsinline></video><div class="label">&times;0.1</div></div>
+      <div class="cell"><video src="assets/video/attr_gravity_scale0.25.mp4" controls preload="metadata" muted playsinline></video><div class="label">&times;0.25</div></div>
+    </div></div>
+    <div class="card"><div class="card-head"><span class="scenario">brightness</span></div><div class="trio">
+      <div class="cell fix"><video src="assets/video/attr_brightness_scale0.02.mp4" controls preload="metadata" muted playsinline></video><div class="label">&times;0.02 -- visible, intact</div></div>
+      <div class="cell bad"><video src="assets/video/attr_brightness_scale0.05.mp4" controls preload="metadata" muted playsinline></video><div class="label">&times;0.05 -- blown out</div></div>
+      <div class="cell bad"><video src="assets/video/attr_brightness_scale0.1.mp4" controls preload="metadata" muted playsinline></video><div class="label">&times;0.1 -- blown out</div></div>
+    </div></div>
+    <div class="card"><div class="card-head"><span class="scenario">camera</span></div><div class="trio">
+      <div class="cell"><video src="assets/video/attr_camera_scale0.02.mp4" controls preload="metadata" muted playsinline></video><div class="label">&times;0.02</div></div>
+      <div class="cell"><video src="assets/video/attr_camera_scale0.05.mp4" controls preload="metadata" muted playsinline></video><div class="label">&times;0.05</div></div>
+      <div class="cell"><video src="assets/video/attr_camera_scale0.1.mp4" controls preload="metadata" muted playsinline></video><div class="label">&times;0.1</div></div>
+    </div></div>
+    <div class="card"><div class="card-head"><span class="scenario">quality</span></div><div class="trio">
+      <div class="cell"><video src="assets/video/attr_quality_scale0.02.mp4" controls preload="metadata" muted playsinline></video><div class="label">&times;0.02</div></div>
+      <div class="cell"><video src="assets/video/attr_quality_scale0.05.mp4" controls preload="metadata" muted playsinline></video><div class="label">&times;0.05</div></div>
+      <div class="cell"><video src="assets/video/attr_quality_scale0.1.mp4" controls preload="metadata" muted playsinline></video><div class="label">&times;0.1</div></div>
+    </div></div>
   </div>
 
   <div class="footnote">
