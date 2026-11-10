@@ -130,8 +130,36 @@ table.ranks th{color:var(--ink-muted); font-weight:500;}
         <div class="cell fix"><video src="assets/video/crossapply_roll_to_duck.mp4" controls preload="metadata" muted playsinline></video><div class="label">Base H3 + roll-in-box's vector (cross-applied)</div></div>
       </div>
     </div>
+    <div class="card">
+      <div class="card-head"><span class="scenario">duck-static's vector &rarr; applied to roll-in-box</span><span class="badge" style="color:var(--accent);background:var(--accent-soft);border-color:var(--border);font-family:var(--mono);font-size:11px;padding:2px 9px;border-radius:999px;">partial, asymmetric</span></div>
+      <p class="prompt">The reverse direction. Duck-static's vector keeps the camera locked to the reference framing for the whole clip -- no zoom drift, same fix roll-in-box's own vector gave. But the ball itself ends up resting outside the box, not inside it -- roll-in-box's own self-derived vector got this right, duck-static's doesn't. Generalization here isn't symmetric: a vector built from a pure scene/camera-drift case transfers the camera-stability fix but not the finer "this specific object lands in this specific place" correction.</p>
+      <div class="pair" style="grid-template-columns:1fr;max-width:480px;">
+        <div class="cell fix"><video src="assets/video/crossapply_duck_to_roll.mp4" controls preload="metadata" muted playsinline></video><div class="label">Base H3 + duck-static's vector (cross-applied)</div></div>
+      </div>
+    </div>
     <div class="methodology">
-      This is the evidence that matters most for the "is this a real direction" question: a vector that only ever worked on the case it came from would be a curve-fit, not a finding. One that transfers cleanly to an unrelated scene is much better evidence of a genuine, somewhat general "stay faithful to the reference frame" direction in this model's representation space -- at least for the composition/scene-drift family of failures. (The reverse direction -- duck-static's vector applied to roll-in-box -- was also run; check back for that result.)
+      Taken together: a scene/composition-drift vector generalizes to <i>other instances of the same broad failure family</i> (something is wandering off the reference) but not necessarily to every specific sub-detail of a different case. One direction transferred fully (roll-in-box &rarr; duck-static); the other transferred the camera-stability part but not the object-placement part (duck-static &rarr; roll-in-box). Still much better evidence than a curve-fit that only worked on its own source clip would give.
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-head"><h2>A messy source gives a bad vector</h2></div>
+    <div class="methodology">
+      Following up on the boss's interest in gravity specifically: tried building a vector from "ball-and-block-fall" (two objects should fall together under gravity). This source contrast turned out <b>not</b> to be clean -- base H3 loses track of the ball entirely (only the block lands) while v7g400 loses track of the block instead (only the ball lands, mid-bounce) -- each model fails in a <i>different</i> way, not "one right, one wrong." Building a steering vector from this pair anyway and applying it produced a worse result than either source video alone.
+    </div>
+    <div class="card">
+      <div class="card-head"><span class="scenario">ball-and-block-fall</span><span class="badge" style="color:var(--bad);background:var(--bad-soft);border-color:var(--border);font-family:var(--mono);font-size:11px;padding:2px 9px;border-radius:999px;">worse than either source</span></div>
+      <p class="prompt">Base: block lands on the pillow, ball vanishes entirely. v7g400: ball lands (visible motion blur, mid-bounce), block vanishes entirely. Steering with the vector built from this pair: <b>both</b> objects missing -- empty grabbers, empty pillows, strictly worse than either individual source clip.</p>
+      <div class="pair">
+        <div class="cell bad"><video src="assets/video/physiq_ball-and-block-fall_base.mp4" controls preload="metadata" muted playsinline></video><div class="label">Base H3 (ball missing)</div></div>
+        <div class="cell bad"><video src="assets/video/physiq_ball-and-block-fall_v7g400.mp4" controls preload="metadata" muted playsinline></video><div class="label">v7g400 (block missing)</div></div>
+      </div>
+      <div class="pair" style="margin-top:10px;grid-template-columns:1fr;max-width:480px;">
+        <div class="cell bad"><video src="assets/video/steer_ball_and_block_fall.mp4" controls preload="metadata" muted playsinline></video><div class="label">Base H3 + this vector (both missing)</div></div>
+      </div>
+    </div>
+    <div class="methodology">
+      <b>Lesson for building a dedicated "gravity" vector:</b> the method is only as good as its source contrast. A genuinely clean gravity-specific candidate was found separately -- <code>paper-fall-water</code> (base: a grabber holds the paper frozen over the bowl for the entire clip, it never falls at all; v7g400: clear, continuous falling motion into the bowl) -- a real "doesn't fall at all" vs "falls correctly" pair, unlike this one. Results from that pair pending.
     </div>
   </div>
 
