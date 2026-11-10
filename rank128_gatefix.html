@@ -55,6 +55,17 @@ h1{font-family:var(--display); font-weight:600; font-size:clamp(26px,3.6vw,38px)
 
   <div id="categories"></div>
 
+  <div class="category">
+    <div class="category-head"><h2>Darkening fix, side-by-side (6 clearest cases)</h2></div>
+    <div class="methodology">
+      <b>How these 6 were picked:</b> per-frame grayscale-mean brightness curves for all 30 prompts, comparing the pre-fix checkpoint (rank128/LR1e-4) against the gate-fix v2 checkpoint. Ranked by how much the largest local brightness dip shrinks between the two -- these 6 show the biggest, cleanest improvement (content-driven brightness changes, e.g. explosions/fireworks that darken in both versions, don't count).
+    </div>
+    <div class="card">
+      <video src="assets/video/gatefix_v2_darkening_comparison_3x6.mp4" controls preload="metadata" muted playsinline style="width:100%;border-radius:8px;background:#000;"></video>
+      <p class="prompt" style="margin-top:10px;">Left to right: cow drinking from a river, giant robot (cyberpunk Beijing), airplane taking off, balloon rupture, grapes on a rotating table, corgi's head as a nebula explosion.</p>
+    </div>
+  </div>
+
   <div class="footnote">
     <b>Why this run:</b> earlier runs at rank 64 / LR 2e-5 barely moved the weights. Raising rank and LR to the production recipe gives a much larger change, and it stays stable: no collapse or broken anatomy across all 30 prompts.
     <br><br>
