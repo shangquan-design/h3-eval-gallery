@@ -52,14 +52,40 @@ table.ranks th{color:var(--ink-muted); font-weight:500;}
 <div class="wrap">
   <h1>Where does Ref2VA's identity-consistency gain live?</h1>
   <div class="status">Exploratory &middot; one case, causal patch test confirmed &middot; no training involved</div>
-  <p class="sub">A mechanistic-interpretability-style probe, in the spirit of locating specific layers/heads responsible for a learned behavior without any retraining. Test case: the one clean, already-documented before/after contrast we have -- the <code>ref2va_physics_sft_v1</code> teacher's "impact_collision_breaking" (skidding car) example, where the base model loses the car's identity mid-clip and the trained teacher holds it (see the handoff report's section&nbsp;4).</p>
+  <p class="sub">A mechanistic-interpretability-style probe, in the spirit of locating specific layers/heads responsible for a learned behavior without any retraining. Main test case: the <code>ref2va_physics_sft_v1</code> teacher's "impact_collision_breaking" (skidding car) example, where the base model loses the car's identity mid-clip and the trained teacher holds it (see the handoff report's section&nbsp;4) -- one instance of a pattern that shows up repeatedly across ref2va training campaigns (see below).</p>
 
   <div class="methodology">
     <b>Method:</b> ran the trained teacher's real 30-step generation once, hooking each of the 50 transformer blocks. At 6 representative denoising steps, each hook fed the teacher block's real input (hidden_states, temb, adaln_indices, rotary_emb) into the same-indexed block of a separately-loaded base H3 (no LoRA), then diffed that block's output against the teacher's own real output for that identical input. This isolates "how differently does this one block's own weights transform an identical input" -- no need to run two independent generations (which would also diverge in sampled content) and no need to extract raw attention weights out of a fused attention kernel.
   </div>
 
   <div class="section">
-    <div class="section-head"><h2>The known contrast: base H3 vs the trained teacher</h2></div>
+    <div class="section-head"><h2>This isn't an isolated case</h2></div>
+    <div class="methodology">
+      The "impact" case above comes from the <code>ref2va_physics_sft_v1</code> campaign (12-category qualitative eval). A separate, larger ref2va campaign (<code>ref2va_v7_scaled400</code>, scored on the full official 198-scenario Physics-IQ benchmark) shows the same pattern repeatedly: base H3 treats the reference frame as loose inspiration and drifts off it mid-clip -- wrong physics, hallucinated scene changes, color bleed -- and training fixes it, with a real quantitative score jump (<b>20.23 &rarr; 25.91</b> Physics-IQ, averaged over all 198 scenarios). Two of the clearest individual cases below, both with official Physics-IQ scores per clip.
+    </div>
+    <div class="card">
+      <div class="card-head"><span class="scenario">duck-static</span><span class="prompt" style="margin:0;">Physics-IQ score: base 2.9 &rarr; fine-tuned 28.7-35.7 (two scoring passes)</span></div>
+      <p class="prompt">A stationary rubber duck on a table. Base H3 invents a slow 90&deg; turn and warps the duck's proportions mid-clip -- treats the reference as inspiration, not a frame to literally continue.</p>
+      <div class="pair">
+        <div class="cell bad"><video src="assets/video/physiq_duck-static_base.mp4" controls preload="metadata" muted playsinline></video><div class="label">Base H3</div></div>
+        <div class="cell fix"><video src="assets/video/physiq_duck-static_v7g400.mp4" controls preload="metadata" muted playsinline></video><div class="label">ref2va_v7_scaled400 (step 400)</div></div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-head"><span class="scenario">paper-in-water</span><span class="prompt" style="margin:0;">Physics-IQ score: base 16.9-19.6 &rarr; fine-tuned 65.3-100.0 (two scoring passes)</span></div>
+      <p class="prompt">A crumpled paper should float at the water's surface. Base H3 sinks it to the bottom of the glass -- a basic buoyancy error.</p>
+      <div class="pair">
+        <div class="cell bad"><video src="assets/video/physiq_paper-in-water_base.mp4" controls preload="metadata" muted playsinline></video><div class="label">Base H3</div></div>
+        <div class="cell fix"><video src="assets/video/physiq_paper-in-water_v7g400.mp4" controls preload="metadata" muted playsinline></video><div class="label">ref2va_v7_scaled400 (step 400)</div></div>
+      </div>
+    </div>
+    <div class="methodology">
+      A handful more from the same campaign, not re-hosted here: roll-in-box (10.8&rarr;57.6), weight-on-ceramic (7.5&rarr;30.3), siphon (29.8&rarr;58.2), plus several non-Physics-IQ reference-fidelity cases (a coastline scene where base hallucinates farmland onto an isolated cliff; a car-wash clip where base's background trees pick up the car's red paint; a speedboat-wake clip where base drifts to open ocean while the fine-tune holds the reference reef). These two (duck-static, paper-in-water) are the ones that made it into the final published writeup as the clearest individual examples.
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-head"><h2>The known contrast: base H3 vs the trained teacher (impact case)</h2></div>
     <div class="card">
       <div class="card-head"><span class="scenario">skidding (impact_collision_breaking)</span></div>
       <p class="prompt">prompt: &ldquo;skidding&rdquo; &mdash; reference frame extracted from the source clip</p>
