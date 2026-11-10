@@ -51,7 +51,7 @@ table.ranks th{color:var(--ink-muted); font-weight:500;}
 <body>
 <div class="wrap">
   <h1>Where does Ref2VA's identity-consistency gain live?</h1>
-  <div class="status">Exploratory &middot; one case, causal patch test confirmed &middot; no training involved</div>
+  <div class="status">Exploratory &middot; causal patch test + steering-vector test, mixed results &middot; no training involved</div>
   <p class="sub">A mechanistic-interpretability-style probe, in the spirit of locating specific layers/heads responsible for a learned behavior without any retraining. Main test case: the <code>ref2va_physics_sft_v1</code> teacher's "impact_collision_breaking" (skidding car) example, where the base model loses the car's identity mid-clip and the trained teacher holds it (see the handoff report's section&nbsp;4) -- one instance of a pattern that shows up repeatedly across ref2va training campaigns (see below).</p>
 
   <div class="methodology">
@@ -81,6 +81,32 @@ table.ranks th{color:var(--ink-muted); font-weight:500;}
     </div>
     <div class="methodology">
       A handful more from the same campaign, not re-hosted here: roll-in-box (10.8&rarr;57.6), weight-on-ceramic (7.5&rarr;30.3), siphon (29.8&rarr;58.2), plus several non-Physics-IQ reference-fidelity cases (a coastline scene where base hallucinates farmland onto an isolated cliff; a car-wash clip where base's background trees pick up the car's red paint; a speedboat-wake clip where base drifts to open ocean while the fine-tune holds the reference reef). These two (duck-static, paper-in-water) are the ones that made it into the final published writeup as the clearest individual examples.
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-head"><h2>Steering vector test: a direction, not a weight swap</h2></div>
+    <div class="methodology">
+      A stricter non-training test than the patch test above: instead of copying any trained LoRA <i>weights</i> into base H3, compute a per-block <b>direction</b> -- the mean (teacher output &minus; base output) over several denoising steps, averaged across every packed-sequence row into a single [hidden_dim] vector per block -- from the ref2va_v7_scaled400 campaign's duck-static and paper-in-water cases. Then load a <i>completely fresh</i> base H3 (zero LoRA weights anywhere) and simply <b>add</b> that fixed vector to blocks L30&ndash;L49's own output during a real generation, same seed/prompt/reference as the original base run.
+    </div>
+    <div class="card">
+      <div class="card-head"><span class="scenario">duck-static</span><span class="badge" style="color:var(--good);background:var(--good-soft);border-color:var(--border);font-family:var(--mono);font-size:11px;padding:2px 9px;border-radius:999px;">steering fixes it</span></div>
+      <p class="prompt">Base H3's real failure here is more severe than "the duck wobbles": it hallucinates an entirely different scene -- a hand holding a phone, the duck shown on the phone's screen. Adding the L30-L49 steering vector to a fresh, zero-LoRA base model removes this drift entirely: stable duck, correct scene, matching the reference -- no trained weights involved anywhere.</p>
+      <div class="pair">
+        <div class="cell bad"><video src="assets/video/physiq_duck-static_base.mp4" controls preload="metadata" muted playsinline></video><div class="label">Base H3 (plain)</div></div>
+        <div class="cell fix"><video src="assets/video/steer_duck_static.mp4" controls preload="metadata" muted playsinline></video><div class="label">Base H3 + steering vector (no LoRA)</div></div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-head"><span class="scenario">paper-in-water</span><span class="badge" style="color:var(--bad);background:var(--bad-soft);border-color:var(--border);font-family:var(--mono);font-size:11px;padding:2px 9px;border-radius:999px;">steering does not fix it</span></div>
+      <p class="prompt">Same method, same layers, a different kind of failure: the crumpled paper still sinks to the bottom of the glass with the steering vector applied, same buoyancy error as plain base.</p>
+      <div class="pair">
+        <div class="cell bad"><video src="assets/video/physiq_paper-in-water_base.mp4" controls preload="metadata" muted playsinline></video><div class="label">Base H3 (plain)</div></div>
+        <div class="cell bad"><video src="assets/video/steer_paper_in_water.mp4" controls preload="metadata" muted playsinline></video><div class="label">Base H3 + steering vector (no LoRA)</div></div>
+      </div>
+    </div>
+    <div class="methodology">
+      <b>Reading this split result:</b> scene/identity drift (the model wandering off what the reference frame actually shows) looks additive -- a single fixed direction, injected into a model that has never seen a single trained weight, is enough to suppress it. Physical dynamics (will a light object float or sink) does not reduce to the same simple direction; whatever the LoRA actually learned for buoyancy is apparently more than "add vector <i>v</i> at these layers." Consistent with the earlier hypothesis that identity-consistency-style behaviors are more tractable for this kind of MI intervention than genuine physics reasoning.
     </div>
   </div>
 
