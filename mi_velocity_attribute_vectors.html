@@ -1,0 +1,127 @@
+<!doctype html><html><head><meta charset="utf-8">
+<title>Non-training attribute control: velocity-space version</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=IBM+Plex+Mono:wght@400;500&family=Work+Sans:wght@400;500;600&display=swap">
+<style>
+:root{
+  --bg:#0d0f12; --panel:#15181c; --panel-2:#1a1e23; --ink:#ecebe6; --ink-muted:#8b9199;
+  --border:#262b31; --accent:#e8a33d; --accent-soft:#2a2114; --good:#6fae84; --good-soft:#17241c;
+  --bad:#d97066; --bad-soft:#2c1a18; --fix:#6fa8dc; --fix-soft:#132431;
+  --mono:'IBM Plex Mono',ui-monospace,Menlo,monospace; --display:'Fraunces',Georgia,serif; --body:'Work Sans',system-ui,sans-serif;
+  color-scheme: dark;
+}
+@media (prefers-color-scheme: light){
+  :root:not([data-theme="light"]){
+    --bg:#f7f6f3; --panel:#ffffff; --panel-2:#f1efe9; --ink:#1c1b19; --ink-muted:#6b6862;
+    --border:#e4e1da; --accent:#b5651d; --accent-soft:#f3e3d2; --good:#3c6e4a; --good-soft:#e3eee5;
+    --bad:#a8402f; --bad-soft:#f6e5e2; --fix:#1f5fa8; --fix-soft:#e2edf7;
+    color-scheme: light;
+  }
+}
+*{box-sizing:border-box;}
+body{margin:0; background:var(--bg); color:var(--ink); font-family:var(--body);}
+.wrap{max-width:1180px; margin:0 auto; padding:40px 16px 70px;}
+h1{font-family:var(--display); font-weight:600; font-size:clamp(26px,3.6vw,38px); margin:0 0 10px; letter-spacing:-0.01em;}
+.sub{color:var(--ink-muted); font-size:15px; max-width:76ch; line-height:1.6; margin:0;}
+.status{display:inline-block; font-family:var(--mono); font-size:11.5px; color:var(--accent); background:var(--accent-soft); border:1px solid var(--border); padding:3px 10px; border-radius:999px; margin-bottom:16px;}
+.methodology{margin-top:20px; font-family:var(--mono); font-size:12px; color:var(--ink-muted); line-height:1.7; border-left:2px solid var(--border); padding-left:14px;}
+.methodology b{color:var(--ink);}
+.section{margin-top:48px;}
+.section-head{display:flex; align-items:baseline; gap:12px; margin-bottom:16px; border-bottom:1px solid var(--border); padding-bottom:10px; flex-wrap:wrap;}
+.section-head h2{font-family:var(--display); font-weight:600; font-size:20px; margin:0;}
+.card{background:var(--panel); border:1px solid var(--border); border-radius:12px; padding:18px 20px; margin-top:14px;}
+.card-head{display:flex; align-items:baseline; justify-content:space-between; gap:10px; flex-wrap:wrap; margin-bottom:4px;}
+.scenario{font-size:16px; font-weight:600;}
+.prompt{font-size:13px; color:var(--ink-muted); font-style:italic; margin:0 0 14px; line-height:1.5;}
+.pair{display:grid; grid-template-columns:1fr 1fr; gap:16px;}
+.trio{display:grid; grid-template-columns:1fr 1fr 1fr; gap:16px;}
+.cell{min-width:0;}
+.cell video{width:100%; max-width:100%; display:block; border-radius:8px; background:#000; aspect-ratio:1344/768; object-fit:cover;}
+.cell .label{font-family:var(--mono); font-size:11px; text-align:center; margin-top:8px; letter-spacing:0.02em; text-transform:uppercase;}
+.cell.bad .label{color:var(--bad);}
+.cell.fix .label{color:var(--good);}
+@media (max-width:700px){ .pair, .trio{grid-template-columns:1fr; } }
+.badge{color:var(--accent);background:var(--accent-soft);border:1px solid var(--border);font-family:var(--mono);font-size:11px;padding:2px 9px;border-radius:999px;}
+.badge.bad{color:var(--bad);background:var(--bad-soft);}
+.badge.good{color:var(--good);background:var(--good-soft);}
+table.metrics{width:100%; border-collapse:collapse; font-family:var(--mono); font-size:12px; margin:16px 0;}
+table.metrics th, table.metrics td{text-align:left; padding:6px 10px; border-bottom:1px solid var(--border);}
+table.metrics th{color:var(--ink-muted); font-weight:500;}
+table.metrics td.bad{color:var(--bad);}
+table.metrics td.good{color:var(--good);}
+.footnote{margin-top:40px; font-size:12.5px; color:var(--ink-muted); line-height:1.7; border-top:1px solid var(--border); padding-top:16px; max-width:84ch;}
+.footnote a{color:var(--accent);}
+.footnote code{font-family:var(--mono); background:var(--panel-2); padding:1px 5px; border-radius:4px; font-size:11.5px;}
+</style></head>
+<body>
+<div class="wrap">
+  <h1>Non-training attribute control: velocity-space version</h1>
+  <div class="status">Mixed result &middot; quality works even better than the hidden-state version &middot; camera's "motion" signal is an artifact, not real panning &middot; no training, no LoRA</div>
+  <p class="sub">Same generalized method as <a href="mi_attribute_vectors.html">the hidden-state attribute-vector page</a> -- prompt-contrastive pairs across 3 source scenes, averaged into one direction, tested on a held-out scene's neutral prompt -- but steering a different locus: the transformer's consolidated <code>noise_pred</code> (the actual velocity prediction the scheduler uses to step the latents) instead of 20 separate per-block hidden states. Per Michael's suggestion in Slack: "have you also looked at the velocity components? That might be a simpler place to steer from."</p>
+
+  <div class="methodology">
+    <b>Method:</b> for each of 3 source scenes (duck-falls-in-box, potato-in-water, domino-in-juice), run base H3 twice with the identical seed/reference, changing only the prompt (clause A vs B). At 7 denoising steps, record the real <code>noise_pred</code> (mean over rows) for each run, diff (A&minus;B), average over all steps and scenes into one <code>[channels]</code> direction -- no LoRA, no trained checkpoint, construction included. Apply it (at a few fixed scales in one job, given the earlier lesson about magnitude) to <code>block_state.noise_pred</code> after every real denoiser call, on a fresh base H3 generating the same held-out scene (<code>paper-fall-water</code>, neutral prompt) used throughout this investigation.
+  </div>
+
+  <table class="metrics">
+    <tr><th>variant</th><th>brightness</th><th>sharpness</th><th>motion</th><th>reading</th></tr>
+    <tr><td>baseline (no steering)</td><td>108.6</td><td>89.6</td><td>0.67</td><td>known failure: paper frozen at the tongs</td></tr>
+    <tr><td>gravity &times;1.0 / 0.1 / 0.02</td><td>109-111</td><td>89-104</td><td>0.60-0.61</td><td>essentially identical to baseline at every scale -- no visible effect, same as the hidden-state version</td></tr>
+    <tr><td>brightness &times;1.0</td><td class="bad">251.9</td><td class="bad">0.3</td><td>0.00</td><td>blown out to blank white -- same catastrophic failure mode as hidden-state</td></tr>
+    <tr><td>brightness &times;0.1</td><td class="good">147.2</td><td>152.3</td><td>0.66</td><td>visibly brighter, scene fully intact, no artifacts -- a real, wider usable window than the hidden-state version's narrow ~0.02</td></tr>
+    <tr><td>brightness &times;0.02</td><td>114.6</td><td>111.6</td><td>0.63</td><td>mild, intact effect</td></tr>
+    <tr><td>camera &times;1.0</td><td>70.2</td><td>145.9</td><td class="bad">1.28 (not real motion)</td><td>framing stays static throughout -- the elevated "motion" number is a persistent reddish color-flicker artifact on the bowl's reflection, not a camera pan (see frames below)</td></tr>
+    <tr><td>camera &times;0.1 / 0.02</td><td>106-108</td><td>107-114</td><td>0.62-0.63</td><td>coherent, no visible effect of any kind</td></tr>
+    <tr><td>quality &times;1.0</td><td>110.6</td><td class="good">194.1 (2.2x)</td><td>0.64</td><td><b>clean, visible sharpness increase at full/unscaled magnitude -- no collapse, no artifacts.</b> The hidden-state version needed its vector scaled down to ~0.1-0.2x to reach a similar effect; here it works at 1.0x directly.</td></tr>
+    <tr><td>quality &times;0.1 / 0.02</td><td>108-109</td><td>105-109</td><td>0.60-0.61</td><td>close to baseline -- milder than full scale, as expected</td></tr>
+  </table>
+
+  <div class="methodology" style="border-left-color:var(--good);">
+    <b>Headline finding:</b> velocity-space steering is meaningfully better-behaved than hidden-state steering for this attribute. <b>Quality works cleanly at full, unscaled magnitude</b> -- something the hidden-state version could only achieve after scaling its vector down by 5-50x to avoid an outright noise collapse. <b>Brightness also has a real effect with more headroom</b> (0.1x is visible and intact, vs. hidden-state's narrower ~0.02x window) before it saturates at 1.0x. This is consistent with Michael's intuition that the consolidated velocity signal is a "simpler" locus than 20 separate per-block directions built from independently-diverging generations.
+  </div>
+  <div class="methodology" style="border-left-color:var(--bad);">
+    <b>But camera and gravity are still not wins.</b> Gravity shows no measurable effect at any tested scale, in either locus -- this specific attribute (fall vs. float) doesn't appear to produce a usable direction from this prompt-contrastive, cross-scene method at all, regardless of where you intervene. Camera's elevated "motion" reading at full scale looked promising in the metrics table alone, but the frame-by-frame check below shows it's a flickering color artifact in the water's reflection, not an actual pan -- exactly the kind of metric-vs-reality mismatch the methodology correction on the hidden-state page was meant to catch, so it's called out rather than reported as a success.
+  </div>
+
+  <div class="card"><div class="card-head"><span class="scenario">quality &times;1.0 -- the clean win, frame by frame</span><span class="badge good">no scaling needed</span></div><div class="trio">
+    <div class="cell fix"><video src="assets/video/velattr_quality_scale1.0.mp4" controls preload="metadata" muted playsinline></video><div class="label">&times;1.0 -- 2.2x sharper, intact</div></div>
+    <div class="cell"><video src="assets/video/velattr_quality_scale0.1.mp4" controls preload="metadata" muted playsinline></video><div class="label">&times;0.1</div></div>
+    <div class="cell"><video src="assets/video/velattr_quality_scale0.02.mp4" controls preload="metadata" muted playsinline></video><div class="label">&times;0.02</div></div>
+  </div></div>
+
+  <div class="card"><div class="card-head"><span class="scenario">brightness -- wider window than hidden-state</span></div><div class="trio">
+    <div class="cell fix"><video src="assets/video/velattr_brightness_scale0.1.mp4" controls preload="metadata" muted playsinline></video><div class="label">&times;0.1 -- visibly brighter, intact</div></div>
+    <div class="cell"><video src="assets/video/velattr_brightness_scale0.02.mp4" controls preload="metadata" muted playsinline></video><div class="label">&times;0.02 -- mild</div></div>
+    <div class="cell bad"><video src="assets/video/velattr_brightness_scale1.0.mp4" controls preload="metadata" muted playsinline></video><div class="label">&times;1.0 -- blown out</div></div>
+  </div></div>
+
+  <div class="card"><div class="card-head"><span class="scenario">camera &times;1.0 -- the "motion" reading is a color artifact, not a pan</span><span class="badge bad">metric was misleading</span></div>
+    <p class="prompt">Dense frame check across the first 1.5s shows a persistent reddish/orange flicker in the bowl's water reflection and on the grabber -- not present in the baseline -- while the framing itself (bowl position, table angle, composition) never moves. That flicker is almost certainly what the optical-flow metric picked up as "motion."</p>
+    <div class="pair">
+      <div class="cell bad"><video src="assets/video/velattr_camera_scale1.0.mp4" controls preload="metadata" muted playsinline></video><div class="label">&times;1.0 -- color flicker, static framing</div></div>
+      <div class="cell"><video src="assets/video/velattr_camera_scale0.1.mp4" controls preload="metadata" muted playsinline></video><div class="label">&times;0.1 -- coherent, no effect</div></div>
+    </div>
+  </div>
+
+  <div class="card"><div class="card-head"><span class="scenario">gravity -- no effect at any scale, either locus</span></div><div class="trio">
+    <div class="cell bad"><video src="assets/video/velattr_gravity_scale1.0.mp4" controls preload="metadata" muted playsinline></video><div class="label">&times;1.0</div></div>
+    <div class="cell bad"><video src="assets/video/velattr_gravity_scale0.1.mp4" controls preload="metadata" muted playsinline></video><div class="label">&times;0.1</div></div>
+    <div class="cell bad"><video src="assets/video/velattr_gravity_scale0.02.mp4" controls preload="metadata" muted playsinline></video><div class="label">&times;0.02</div></div>
+  </div></div>
+
+  <div class="section">
+    <div class="section-head"><h2>Source pairs (one scene shown; 3 used to build each direction)</h2></div>
+    <div class="card"><div class="card-head"><span class="scenario">duck-falls-in-box</span></div>
+      <p class="prompt">Same mechanism for every attribute: two ordinary, unsteered base-H3 generations with different prompts (e.g. "falls immediately under gravity" vs. "stays suspended, never falls"). The model's own pretrained prompt-following produces the two videos; only the internal <code>noise_pred</code> diffing afterward is the non-training part.</p>
+      <div class="trio">
+        <div class="cell"><video src="assets/video/velattr_gravity_duck_falls_in_box_A.mp4" controls preload="metadata" muted playsinline></video><div class="label">gravity A: falls</div></div>
+        <div class="cell"><video src="assets/video/velattr_quality_duck_falls_in_box_A.mp4" controls preload="metadata" muted playsinline></video><div class="label">quality A: sharp</div></div>
+        <div class="cell"><video src="assets/video/velattr_brightness_duck_falls_in_box_A.mp4" controls preload="metadata" muted playsinline></video><div class="label">brightness A: bright</div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="footnote">
+    Held-out test scene: <code>paper-fall-water</code>, neutral prompt, no attribute language added -- identical to the hidden-state page for direct comparison. Script: <code>mi_velocity_attribute_vector.py &lt;attribute&gt; &lt;scales&gt;</code>. All generations: base <code>MiniMax-H3</code>, seed 1431, 768&times;1344, 107 frames, 30 steps, no LoRA loaded in any phase. Metrics: mean pixel brightness, Laplacian-of-grayscale variance (sharpness), mean Farneback optical-flow magnitude over 10 evenly-spaced frames.
+  </div>
+</div>
+</body></html>
