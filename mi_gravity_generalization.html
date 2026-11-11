@@ -51,36 +51,36 @@ table.metrics td.bad{color:var(--bad);}
 </style></head>
 <body>
 <div class="wrap">
-  <h1>Gravity attribute vector: generalization check across 5 scenes</h1>
-  <div class="status">Negative result &middot; neither locus produces a reliable gravity effect on any held-out scene</div>
-  <p class="sub">Follow-up to <a href="mi_attribute_vectors.html">the hidden-state</a> and <a href="mi_velocity_attribute_vectors.html">velocity-space</a> attribute-vector pages, both of which found zero visible gravity effect on a single held-out scene (<code>paper-fall-water</code>). Before concluding the gravity direction itself is the problem (not just that one scene), the already-built vectors -- no reconstruction, same <code>.pt</code> files -- were applied at full magnitude to <b>4 more held-out scenes</b>, none used anywhere in building either vector.</p>
+  <h1>Gravity attribute vector: generalization check, expanding to 20 scenes</h1>
+  <div class="status">In progress &middot; scale reduced to 0.25x after feedback &middot; 4 of 20 scenes shown so far, 16 more running</div>
+  <p class="sub">Follow-up to <a href="mi_attribute_vectors.html">the hidden-state</a> and <a href="mi_velocity_attribute_vectors.html">velocity-space</a> attribute-vector pages, both of which found zero visible gravity effect on a single held-out scene (<code>paper-fall-water</code>) at full magnitude. The first pass here (4 scenes, also at full magnitude) confirmed that: hidden-state showed a constant yellow/blur artifact, and velocity showed an unnaturally strong overshoot on one scene (ball-and-block-fall: object bounced back up into the grabber tool). <b>Scaling both vectors down to 0.25x</b> of their original magnitude removes most of that distortion -- the numbers and clips below are the 0.25x versions. A batch of 16 more held-out scenes is running now at the same 0.25x scale to build out a larger, more representative set.</p>
 
   <table class="metrics">
-    <tr><th>scene</th><th>variant</th><th>brightness</th><th>sharpness</th><th>motion</th><th>reading</th></tr>
-    <tr><td>ball-and-block-fall</td><td>baseline</td><td>107.0</td><td>17.4</td><td>0.458</td><td>normal fall + landing</td></tr>
-    <tr><td></td><td>hidden-state</td><td class="bad">137.6</td><td class="bad">8.3</td><td>0.429</td><td>yellower, blurrier -- same artifact as every other scene</td></tr>
-    <tr><td></td><td>velocity</td><td>99.1</td><td>50.3</td><td class="bad">0.226</td><td>falls earlier in-frame, but ball+block vanish entirely after landing</td></tr>
-    <tr><td>ball-in-basket</td><td>baseline</td><td>93.0</td><td>78.9</td><td>1.188</td><td>normal fall into crate</td></tr>
-    <tr><td></td><td>hidden-state</td><td class="bad">127.4</td><td class="bad">5.7</td><td>0.784</td><td>same artifact</td></tr>
-    <tr><td></td><td>velocity</td><td>93.6</td><td>64.8</td><td>1.138</td><td>ball's trajectory shifts, ends up outside the crate -- not "more gravity," just a different (worse) outcome</td></tr>
-    <tr><td>marble-run-x</td><td>baseline</td><td>108.9</td><td>94.4</td><td>0.411</td><td>&ndash;</td></tr>
-    <tr><td></td><td>hidden-state</td><td class="bad">135.7</td><td class="bad">6.9</td><td>0.784</td><td>same artifact</td></tr>
-    <tr><td></td><td>velocity</td><td>112.2</td><td>84.0</td><td>0.290</td><td>frame-for-frame near-identical to baseline -- no effect</td></tr>
-    <tr><td>paper-in-water</td><td>baseline</td><td>104.6</td><td>22.2</td><td>0.127</td><td>&ndash;</td></tr>
-    <tr><td></td><td>hidden-state</td><td class="bad">133.7</td><td class="bad">6.8</td><td>0.129</td><td>same artifact</td></tr>
-    <tr><td></td><td>velocity</td><td>109.2</td><td>21.7</td><td>0.147</td><td>sinks slightly earlier, same final outcome -- marginal, not a clean effect</td></tr>
+    <tr><th>scene</th><th>variant</th><th>brightness</th><th>sharpness</th><th>reading</th></tr>
+    <tr><td>ball-and-block-fall</td><td>baseline</td><td>107.0</td><td>17.4</td><td>normal fall + landing</td></tr>
+    <tr><td></td><td>hidden-state &times;0.25</td><td>104.7</td><td>36.4</td><td>close to baseline, artifact mostly gone; no confirmed behavioral change</td></tr>
+    <tr><td></td><td>velocity &times;0.25</td><td>97.1</td><td>55.4</td><td>ball+block land and rest on the pillow for a couple of frames before fading -- the "bounces back to the grabber" overshoot from full magnitude is gone</td></tr>
+    <tr><td>ball-in-basket</td><td>baseline</td><td>93.0</td><td>78.9</td><td>normal fall into crate</td></tr>
+    <tr><td></td><td>hidden-state &times;0.25</td><td>97.6</td><td>46.4</td><td>close to baseline</td></tr>
+    <tr><td></td><td>velocity &times;0.25</td><td>92.3</td><td>70.0</td><td>close to baseline</td></tr>
+    <tr><td>marble-run-x</td><td>baseline</td><td>108.9</td><td>94.4</td><td>&ndash;</td></tr>
+    <tr><td></td><td>hidden-state &times;0.25</td><td>114.1</td><td>58.2</td><td>close to baseline</td></tr>
+    <tr><td></td><td>velocity &times;0.25</td><td>110.6</td><td>94.0</td><td>near-identical to baseline -- no effect</td></tr>
+    <tr><td>paper-in-water</td><td>baseline</td><td>104.6</td><td>22.2</td><td>&ndash;</td></tr>
+    <tr><td></td><td>hidden-state &times;0.25</td><td>112.5</td><td>16.4</td><td>close to baseline, visually clean</td></tr>
+    <tr><td></td><td>velocity &times;0.25</td><td>106.8</td><td>24.1</td><td>close to baseline</td></tr>
   </table>
 
-  <div class="methodology" style="border-left-color:var(--bad);">
-    <b>Conclusion:</b> across 5 held-out scenes now (this page's 4 plus the original <code>paper-fall-water</code>), neither locus produces a reliable "makes things fall better" effect. <b>Hidden-state is a constant, content-independent artifact</b> (brighter + blurrier, every single scene, same magnitude) -- not a gravity effect at all. <b>Velocity is better-behaved (stays visually coherent) but inconsistent</b>: no effect on 2/4 new scenes, a timing shift with a new defect (object disappearance) on one, and a trajectory change that looks like a worse outcome rather than a better one on another. This isn't one unlucky test scene -- gravity looks like a genuine weak point for this method, in either locus.
+  <div class="methodology">
+    <b>Reading so far:</b> at 0.25x, both loci stay visually close to baseline -- the artifact from full magnitude is mostly gone. What hasn't appeared is a confirmed, repeatable "makes things fall better/faster" effect: no scene here shows a clean, unambiguous improvement over baseline physics. The closer-to-natural ball-and-block-fall result at 0.25x is an improvement in <i>coherence</i>, not confirmed evidence of a stronger gravity pull. Treat this page as provisional until the 16-scene batch lands.
   </div>
 
-  <div class="card"><div class="card-head"><span class="scenario">ball-and-block-fall</span><span class="badge bad">velocity: earlier fall, then object disappears</span></div>
+  <div class="card"><div class="card-head"><span class="scenario">ball-and-block-fall</span><span class="badge">0.25x: coherent, no confirmed gravity effect</span></div>
     <p class="prompt">Two pillows on a table and two grabber tools hanging above them from which a brown tennis ball and an orange block are suspended. The grabber tools let go of the ball and block.</p>
     <div class="trio">
       <div class="cell"><video src="assets/video/gravgen_ball_and_block_fall_baseline.mp4" controls preload="metadata" muted playsinline></video><div class="label">baseline</div></div>
-      <div class="cell bad"><video src="assets/video/gravgen_ball_and_block_fall_hiddenstate.mp4" controls preload="metadata" muted playsinline></video><div class="label">hidden-state</div></div>
-      <div class="cell bad"><video src="assets/video/gravgen_ball_and_block_fall_velocity.mp4" controls preload="metadata" muted playsinline></video><div class="label">velocity</div></div>
+      <div class="cell"><video src="assets/video/gravgen_ball_and_block_fall_hiddenstate.mp4" controls preload="metadata" muted playsinline></video><div class="label">hidden-state &times;0.25</div></div>
+      <div class="cell"><video src="assets/video/gravgen_ball_and_block_fall_velocity.mp4" controls preload="metadata" muted playsinline></video><div class="label">velocity &times;0.25</div></div>
     </div>
   </div>
 
@@ -88,8 +88,8 @@ table.metrics td.bad{color:var(--bad);}
     <p class="prompt">An orange inflatable basketball is suspended above a black plastic crate placed on a wooden table. The ball is then released.</p>
     <div class="trio">
       <div class="cell"><video src="assets/video/gravgen_ball_in_basket_baseline.mp4" controls preload="metadata" muted playsinline></video><div class="label">baseline</div></div>
-      <div class="cell bad"><video src="assets/video/gravgen_ball_in_basket_hiddenstate.mp4" controls preload="metadata" muted playsinline></video><div class="label">hidden-state</div></div>
-      <div class="cell bad"><video src="assets/video/gravgen_ball_in_basket_velocity.mp4" controls preload="metadata" muted playsinline></video><div class="label">velocity</div></div>
+      <div class="cell"><video src="assets/video/gravgen_ball_in_basket_hiddenstate.mp4" controls preload="metadata" muted playsinline></video><div class="label">hidden-state &times;0.25</div></div>
+      <div class="cell"><video src="assets/video/gravgen_ball_in_basket_velocity.mp4" controls preload="metadata" muted playsinline></video><div class="label">velocity &times;0.25</div></div>
     </div>
   </div>
 
@@ -97,8 +97,8 @@ table.metrics td.bad{color:var(--bad);}
     <p class="prompt">A few magnetic ramps are attached to a whiteboard for a game of marble run. A yellow marble is released at the top of the ramps and slides down.</p>
     <div class="trio">
       <div class="cell"><video src="assets/video/gravgen_marble_run_x_baseline.mp4" controls preload="metadata" muted playsinline></video><div class="label">baseline</div></div>
-      <div class="cell bad"><video src="assets/video/gravgen_marble_run_x_hiddenstate.mp4" controls preload="metadata" muted playsinline></video><div class="label">hidden-state</div></div>
-      <div class="cell"><video src="assets/video/gravgen_marble_run_x_velocity.mp4" controls preload="metadata" muted playsinline></video><div class="label">velocity -- no effect</div></div>
+      <div class="cell"><video src="assets/video/gravgen_marble_run_x_hiddenstate.mp4" controls preload="metadata" muted playsinline></video><div class="label">hidden-state &times;0.25</div></div>
+      <div class="cell"><video src="assets/video/gravgen_marble_run_x_velocity.mp4" controls preload="metadata" muted playsinline></video><div class="label">velocity &times;0.25 -- no effect</div></div>
     </div>
   </div>
 
@@ -106,13 +106,13 @@ table.metrics td.bad{color:var(--bad);}
     <p class="prompt">A small piece of crumpled white paper is being lowered into a tall glass containing blue liquid. The crumpled paper is released into the glass.</p>
     <div class="trio">
       <div class="cell"><video src="assets/video/gravgen_paper_in_water_baseline.mp4" controls preload="metadata" muted playsinline></video><div class="label">baseline</div></div>
-      <div class="cell bad"><video src="assets/video/gravgen_paper_in_water_hiddenstate.mp4" controls preload="metadata" muted playsinline></video><div class="label">hidden-state</div></div>
-      <div class="cell"><video src="assets/video/gravgen_paper_in_water_velocity.mp4" controls preload="metadata" muted playsinline></video><div class="label">velocity -- marginal timing shift</div></div>
+      <div class="cell"><video src="assets/video/gravgen_paper_in_water_hiddenstate.mp4" controls preload="metadata" muted playsinline></video><div class="label">hidden-state &times;0.25</div></div>
+      <div class="cell"><video src="assets/video/gravgen_paper_in_water_velocity.mp4" controls preload="metadata" muted playsinline></video><div class="label">velocity &times;0.25</div></div>
     </div>
   </div>
 
   <div class="footnote">
-    Vectors reused as-is from <a href="mi_attribute_vectors.html">the hidden-state page</a> and <a href="mi_velocity_attribute_vectors.html">the velocity-space page</a> -- no reconstruction, scale=1.0 (full, unscaled magnitude) for both. None of these 4 scenes (ball-and-block-fall, ball-in-basket, marble-run-x, paper-in-water) were used to build either vector. Metrics: mean pixel brightness, Laplacian-of-grayscale variance (sharpness), mean Farneback optical-flow magnitude, over 10 evenly-spaced frames. Scripts: <code>mi_gravity_generalization_hiddenstate.py</code>, <code>mi_gravity_generalization_velocity.py</code>. Base <code>MiniMax-H3</code>, seed 1431, no LoRA in any phase.
+    Vectors reused as-is from <a href="mi_attribute_vectors.html">the hidden-state page</a> and <a href="mi_velocity_attribute_vectors.html">the velocity-space page</a> -- no reconstruction, scale=0.25 of the original full magnitude for both. None of these 4 scenes (ball-and-block-fall, ball-in-basket, marble-run-x, paper-in-water) were used to build either vector. Metrics: mean pixel brightness, Laplacian-of-grayscale variance (sharpness), over 10 evenly-spaced frames. Scripts: <code>mi_gravity_generalization_hiddenstate.py</code>/<code>mi_gravity_expansion_hiddenstate.py</code>, <code>mi_gravity_generalization_velocity.py</code>/<code>mi_gravity_expansion_velocity.py</code>. Base <code>MiniMax-H3</code>, seed 1431, no LoRA in any phase.
   </div>
 </div>
 </body></html>
