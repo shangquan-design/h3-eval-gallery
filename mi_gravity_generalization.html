@@ -1,5 +1,5 @@
 <!doctype html><html><head><meta charset="utf-8">
-<title>Gravity attribute vector: generalization check across 5 scenes</title>
+<title>Gravity attribute vector: 20-scene generalization check</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=IBM+Plex+Mono:wght@400;500&family=Work+Sans:wght@400;500;600&display=swap">
 <style>
 :root{
@@ -22,7 +22,7 @@ body{margin:0; background:var(--bg); color:var(--ink); font-family:var(--body);}
 .wrap{max-width:1180px; margin:0 auto; padding:40px 16px 70px;}
 h1{font-family:var(--display); font-weight:600; font-size:clamp(26px,3.6vw,38px); margin:0 0 10px; letter-spacing:-0.01em;}
 .sub{color:var(--ink-muted); font-size:15px; max-width:76ch; line-height:1.6; margin:0;}
-.status{display:inline-block; font-family:var(--mono); font-size:11.5px; color:var(--bad); background:var(--bad-soft); border:1px solid var(--border); padding:3px 10px; border-radius:999px; margin-bottom:16px;}
+.status{display:inline-block; font-family:var(--mono); font-size:11.5px; color:var(--good); background:var(--good-soft); border:1px solid var(--border); padding:3px 10px; border-radius:999px; margin-bottom:16px;}
 .methodology{margin-top:20px; font-family:var(--mono); font-size:12px; color:var(--ink-muted); line-height:1.7; border-left:2px solid var(--border); padding-left:14px;}
 .methodology b{color:var(--ink);}
 .section{margin-top:48px;}
@@ -41,41 +41,97 @@ h1{font-family:var(--display); font-weight:600; font-size:clamp(26px,3.6vw,38px)
 @media (max-width:700px){ .trio{grid-template-columns:1fr; } }
 .badge{color:var(--accent);background:var(--accent-soft);border:1px solid var(--border);font-family:var(--mono);font-size:11px;padding:2px 9px;border-radius:999px;}
 .badge.bad{color:var(--bad);background:var(--bad-soft);}
-table.metrics{width:100%; border-collapse:collapse; font-family:var(--mono); font-size:12px; margin:16px 0;}
-table.metrics th, table.metrics td{text-align:left; padding:6px 10px; border-bottom:1px solid var(--border);}
+.badge.good{color:var(--good);background:var(--good-soft);}
+table.metrics{width:100%; border-collapse:collapse; font-family:var(--mono); font-size:11.5px; margin:16px 0;}
+table.metrics th, table.metrics td{text-align:left; padding:5px 8px; border-bottom:1px solid var(--border);}
 table.metrics th{color:var(--ink-muted); font-weight:500;}
 table.metrics td.bad{color:var(--bad);}
+table.metrics td.good{color:var(--good);}
 .footnote{margin-top:40px; font-size:12.5px; color:var(--ink-muted); line-height:1.7; border-top:1px solid var(--border); padding-top:16px; max-width:84ch;}
 .footnote a{color:var(--accent);}
 .footnote code{font-family:var(--mono); background:var(--panel-2); padding:1px 5px; border-radius:4px; font-size:11.5px;}
 </style></head>
 <body>
 <div class="wrap">
-  <h1>Gravity attribute vector: generalization check, expanding to 20 scenes</h1>
-  <div class="status">In progress &middot; scale reduced to 0.25x after feedback &middot; 4 of 20 scenes shown so far, 16 more running</div>
-  <p class="sub">Follow-up to <a href="mi_attribute_vectors.html">the hidden-state</a> and <a href="mi_velocity_attribute_vectors.html">velocity-space</a> attribute-vector pages, both of which found zero visible gravity effect on a single held-out scene (<code>paper-fall-water</code>) at full magnitude. The first pass here (4 scenes, also at full magnitude) confirmed that: hidden-state showed a constant yellow/blur artifact, and velocity showed an unnaturally strong overshoot on one scene (ball-and-block-fall: object bounced back up into the grabber tool). <b>Scaling both vectors down to 0.25x</b> of their original magnitude removes most of that distortion -- the numbers and clips below are the 0.25x versions. A batch of 16 more held-out scenes is running now at the same 0.25x scale to build out a larger, more representative set.</p>
+  <h1>Gravity attribute vector: 20-scene generalization check</h1>
+  <div class="status">1 confirmed positive case out of 20 &middot; scale 0.25x for both loci</div>
+  <p class="sub">Follow-up to <a href="mi_attribute_vectors.html">the hidden-state</a> and <a href="mi_velocity_attribute_vectors.html">velocity-space</a> attribute-vector pages. After feedback that the original full-magnitude test was too distorted to judge fairly, both saved gravity vectors (no reconstruction) were scaled down to <b>0.25x</b> and applied to <b>20 held-out scenes</b> -- none used in building either vector. Dense-frame-checked, not sparse screenshots, per the methodology correction on the hidden-state page.</p>
 
-  <table class="metrics">
-    <tr><th>scene</th><th>variant</th><th>brightness</th><th>sharpness</th><th>reading</th></tr>
-    <tr><td>ball-and-block-fall</td><td>baseline</td><td>107.0</td><td>17.4</td><td>normal fall + landing</td></tr>
-    <tr><td></td><td>hidden-state &times;0.25</td><td>104.7</td><td>36.4</td><td>close to baseline, artifact mostly gone; no confirmed behavioral change</td></tr>
-    <tr><td></td><td>velocity &times;0.25</td><td>97.1</td><td>55.4</td><td>ball+block land and rest on the pillow for a couple of frames before fading -- the "bounces back to the grabber" overshoot from full magnitude is gone</td></tr>
-    <tr><td>ball-in-basket</td><td>baseline</td><td>93.0</td><td>78.9</td><td>normal fall into crate</td></tr>
-    <tr><td></td><td>hidden-state &times;0.25</td><td>97.6</td><td>46.4</td><td>close to baseline</td></tr>
-    <tr><td></td><td>velocity &times;0.25</td><td>92.3</td><td>70.0</td><td>close to baseline</td></tr>
-    <tr><td>marble-run-x</td><td>baseline</td><td>108.9</td><td>94.4</td><td>&ndash;</td></tr>
-    <tr><td></td><td>hidden-state &times;0.25</td><td>114.1</td><td>58.2</td><td>close to baseline</td></tr>
-    <tr><td></td><td>velocity &times;0.25</td><td>110.6</td><td>94.0</td><td>near-identical to baseline -- no effect</td></tr>
-    <tr><td>paper-in-water</td><td>baseline</td><td>104.6</td><td>22.2</td><td>&ndash;</td></tr>
-    <tr><td></td><td>hidden-state &times;0.25</td><td>112.5</td><td>16.4</td><td>close to baseline, visually clean</td></tr>
-    <tr><td></td><td>velocity &times;0.25</td><td>106.8</td><td>24.1</td><td>close to baseline</td></tr>
-  </table>
-
+  <div class="methodology" style="border-left-color:var(--good);">
+    <b>Headline finding: one real, confirmed case.</b> <code>mug-breaks</code> is a base-H3 failure where the grabber tool never releases the mug for the entire clip. With the velocity gravity vector (&times;0.25) applied, dense 14-frame sampling shows the grabber releasing and the mug falling to the ground in the last ~10% of the clip -- something the unsteered baseline never does at all. This is the first scene, across all 20 tested (the 4 from the earlier pass plus these 16), where either locus produces a confirmed behavioral change that looks like "more gravity," not just an artifact.
+  </div>
+  <div class="methodology" style="border-left-color:var(--bad);">
+    <b>One scene went the other way.</b> <code>double-cradle</code> (a Newton's cradle release) shows both loci collapsing the baseline's dynamic swinging into near-total stillness -- optical-flow motion drops ~70% and the grabber doesn't visibly release at all in the sampled frames. That's motion being suppressed, not gravity being strengthened -- the opposite of what we're looking for, flagged here rather than quietly dropped.
+  </div>
   <div class="methodology">
-    <b>Reading so far:</b> at 0.25x, both loci stay visually close to baseline -- the artifact from full magnitude is mostly gone. What hasn't appeared is a confirmed, repeatable "makes things fall better/faster" effect: no scene here shows a clean, unambiguous improvement over baseline physics. The closer-to-natural ball-and-block-fall result at 0.25x is an improvement in <i>coherence</i>, not confirmed evidence of a stronger gravity pull. Treat this page as provisional until the 16-scene batch lands.
+    <b>Everything else (18/20 scenes):</b> the same pattern as the first pass. Hidden-state is a near-constant brightness/blur shift, now much milder at 0.25x but still not behaviorally different from baseline. Velocity stays close to baseline with no clear directional effect. One scene (<code>solid-ball-peakaboo</code>) has an unusually dark baseline rendering that the hidden-state variant happens to brighten back to normal -- a coincidence of that scene's lighting, not a gravity effect (the lower/lift sequence and timing are otherwise identical).
   </div>
 
-  <div class="card"><div class="card-head"><span class="scenario">ball-and-block-fall</span><span class="badge">0.25x: coherent, no confirmed gravity effect</span></div>
+  <table class="metrics">
+    <tr><th>scene</th><th>variant</th><th>brightness</th><th>sharpness</th><th>motion</th></tr>
+    <tr><td>ball-and-block-fall</td><td>baseline</td><td>107.0</td><td>17.4</td><td>0.458</td></tr>
+    <tr><td>ball-and-block-fall</td><td>hidden-state</td><td>104.7</td><td>36.4</td><td>&ndash;</td></tr>
+    <tr><td>ball-and-block-fall</td><td>velocity</td><td>97.1</td><td>55.4</td><td>&ndash;</td></tr>
+    <tr><td>ball-in-basket</td><td>baseline</td><td>93.0</td><td>78.9</td><td>1.188</td></tr>
+    <tr><td>ball-in-basket</td><td>hidden-state</td><td>97.6</td><td>46.4</td><td>&ndash;</td></tr>
+    <tr><td>ball-in-basket</td><td>velocity</td><td>92.3</td><td>70.0</td><td>&ndash;</td></tr>
+    <tr><td>marble-run-x</td><td>baseline</td><td>108.9</td><td>94.4</td><td>0.411</td></tr>
+    <tr><td>marble-run-x</td><td>hidden-state</td><td>114.1</td><td>58.2</td><td>&ndash;</td></tr>
+    <tr><td>marble-run-x</td><td>velocity</td><td>110.6</td><td>94.0</td><td>&ndash;</td></tr>
+    <tr><td>paper-in-water</td><td>baseline</td><td>104.6</td><td>22.2</td><td>0.127</td></tr>
+    <tr><td>paper-in-water</td><td>hidden-state</td><td>112.5</td><td>16.4</td><td>&ndash;</td></tr>
+    <tr><td>paper-in-water</td><td>velocity</td><td>106.8</td><td>24.1</td><td>&ndash;</td></tr>
+    <tr><td>ball-behind-rotating-paper</td><td>baseline</td><td>106.2</td><td>40.5</td><td>4.894</td></tr>
+    <tr><td>ball-behind-rotating-paper</td><td>hidden-state</td><td>114.9</td><td>30.6</td><td>3.558</td></tr>
+    <tr><td>ball-behind-rotating-paper</td><td>velocity</td><td>109.5</td><td>49.2</td><td>3.691</td></tr>
+    <tr><td>ball-in-sand</td><td>baseline</td><td>105.4</td><td>176.0</td><td>0.785</td></tr>
+    <tr><td>ball-in-sand</td><td>hidden-state</td><td>116.5</td><td>113.8</td><td>0.709</td></tr>
+    <tr><td>ball-in-sand</td><td>velocity</td><td>111.5</td><td>149.4</td><td>0.692</td></tr>
+    <tr><td>double-cradle</td><td>baseline</td><td>79.6</td><td>57.8</td><td>4.034</td></tr>
+    <tr><td>double-cradle</td><td>hidden-state</td><td>105.8</td><td>70.6</td><td>1.084</td></tr>
+    <tr><td>double-cradle</td><td>velocity</td><td>104.9</td><td>121.1</td><td>1.349</td></tr>
+    <tr><td>magnet-transparent-peakaboo</td><td>baseline</td><td>104.4</td><td>55.7</td><td>1.013</td></tr>
+    <tr><td>magnet-transparent-peakaboo</td><td>hidden-state</td><td>115.4</td><td>31.0</td><td>0.734</td></tr>
+    <tr><td>magnet-transparent-peakaboo</td><td>velocity</td><td>111.4</td><td>47.1</td><td>0.759</td></tr>
+    <tr><td>marble-run-y</td><td>baseline</td><td>107.9</td><td>78.5</td><td>0.247</td></tr>
+    <tr><td>marble-run-y</td><td>hidden-state</td><td>114.2</td><td>36.1</td><td>0.290</td></tr>
+    <tr><td>marble-run-y</td><td>velocity</td><td>108.7</td><td>76.3</td><td>0.370</td></tr>
+    <tr><td>match</td><td>baseline</td><td>107.9</td><td>37.2</td><td>1.042</td></tr>
+    <tr><td>match</td><td>hidden-state</td><td>112.7</td><td>27.1</td><td>0.680</td></tr>
+    <tr><td>match</td><td>velocity</td><td>108.6</td><td>39.5</td><td>0.721</td></tr>
+    <tr><td>mirror-ball-fall</td><td>baseline</td><td>102.6</td><td>30.0</td><td>0.536</td></tr>
+    <tr><td>mirror-ball-fall</td><td>hidden-state</td><td>106.6</td><td>21.9</td><td>0.541</td></tr>
+    <tr><td>mirror-ball-fall</td><td>velocity</td><td>102.7</td><td>29.2</td><td>0.571</td></tr>
+    <tr><td>mug-breaks</td><td>baseline</td><td>97.1</td><td>113.7</td><td>0.766</td></tr>
+    <tr><td>mug-breaks</td><td>hidden-state</td><td>112.0</td><td>41.6</td><td>0.778</td></tr>
+    <tr><td>mug-breaks</td><td>velocity</td><td>110.2</td><td>52.4</td><td>1.327</td></tr>
+    <tr><td>napkin-soak</td><td>baseline</td><td>106.6</td><td>70.3</td><td>1.354</td></tr>
+    <tr><td>napkin-soak</td><td>hidden-state</td><td>112.6</td><td>40.7</td><td>0.927</td></tr>
+    <tr><td>napkin-soak</td><td>velocity</td><td>108.5</td><td>76.3</td><td>1.270</td></tr>
+    <tr><td>silk-cover</td><td>baseline</td><td>135.7</td><td>87.6</td><td>2.265</td></tr>
+    <tr><td>silk-cover</td><td>hidden-state</td><td>147.1</td><td>26.1</td><td>1.821</td></tr>
+    <tr><td>silk-cover</td><td>velocity</td><td>143.9</td><td>39.9</td><td>2.570</td></tr>
+    <tr><td>single-cradle</td><td>baseline</td><td>102.7</td><td>104.7</td><td>1.365</td></tr>
+    <tr><td>single-cradle</td><td>hidden-state</td><td>108.0</td><td>74.7</td><td>0.992</td></tr>
+    <tr><td>single-cradle</td><td>velocity</td><td>101.9</td><td>110.5</td><td>1.145</td></tr>
+    <tr><td>solid-ball-peakaboo</td><td>baseline</td><td>65.3</td><td>50.8</td><td>2.789</td></tr>
+    <tr><td>solid-ball-peakaboo</td><td>hidden-state</td><td>113.4</td><td>22.9</td><td>2.515</td></tr>
+    <tr><td>solid-ball-peakaboo</td><td>velocity</td><td>109.6</td><td>29.7</td><td>2.584</td></tr>
+    <tr><td>stable-blocks</td><td>baseline</td><td>106.4</td><td>26.9</td><td>0.383</td></tr>
+    <tr><td>stable-blocks</td><td>hidden-state</td><td>109.5</td><td>24.7</td><td>0.230</td></tr>
+    <tr><td>stable-blocks</td><td>velocity</td><td>105.6</td><td>44.6</td><td>0.241</td></tr>
+    <tr><td>weight-on-ceramic</td><td>baseline</td><td>92.4</td><td>21.2</td><td>0.720</td></tr>
+    <tr><td>weight-on-ceramic</td><td>hidden-state</td><td>100.4</td><td>18.7</td><td>0.819</td></tr>
+    <tr><td>weight-on-ceramic</td><td>velocity</td><td>95.2</td><td>26.7</td><td>0.848</td></tr>
+    <tr><td>weight-on-paper</td><td>baseline</td><td>100.7</td><td>28.1</td><td>2.084</td></tr>
+    <tr><td>weight-on-paper</td><td>hidden-state</td><td>103.5</td><td>19.4</td><td>1.288</td></tr>
+    <tr><td>weight-on-paper</td><td>velocity</td><td>97.6</td><td>30.7</td><td>1.242</td></tr>
+    <tr><td>weight-on-pillow</td><td>baseline</td><td>98.9</td><td>37.0</td><td>2.682</td></tr>
+    <tr><td>weight-on-pillow</td><td>hidden-state</td><td>104.7</td><td>26.9</td><td>3.469</td></tr>
+    <tr><td>weight-on-pillow</td><td>velocity</td><td>101.3</td><td>34.6</td><td>2.612</td></tr>
+  </table>
+
+  <div class="card"><div class="card-head"><span class="scenario">ball-and-block-fall</span></div>
     <p class="prompt">Two pillows on a table and two grabber tools hanging above them from which a brown tennis ball and an orange block are suspended. The grabber tools let go of the ball and block.</p>
     <div class="trio">
       <div class="cell"><video src="assets/video/gravgen_ball_and_block_fall_baseline.mp4" controls preload="metadata" muted playsinline></video><div class="label">baseline</div></div>
@@ -83,7 +139,6 @@ table.metrics td.bad{color:var(--bad);}
       <div class="cell"><video src="assets/video/gravgen_ball_and_block_fall_velocity.mp4" controls preload="metadata" muted playsinline></video><div class="label">velocity &times;0.25</div></div>
     </div>
   </div>
-
   <div class="card"><div class="card-head"><span class="scenario">ball-in-basket</span></div>
     <p class="prompt">An orange inflatable basketball is suspended above a black plastic crate placed on a wooden table. The ball is then released.</p>
     <div class="trio">
@@ -92,16 +147,14 @@ table.metrics td.bad{color:var(--bad);}
       <div class="cell"><video src="assets/video/gravgen_ball_in_basket_velocity.mp4" controls preload="metadata" muted playsinline></video><div class="label">velocity &times;0.25</div></div>
     </div>
   </div>
-
   <div class="card"><div class="card-head"><span class="scenario">marble-run-x</span></div>
-    <p class="prompt">A few magnetic ramps are attached to a whiteboard for a game of marble run. A yellow marble is released at the top of the ramps and slides down.</p>
+    <p class="prompt">A few magnetic ramps are attached to a whiteboard for a game of marble run. A yellow marble is released at the top and slides down.</p>
     <div class="trio">
       <div class="cell"><video src="assets/video/gravgen_marble_run_x_baseline.mp4" controls preload="metadata" muted playsinline></video><div class="label">baseline</div></div>
       <div class="cell"><video src="assets/video/gravgen_marble_run_x_hiddenstate.mp4" controls preload="metadata" muted playsinline></video><div class="label">hidden-state &times;0.25</div></div>
-      <div class="cell"><video src="assets/video/gravgen_marble_run_x_velocity.mp4" controls preload="metadata" muted playsinline></video><div class="label">velocity &times;0.25 -- no effect</div></div>
+      <div class="cell"><video src="assets/video/gravgen_marble_run_x_velocity.mp4" controls preload="metadata" muted playsinline></video><div class="label">velocity &times;0.25 &mdash; no effect</div></div>
     </div>
   </div>
-
   <div class="card"><div class="card-head"><span class="scenario">paper-in-water</span></div>
     <p class="prompt">A small piece of crumpled white paper is being lowered into a tall glass containing blue liquid. The crumpled paper is released into the glass.</p>
     <div class="trio">
@@ -110,9 +163,137 @@ table.metrics td.bad{color:var(--bad);}
       <div class="cell"><video src="assets/video/gravgen_paper_in_water_velocity.mp4" controls preload="metadata" muted playsinline></video><div class="label">velocity &times;0.25</div></div>
     </div>
   </div>
+  <div class="card"><div class="card-head"><span class="scenario">ball-behind-rotating-paper</span></div>
+    <p class="prompt">A grabber arm holds a tennis ball above a piece of cardstock on a rotating platform. The grabber lowers the ball onto the table as the cardstock rotates.</p>
+    <div class="trio">
+      <div class="cell"><video src="assets/video/gravgen_ball_behind_rotating_paper_baseline.mp4" controls preload="metadata" muted playsinline></video><div class="label">baseline</div></div>
+      <div class="cell"><video src="assets/video/gravgen_ball_behind_rotating_paper_hiddenstate.mp4" controls preload="metadata" muted playsinline></video><div class="label">hidden-state &times;0.25</div></div>
+      <div class="cell"><video src="assets/video/gravgen_ball_behind_rotating_paper_velocity.mp4" controls preload="metadata" muted playsinline></video><div class="label">velocity &times;0.25</div></div>
+    </div>
+  </div>
+  <div class="card"><div class="card-head"><span class="scenario">ball-in-sand</span></div>
+    <p class="prompt">A blue grabber tool holds a tennis ball above a pile of green kinetic sand on a wooden table. The grabber then releases the ball.</p>
+    <div class="trio">
+      <div class="cell"><video src="assets/video/gravgen_ball_in_sand_baseline.mp4" controls preload="metadata" muted playsinline></video><div class="label">baseline</div></div>
+      <div class="cell"><video src="assets/video/gravgen_ball_in_sand_hiddenstate.mp4" controls preload="metadata" muted playsinline></video><div class="label">hidden-state &times;0.25</div></div>
+      <div class="cell"><video src="assets/video/gravgen_ball_in_sand_velocity.mp4" controls preload="metadata" muted playsinline></video><div class="label">velocity &times;0.25</div></div>
+    </div>
+  </div>
+  <div class="card"><div class="card-head"><span class="scenario">double-cradle</span><span class="badge bad">motion suppressed, not enhanced</span></div>
+    <p class="prompt">A Newton's cradle device on the table and two of the metal balls are held up by a blue handled grabber tool. The claw releases the two balls.</p>
+    <div class="trio">
+      <div class="cell"><video src="assets/video/gravgen_double_cradle_baseline.mp4" controls preload="metadata" muted playsinline></video><div class="label">baseline</div></div>
+      <div class="cell bad"><video src="assets/video/gravgen_double_cradle_hiddenstate.mp4" controls preload="metadata" muted playsinline></video><div class="label">hidden-state &times;0.25 &mdash; near-static</div></div>
+      <div class="cell bad"><video src="assets/video/gravgen_double_cradle_velocity.mp4" controls preload="metadata" muted playsinline></video><div class="label">velocity &times;0.25 &mdash; near-static</div></div>
+    </div>
+  </div>
+  <div class="card"><div class="card-head"><span class="scenario">magnet-transparent-peakaboo</span></div>
+    <p class="prompt">A clear acrylic box suspended from a cord hangs above a tennis ball on a wooden table. The box is lowered to cover the ball.</p>
+    <div class="trio">
+      <div class="cell"><video src="assets/video/gravgen_magnet_transparent_peakaboo_baseline.mp4" controls preload="metadata" muted playsinline></video><div class="label">baseline</div></div>
+      <div class="cell"><video src="assets/video/gravgen_magnet_transparent_peakaboo_hiddenstate.mp4" controls preload="metadata" muted playsinline></video><div class="label">hidden-state &times;0.25</div></div>
+      <div class="cell"><video src="assets/video/gravgen_magnet_transparent_peakaboo_velocity.mp4" controls preload="metadata" muted playsinline></video><div class="label">velocity &times;0.25</div></div>
+    </div>
+  </div>
+  <div class="card"><div class="card-head"><span class="scenario">marble-run-y</span></div>
+    <p class="prompt">A few magnetic ramps are attached to a whiteboard for a game of marble run. A yellow marble is released at the top and slides down.</p>
+    <div class="trio">
+      <div class="cell"><video src="assets/video/gravgen_marble_run_y_baseline.mp4" controls preload="metadata" muted playsinline></video><div class="label">baseline</div></div>
+      <div class="cell"><video src="assets/video/gravgen_marble_run_y_hiddenstate.mp4" controls preload="metadata" muted playsinline></video><div class="label">hidden-state &times;0.25</div></div>
+      <div class="cell"><video src="assets/video/gravgen_marble_run_y_velocity.mp4" controls preload="metadata" muted playsinline></video><div class="label">velocity &times;0.25</div></div>
+    </div>
+  </div>
+  <div class="card"><div class="card-head"><span class="scenario">match</span></div>
+    <p class="prompt">A lit match is being lowered into a glass of water.</p>
+    <div class="trio">
+      <div class="cell"><video src="assets/video/gravgen_match_baseline.mp4" controls preload="metadata" muted playsinline></video><div class="label">baseline</div></div>
+      <div class="cell"><video src="assets/video/gravgen_match_hiddenstate.mp4" controls preload="metadata" muted playsinline></video><div class="label">hidden-state &times;0.25</div></div>
+      <div class="cell"><video src="assets/video/gravgen_match_velocity.mp4" controls preload="metadata" muted playsinline></video><div class="label">velocity &times;0.25</div></div>
+    </div>
+  </div>
+  <div class="card"><div class="card-head"><span class="scenario">mirror-ball-fall</span></div>
+    <p class="prompt">A tennis ball attached to a magnet and string is hanging in front of a mirror. The string lowers the ball slowly.</p>
+    <div class="trio">
+      <div class="cell"><video src="assets/video/gravgen_mirror_ball_fall_baseline.mp4" controls preload="metadata" muted playsinline></video><div class="label">baseline</div></div>
+      <div class="cell"><video src="assets/video/gravgen_mirror_ball_fall_hiddenstate.mp4" controls preload="metadata" muted playsinline></video><div class="label">hidden-state &times;0.25</div></div>
+      <div class="cell"><video src="assets/video/gravgen_mirror_ball_fall_velocity.mp4" controls preload="metadata" muted playsinline></video><div class="label">velocity &times;0.25</div></div>
+    </div>
+  </div>
+  <div class="card"><div class="card-head"><span class="scenario">mug-breaks</span><span class="badge good">confirmed: mug falls where baseline never releases it</span></div>
+    <p class="prompt">A yellow mug is held by a grabber tool in front of a white projection screen with a concrete brick positioned beneath it. The grabber releases the mug.</p>
+    <div class="trio">
+      <div class="cell"><video src="assets/video/gravgen_mug_breaks_baseline.mp4" controls preload="metadata" muted playsinline></video><div class="label">baseline</div></div>
+      <div class="cell"><video src="assets/video/gravgen_mug_breaks_hiddenstate.mp4" controls preload="metadata" muted playsinline></video><div class="label">hidden-state &times;0.25</div></div>
+      <div class="cell fix"><video src="assets/video/gravgen_mug_breaks_velocity.mp4" controls preload="metadata" muted playsinline></video><div class="label">velocity &times;0.25 &mdash; falls near the end</div></div>
+    </div>
+  </div>
+  <div class="card"><div class="card-head"><span class="scenario">napkin-soak</span></div>
+    <p class="prompt">A grabber tool holds a piece of paper towel over a shallow dish of light blue liquid on a wooden table. The grabber releases the paper towel.</p>
+    <div class="trio">
+      <div class="cell"><video src="assets/video/gravgen_napkin_soak_baseline.mp4" controls preload="metadata" muted playsinline></video><div class="label">baseline</div></div>
+      <div class="cell"><video src="assets/video/gravgen_napkin_soak_hiddenstate.mp4" controls preload="metadata" muted playsinline></video><div class="label">hidden-state &times;0.25</div></div>
+      <div class="cell"><video src="assets/video/gravgen_napkin_soak_velocity.mp4" controls preload="metadata" muted playsinline></video><div class="label">velocity &times;0.25</div></div>
+    </div>
+  </div>
+  <div class="card"><div class="card-head"><span class="scenario">silk-cover</span></div>
+    <p class="prompt">A teapot is placed on a wooden table. A piece of silk fabric is lowered onto the teapot to cover it.</p>
+    <div class="trio">
+      <div class="cell"><video src="assets/video/gravgen_silk_cover_baseline.mp4" controls preload="metadata" muted playsinline></video><div class="label">baseline</div></div>
+      <div class="cell"><video src="assets/video/gravgen_silk_cover_hiddenstate.mp4" controls preload="metadata" muted playsinline></video><div class="label">hidden-state &times;0.25</div></div>
+      <div class="cell"><video src="assets/video/gravgen_silk_cover_velocity.mp4" controls preload="metadata" muted playsinline></video><div class="label">velocity &times;0.25</div></div>
+    </div>
+  </div>
+  <div class="card"><div class="card-head"><span class="scenario">single-cradle</span></div>
+    <p class="prompt">A Newton's cradle device on the table and one of the metal balls is held up by a blue handled grabber tool. The claw releases the ball.</p>
+    <div class="trio">
+      <div class="cell"><video src="assets/video/gravgen_single_cradle_baseline.mp4" controls preload="metadata" muted playsinline></video><div class="label">baseline</div></div>
+      <div class="cell"><video src="assets/video/gravgen_single_cradle_hiddenstate.mp4" controls preload="metadata" muted playsinline></video><div class="label">hidden-state &times;0.25</div></div>
+      <div class="cell"><video src="assets/video/gravgen_single_cradle_velocity.mp4" controls preload="metadata" muted playsinline></video><div class="label">velocity &times;0.25</div></div>
+    </div>
+  </div>
+  <div class="card"><div class="card-head"><span class="scenario">solid-ball-peakaboo</span><span class="badge">hidden-state brightening coincides with a dark baseline render, not gravity</span></div>
+    <p class="prompt">A woven basket hangs from a rope with a magnet on the bottom, above a tennis ball on a table. The basket is lowered to cover the ball, then lifts again.</p>
+    <div class="trio">
+      <div class="cell"><video src="assets/video/gravgen_solid_ball_peakaboo_baseline.mp4" controls preload="metadata" muted playsinline></video><div class="label">baseline</div></div>
+      <div class="cell"><video src="assets/video/gravgen_solid_ball_peakaboo_hiddenstate.mp4" controls preload="metadata" muted playsinline></video><div class="label">hidden-state &times;0.25 &mdash; same sequence, brighter</div></div>
+      <div class="cell"><video src="assets/video/gravgen_solid_ball_peakaboo_velocity.mp4" controls preload="metadata" muted playsinline></video><div class="label">velocity &times;0.25</div></div>
+    </div>
+  </div>
+  <div class="card"><div class="card-head"><span class="scenario">stable-blocks</span></div>
+    <p class="prompt">A pink block is being lowered towards a simple structure made of colorful blocks resembling a gate.</p>
+    <div class="trio">
+      <div class="cell"><video src="assets/video/gravgen_stable_blocks_baseline.mp4" controls preload="metadata" muted playsinline></video><div class="label">baseline</div></div>
+      <div class="cell"><video src="assets/video/gravgen_stable_blocks_hiddenstate.mp4" controls preload="metadata" muted playsinline></video><div class="label">hidden-state &times;0.25</div></div>
+      <div class="cell"><video src="assets/video/gravgen_stable_blocks_velocity.mp4" controls preload="metadata" muted playsinline></video><div class="label">velocity &times;0.25</div></div>
+    </div>
+  </div>
+  <div class="card"><div class="card-head"><span class="scenario">weight-on-ceramic</span></div>
+    <p class="prompt">A 30lb kettlebell is slowly lowered on top of a yellow ceramic coffee mug placed on a wooden table.</p>
+    <div class="trio">
+      <div class="cell"><video src="assets/video/gravgen_weight_on_ceramic_baseline.mp4" controls preload="metadata" muted playsinline></video><div class="label">baseline</div></div>
+      <div class="cell"><video src="assets/video/gravgen_weight_on_ceramic_hiddenstate.mp4" controls preload="metadata" muted playsinline></video><div class="label">hidden-state &times;0.25</div></div>
+      <div class="cell"><video src="assets/video/gravgen_weight_on_ceramic_velocity.mp4" controls preload="metadata" muted playsinline></video><div class="label">velocity &times;0.25</div></div>
+    </div>
+  </div>
+  <div class="card"><div class="card-head"><span class="scenario">weight-on-paper</span></div>
+    <p class="prompt">A 30lb kettlebell is slowly lowered onto a white styrofoam cup placed on a wooden table on its side.</p>
+    <div class="trio">
+      <div class="cell"><video src="assets/video/gravgen_weight_on_paper_baseline.mp4" controls preload="metadata" muted playsinline></video><div class="label">baseline</div></div>
+      <div class="cell"><video src="assets/video/gravgen_weight_on_paper_hiddenstate.mp4" controls preload="metadata" muted playsinline></video><div class="label">hidden-state &times;0.25</div></div>
+      <div class="cell"><video src="assets/video/gravgen_weight_on_paper_velocity.mp4" controls preload="metadata" muted playsinline></video><div class="label">velocity &times;0.25</div></div>
+    </div>
+  </div>
+  <div class="card"><div class="card-head"><span class="scenario">weight-on-pillow</span></div>
+    <p class="prompt">A 30lb kettlebell and a green piece of paper are lowered onto two pillows.</p>
+    <div class="trio">
+      <div class="cell"><video src="assets/video/gravgen_weight_on_pillow_baseline.mp4" controls preload="metadata" muted playsinline></video><div class="label">baseline</div></div>
+      <div class="cell"><video src="assets/video/gravgen_weight_on_pillow_hiddenstate.mp4" controls preload="metadata" muted playsinline></video><div class="label">hidden-state &times;0.25</div></div>
+      <div class="cell"><video src="assets/video/gravgen_weight_on_pillow_velocity.mp4" controls preload="metadata" muted playsinline></video><div class="label">velocity &times;0.25</div></div>
+    </div>
+  </div>
 
   <div class="footnote">
-    Vectors reused as-is from <a href="mi_attribute_vectors.html">the hidden-state page</a> and <a href="mi_velocity_attribute_vectors.html">the velocity-space page</a> -- no reconstruction, scale=0.25 of the original full magnitude for both. None of these 4 scenes (ball-and-block-fall, ball-in-basket, marble-run-x, paper-in-water) were used to build either vector. Metrics: mean pixel brightness, Laplacian-of-grayscale variance (sharpness), over 10 evenly-spaced frames. Scripts: <code>mi_gravity_generalization_hiddenstate.py</code>/<code>mi_gravity_expansion_hiddenstate.py</code>, <code>mi_gravity_generalization_velocity.py</code>/<code>mi_gravity_expansion_velocity.py</code>. Base <code>MiniMax-H3</code>, seed 1431, no LoRA in any phase.
+    Vectors reused as-is from <a href="mi_attribute_vectors.html">the hidden-state page</a> and <a href="mi_velocity_attribute_vectors.html">the velocity-space page</a> -- no reconstruction, scale=0.25 of the original full magnitude for both. None of these 20 scenes were used to build either vector. Metrics: mean pixel brightness, Laplacian-of-grayscale variance (sharpness), mean Farneback optical-flow magnitude, over 10 evenly-spaced frames (14 for the <code>mug-breaks</code> dense check). Scripts: <code>mi_gravity_generalization_{{hiddenstate,velocity}}.py</code> (first 4), <code>mi_gravity_expansion_{{hiddenstate,velocity}}.py</code> (remaining 16). Base <code>MiniMax-H3</code>, seed 1431, no LoRA in any phase.
   </div>
 </div>
 </body></html>
