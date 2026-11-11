@@ -1,0 +1,118 @@
+<!doctype html><html><head><meta charset="utf-8">
+<title>Gravity attribute vector: generalization check across 5 scenes</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=IBM+Plex+Mono:wght@400;500&family=Work+Sans:wght@400;500;600&display=swap">
+<style>
+:root{
+  --bg:#0d0f12; --panel:#15181c; --panel-2:#1a1e23; --ink:#ecebe6; --ink-muted:#8b9199;
+  --border:#262b31; --accent:#e8a33d; --accent-soft:#2a2114; --good:#6fae84; --good-soft:#17241c;
+  --bad:#d97066; --bad-soft:#2c1a18; --fix:#6fa8dc; --fix-soft:#132431;
+  --mono:'IBM Plex Mono',ui-monospace,Menlo,monospace; --display:'Fraunces',Georgia,serif; --body:'Work Sans',system-ui,sans-serif;
+  color-scheme: dark;
+}
+@media (prefers-color-scheme: light){
+  :root:not([data-theme="light"]){
+    --bg:#f7f6f3; --panel:#ffffff; --panel-2:#f1efe9; --ink:#1c1b19; --ink-muted:#6b6862;
+    --border:#e4e1da; --accent:#b5651d; --accent-soft:#f3e3d2; --good:#3c6e4a; --good-soft:#e3eee5;
+    --bad:#a8402f; --bad-soft:#f6e5e2; --fix:#1f5fa8; --fix-soft:#e2edf7;
+    color-scheme: light;
+  }
+}
+*{box-sizing:border-box;}
+body{margin:0; background:var(--bg); color:var(--ink); font-family:var(--body);}
+.wrap{max-width:1180px; margin:0 auto; padding:40px 16px 70px;}
+h1{font-family:var(--display); font-weight:600; font-size:clamp(26px,3.6vw,38px); margin:0 0 10px; letter-spacing:-0.01em;}
+.sub{color:var(--ink-muted); font-size:15px; max-width:76ch; line-height:1.6; margin:0;}
+.status{display:inline-block; font-family:var(--mono); font-size:11.5px; color:var(--bad); background:var(--bad-soft); border:1px solid var(--border); padding:3px 10px; border-radius:999px; margin-bottom:16px;}
+.methodology{margin-top:20px; font-family:var(--mono); font-size:12px; color:var(--ink-muted); line-height:1.7; border-left:2px solid var(--border); padding-left:14px;}
+.methodology b{color:var(--ink);}
+.section{margin-top:48px;}
+.section-head{display:flex; align-items:baseline; gap:12px; margin-bottom:16px; border-bottom:1px solid var(--border); padding-bottom:10px; flex-wrap:wrap;}
+.section-head h2{font-family:var(--display); font-weight:600; font-size:20px; margin:0;}
+.card{background:var(--panel); border:1px solid var(--border); border-radius:12px; padding:18px 20px; margin-top:14px;}
+.card-head{display:flex; align-items:baseline; justify-content:space-between; gap:10px; flex-wrap:wrap; margin-bottom:4px;}
+.scenario{font-size:16px; font-weight:600;}
+.prompt{font-size:13px; color:var(--ink-muted); font-style:italic; margin:0 0 14px; line-height:1.5;}
+.trio{display:grid; grid-template-columns:1fr 1fr 1fr; gap:16px;}
+.cell{min-width:0;}
+.cell video{width:100%; max-width:100%; display:block; border-radius:8px; background:#000; aspect-ratio:1344/768; object-fit:cover;}
+.cell .label{font-family:var(--mono); font-size:11px; text-align:center; margin-top:8px; letter-spacing:0.02em; text-transform:uppercase;}
+.cell.bad .label{color:var(--bad);}
+.cell.fix .label{color:var(--good);}
+@media (max-width:700px){ .trio{grid-template-columns:1fr; } }
+.badge{color:var(--accent);background:var(--accent-soft);border:1px solid var(--border);font-family:var(--mono);font-size:11px;padding:2px 9px;border-radius:999px;}
+.badge.bad{color:var(--bad);background:var(--bad-soft);}
+table.metrics{width:100%; border-collapse:collapse; font-family:var(--mono); font-size:12px; margin:16px 0;}
+table.metrics th, table.metrics td{text-align:left; padding:6px 10px; border-bottom:1px solid var(--border);}
+table.metrics th{color:var(--ink-muted); font-weight:500;}
+table.metrics td.bad{color:var(--bad);}
+.footnote{margin-top:40px; font-size:12.5px; color:var(--ink-muted); line-height:1.7; border-top:1px solid var(--border); padding-top:16px; max-width:84ch;}
+.footnote a{color:var(--accent);}
+.footnote code{font-family:var(--mono); background:var(--panel-2); padding:1px 5px; border-radius:4px; font-size:11.5px;}
+</style></head>
+<body>
+<div class="wrap">
+  <h1>Gravity attribute vector: generalization check across 5 scenes</h1>
+  <div class="status">Negative result &middot; neither locus produces a reliable gravity effect on any held-out scene</div>
+  <p class="sub">Follow-up to <a href="mi_attribute_vectors.html">the hidden-state</a> and <a href="mi_velocity_attribute_vectors.html">velocity-space</a> attribute-vector pages, both of which found zero visible gravity effect on a single held-out scene (<code>paper-fall-water</code>). Before concluding the gravity direction itself is the problem (not just that one scene), the already-built vectors -- no reconstruction, same <code>.pt</code> files -- were applied at full magnitude to <b>4 more held-out scenes</b>, none used anywhere in building either vector.</p>
+
+  <table class="metrics">
+    <tr><th>scene</th><th>variant</th><th>brightness</th><th>sharpness</th><th>motion</th><th>reading</th></tr>
+    <tr><td>ball-and-block-fall</td><td>baseline</td><td>107.0</td><td>17.4</td><td>0.458</td><td>normal fall + landing</td></tr>
+    <tr><td></td><td>hidden-state</td><td class="bad">137.6</td><td class="bad">8.3</td><td>0.429</td><td>yellower, blurrier -- same artifact as every other scene</td></tr>
+    <tr><td></td><td>velocity</td><td>99.1</td><td>50.3</td><td class="bad">0.226</td><td>falls earlier in-frame, but ball+block vanish entirely after landing</td></tr>
+    <tr><td>ball-in-basket</td><td>baseline</td><td>93.0</td><td>78.9</td><td>1.188</td><td>normal fall into crate</td></tr>
+    <tr><td></td><td>hidden-state</td><td class="bad">127.4</td><td class="bad">5.7</td><td>0.784</td><td>same artifact</td></tr>
+    <tr><td></td><td>velocity</td><td>93.6</td><td>64.8</td><td>1.138</td><td>ball's trajectory shifts, ends up outside the crate -- not "more gravity," just a different (worse) outcome</td></tr>
+    <tr><td>marble-run-x</td><td>baseline</td><td>108.9</td><td>94.4</td><td>0.411</td><td>&ndash;</td></tr>
+    <tr><td></td><td>hidden-state</td><td class="bad">135.7</td><td class="bad">6.9</td><td>0.784</td><td>same artifact</td></tr>
+    <tr><td></td><td>velocity</td><td>112.2</td><td>84.0</td><td>0.290</td><td>frame-for-frame near-identical to baseline -- no effect</td></tr>
+    <tr><td>paper-in-water</td><td>baseline</td><td>104.6</td><td>22.2</td><td>0.127</td><td>&ndash;</td></tr>
+    <tr><td></td><td>hidden-state</td><td class="bad">133.7</td><td class="bad">6.8</td><td>0.129</td><td>same artifact</td></tr>
+    <tr><td></td><td>velocity</td><td>109.2</td><td>21.7</td><td>0.147</td><td>sinks slightly earlier, same final outcome -- marginal, not a clean effect</td></tr>
+  </table>
+
+  <div class="methodology" style="border-left-color:var(--bad);">
+    <b>Conclusion:</b> across 5 held-out scenes now (this page's 4 plus the original <code>paper-fall-water</code>), neither locus produces a reliable "makes things fall better" effect. <b>Hidden-state is a constant, content-independent artifact</b> (brighter + blurrier, every single scene, same magnitude) -- not a gravity effect at all. <b>Velocity is better-behaved (stays visually coherent) but inconsistent</b>: no effect on 2/4 new scenes, a timing shift with a new defect (object disappearance) on one, and a trajectory change that looks like a worse outcome rather than a better one on another. This isn't one unlucky test scene -- gravity looks like a genuine weak point for this method, in either locus.
+  </div>
+
+  <div class="card"><div class="card-head"><span class="scenario">ball-and-block-fall</span><span class="badge bad">velocity: earlier fall, then object disappears</span></div>
+    <p class="prompt">Two pillows on a table and two grabber tools hanging above them from which a brown tennis ball and an orange block are suspended. The grabber tools let go of the ball and block.</p>
+    <div class="trio">
+      <div class="cell"><video src="assets/video/gravgen_ball_and_block_fall_baseline.mp4" controls preload="metadata" muted playsinline></video><div class="label">baseline</div></div>
+      <div class="cell bad"><video src="assets/video/gravgen_ball_and_block_fall_hiddenstate.mp4" controls preload="metadata" muted playsinline></video><div class="label">hidden-state</div></div>
+      <div class="cell bad"><video src="assets/video/gravgen_ball_and_block_fall_velocity.mp4" controls preload="metadata" muted playsinline></video><div class="label">velocity</div></div>
+    </div>
+  </div>
+
+  <div class="card"><div class="card-head"><span class="scenario">ball-in-basket</span></div>
+    <p class="prompt">An orange inflatable basketball is suspended above a black plastic crate placed on a wooden table. The ball is then released.</p>
+    <div class="trio">
+      <div class="cell"><video src="assets/video/gravgen_ball_in_basket_baseline.mp4" controls preload="metadata" muted playsinline></video><div class="label">baseline</div></div>
+      <div class="cell bad"><video src="assets/video/gravgen_ball_in_basket_hiddenstate.mp4" controls preload="metadata" muted playsinline></video><div class="label">hidden-state</div></div>
+      <div class="cell bad"><video src="assets/video/gravgen_ball_in_basket_velocity.mp4" controls preload="metadata" muted playsinline></video><div class="label">velocity</div></div>
+    </div>
+  </div>
+
+  <div class="card"><div class="card-head"><span class="scenario">marble-run-x</span></div>
+    <p class="prompt">A few magnetic ramps are attached to a whiteboard for a game of marble run. A yellow marble is released at the top of the ramps and slides down.</p>
+    <div class="trio">
+      <div class="cell"><video src="assets/video/gravgen_marble_run_x_baseline.mp4" controls preload="metadata" muted playsinline></video><div class="label">baseline</div></div>
+      <div class="cell bad"><video src="assets/video/gravgen_marble_run_x_hiddenstate.mp4" controls preload="metadata" muted playsinline></video><div class="label">hidden-state</div></div>
+      <div class="cell"><video src="assets/video/gravgen_marble_run_x_velocity.mp4" controls preload="metadata" muted playsinline></video><div class="label">velocity -- no effect</div></div>
+    </div>
+  </div>
+
+  <div class="card"><div class="card-head"><span class="scenario">paper-in-water</span></div>
+    <p class="prompt">A small piece of crumpled white paper is being lowered into a tall glass containing blue liquid. The crumpled paper is released into the glass.</p>
+    <div class="trio">
+      <div class="cell"><video src="assets/video/gravgen_paper_in_water_baseline.mp4" controls preload="metadata" muted playsinline></video><div class="label">baseline</div></div>
+      <div class="cell bad"><video src="assets/video/gravgen_paper_in_water_hiddenstate.mp4" controls preload="metadata" muted playsinline></video><div class="label">hidden-state</div></div>
+      <div class="cell"><video src="assets/video/gravgen_paper_in_water_velocity.mp4" controls preload="metadata" muted playsinline></video><div class="label">velocity -- marginal timing shift</div></div>
+    </div>
+  </div>
+
+  <div class="footnote">
+    Vectors reused as-is from <a href="mi_attribute_vectors.html">the hidden-state page</a> and <a href="mi_velocity_attribute_vectors.html">the velocity-space page</a> -- no reconstruction, scale=1.0 (full, unscaled magnitude) for both. None of these 4 scenes (ball-and-block-fall, ball-in-basket, marble-run-x, paper-in-water) were used to build either vector. Metrics: mean pixel brightness, Laplacian-of-grayscale variance (sharpness), mean Farneback optical-flow magnitude, over 10 evenly-spaced frames. Scripts: <code>mi_gravity_generalization_hiddenstate.py</code>, <code>mi_gravity_generalization_velocity.py</code>. Base <code>MiniMax-H3</code>, seed 1431, no LoRA in any phase.
+  </div>
+</div>
+</body></html>
