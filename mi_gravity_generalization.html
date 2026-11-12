@@ -292,8 +292,45 @@ table.metrics td.good{color:var(--good);}
     </div>
   </div>
 
+  <div class="section">
+    <div class="section-head"><h2>Scale sweep on the two flagged scenes</h2><span class="badge">no better scale found than 0.25x</span></div>
+    <p class="sub">Follow-up check: does a different hidden-state scale do better than 0.25x on the one confirmed-positive scene and the one wrong-direction scene above? Dense-frame motion-curve analysis (28 evenly-spaced frames, frame-to-frame pixel diff, not sparse screenshots) across 0.1x&ndash;1.0x for both.</p>
+    <div class="methodology">
+      <b>mug-breaks:</b> the late-clip release timing holds at 0.4x and 0.6x (total motion still ~90&ndash;91% of baseline), but at 0.8x and 1.0x overall motion energy drops to 69% and 61% of baseline &mdash; the clip gets more subdued/blurred, not more dynamic. No scale beats 0.25x; higher scale just trades motion for artifact, consistent with the full-magnitude collapse seen on the attribute-vector page.
+    </div>
+    <div class="methodology" style="border-left-color:var(--bad);">
+      <b>double-cradle:</b> motion suppression is flat at ~26&ndash;27% of baseline from 0.1x all the way to 0.6x, then drops further to 18% at 1.0x. The effect is not a 0.25x-specific artifact &mdash; even the smallest scale tested (0.1x) immediately kills ~73% of the swinging motion. This direction suppresses this scene's dynamics at any magnitude; it's confirmed as a genuine wrong-direction case, not a tuning issue.
+    </div>
+    <div class="card"><div class="card-head"><span class="scenario">mug-breaks</span><span class="badge">hidden-state scale sweep</span></div>
+      <p class="prompt">Same scene and prompt as above. Scales shown: 0.25 (repeated from above for reference), 0.4, 0.6, 0.8, 1.0.</p>
+      <div class="trio">
+        <div class="cell fix"><video src="assets/video/gravgen_mug_breaks_hiddenstate.mp4" controls preload="metadata" muted playsinline></video><div class="label">hidden-state &times;0.25</div></div>
+        <div class="cell"><video src="assets/video/gravgen_mug_breaks_hiddenstate_scale04.mp4" controls preload="metadata" muted playsinline></video><div class="label">hidden-state &times;0.4</div></div>
+        <div class="cell"><video src="assets/video/gravgen_mug_breaks_hiddenstate_scale06.mp4" controls preload="metadata" muted playsinline></video><div class="label">hidden-state &times;0.6</div></div>
+      </div>
+      <div class="trio" style="margin-top:16px;">
+        <div class="cell bad"><video src="assets/video/gravgen_mug_breaks_hiddenstate_scale08.mp4" controls preload="metadata" muted playsinline></video><div class="label">hidden-state &times;0.8 &mdash; motion subdued (69%)</div></div>
+        <div class="cell bad"><video src="assets/video/gravgen_mug_breaks_hiddenstate_scale10.mp4" controls preload="metadata" muted playsinline></video><div class="label">hidden-state &times;1.0 &mdash; motion subdued (61%)</div></div>
+        <div class="cell"></div>
+      </div>
+    </div>
+    <div class="card"><div class="card-head"><span class="scenario">double-cradle</span><span class="badge bad">suppression holds at every scale</span></div>
+      <p class="prompt">Same scene and prompt as above. Scales shown: 0.1, 0.25 (repeated from above), 0.4, 0.6, 1.0.</p>
+      <div class="trio">
+        <div class="cell bad"><video src="assets/video/gravgen_double_cradle_hiddenstate_scale01.mp4" controls preload="metadata" muted playsinline></video><div class="label">hidden-state &times;0.1 &mdash; already 27% of baseline motion</div></div>
+        <div class="cell bad"><video src="assets/video/gravgen_double_cradle_hiddenstate.mp4" controls preload="metadata" muted playsinline></video><div class="label">hidden-state &times;0.25</div></div>
+        <div class="cell bad"><video src="assets/video/gravgen_double_cradle_hiddenstate_scale04.mp4" controls preload="metadata" muted playsinline></video><div class="label">hidden-state &times;0.4</div></div>
+      </div>
+      <div class="trio" style="margin-top:16px;">
+        <div class="cell bad"><video src="assets/video/gravgen_double_cradle_hiddenstate_scale06.mp4" controls preload="metadata" muted playsinline></video><div class="label">hidden-state &times;0.6</div></div>
+        <div class="cell bad"><video src="assets/video/gravgen_double_cradle_hiddenstate_scale10.mp4" controls preload="metadata" muted playsinline></video><div class="label">hidden-state &times;1.0 &mdash; 18% of baseline motion</div></div>
+        <div class="cell"></div>
+      </div>
+    </div>
+  </div>
+
   <div class="footnote">
-    Vectors reused as-is from <a href="mi_attribute_vectors.html">the hidden-state page</a> and <a href="mi_velocity_attribute_vectors.html">the velocity-space page</a> -- no reconstruction, scale=0.25 of the original full magnitude for both. None of these 20 scenes were used to build either vector. Metrics: mean pixel brightness, Laplacian-of-grayscale variance (sharpness), mean Farneback optical-flow magnitude, over 10 evenly-spaced frames (14 for the <code>mug-breaks</code> dense check). Scripts: <code>mi_gravity_generalization_{{hiddenstate,velocity}}.py</code> (first 4), <code>mi_gravity_expansion_{{hiddenstate,velocity}}.py</code> (remaining 16). Base <code>MiniMax-H3</code>, seed 1431, no LoRA in any phase.
+    Vectors reused as-is from <a href="mi_attribute_vectors.html">the hidden-state page</a> and <a href="mi_velocity_attribute_vectors.html">the velocity-space page</a> -- no reconstruction, scale=0.25 of the original full magnitude for both. None of these 20 scenes were used to build either vector. Metrics: mean pixel brightness, Laplacian-of-grayscale variance (sharpness), mean Farneback optical-flow magnitude, over 10 evenly-spaced frames (14 for the <code>mug-breaks</code> dense check). Scripts: <code>mi_gravity_generalization_{{hiddenstate,velocity}}.py</code> (first 4), <code>mi_gravity_expansion_{{hiddenstate,velocity}}.py</code> (remaining 16). Scale-sweep section: <code>mi_gravity_hiddenstate_scalesweep_single.py</code>, same saved hidden-state vector reused at 0.1&ndash;1.0x, motion measured via 28-frame dense frame-diff curves (not Farneback). Base <code>MiniMax-H3</code>, seed 1431, no LoRA in any phase.
   </div>
 </div>
 </body></html>
