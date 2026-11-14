@@ -1,0 +1,147 @@
+<!doctype html><html><head><meta charset="utf-8">
+<title>Does physics pretraining transfer to robot rollout success?</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=IBM+Plex+Mono:wght@400;500&family=Work+Sans:wght@400;500;600&display=swap">
+<style>
+:root{
+  --bg:#0d0f12; --panel:#15181c; --panel-2:#1a1e23; --ink:#ecebe6; --ink-muted:#8b9199;
+  --border:#262b31; --accent:#e8a33d; --accent-soft:#2a2114; --good:#6fae84; --good-soft:#17241c;
+  --bad:#d97066; --bad-soft:#2c1a18; --fix:#6fa8dc; --fix-soft:#132431;
+  --mono:'IBM Plex Mono',ui-monospace,Menlo,monospace; --display:'Fraunces',Georgia,serif; --body:'Work Sans',system-ui,sans-serif;
+  color-scheme: dark;
+}
+@media (prefers-color-scheme: light){
+  :root:not([data-theme="light"]){
+    --bg:#f7f6f3; --panel:#ffffff; --panel-2:#f1efe9; --ink:#1c1b19; --ink-muted:#6b6862;
+    --border:#e4e1da; --accent:#b5651d; --accent-soft:#f3e3d2; --good:#3c6e4a; --good-soft:#e3eee5;
+    --bad:#a8402f; --bad-soft:#f6e5e2; --fix:#1f5fa8; --fix-soft:#e2edf7;
+    color-scheme: light;
+  }
+}
+*{box-sizing:border-box;}
+body{margin:0; background:var(--bg); color:var(--ink); font-family:var(--body);}
+.wrap{max-width:1180px; margin:0 auto; padding:40px 16px 70px;}
+h1{font-family:var(--display); font-weight:600; font-size:clamp(26px,3.6vw,38px); margin:0 0 10px; letter-spacing:-0.01em;}
+.sub{color:var(--ink-muted); font-size:15px; max-width:80ch; line-height:1.6; margin:0;}
+.status{display:inline-block; font-family:var(--mono); font-size:11.5px; color:var(--bad); background:var(--bad-soft); border:1px solid var(--border); padding:3px 10px; border-radius:999px; margin-bottom:16px;}
+.methodology{margin-top:20px; font-family:var(--mono); font-size:12px; color:var(--ink-muted); line-height:1.7; border-left:2px solid var(--border); padding-left:14px;}
+.methodology b{color:var(--ink);}
+.section{margin-top:48px;}
+.section-head{display:flex; align-items:baseline; gap:12px; margin-bottom:16px; border-bottom:1px solid var(--border); padding-bottom:10px; flex-wrap:wrap;}
+.section-head h2{font-family:var(--display); font-weight:600; font-size:20px; margin:0;}
+.card{background:var(--panel); border:1px solid var(--border); border-radius:12px; padding:18px 20px; margin-top:14px;}
+.card-head{display:flex; align-items:baseline; justify-content:space-between; gap:10px; flex-wrap:wrap; margin-bottom:4px;}
+.scenario{font-size:16px; font-weight:600;}
+.prompt{font-size:13px; color:var(--ink-muted); font-style:italic; margin:0 0 14px; line-height:1.5;}
+.trio{display:grid; grid-template-columns:1fr 1fr; gap:16px;}
+.cell{min-width:0;}
+.cell video, .cell img{width:100%; max-width:100%; display:block; border-radius:8px; background:#000;}
+.cell .label{font-family:var(--mono); font-size:11px; text-align:center; margin-top:8px; letter-spacing:0.02em; text-transform:uppercase;}
+.cell.bad .label{color:var(--bad);}
+.cell.fix .label{color:var(--good);}
+@media (max-width:700px){ .trio{grid-template-columns:1fr; } }
+.badge{color:var(--accent);background:var(--accent-soft);border:1px solid var(--border);font-family:var(--mono);font-size:11px;padding:2px 9px;border-radius:999px;}
+.badge.bad{color:var(--bad);background:var(--bad-soft);}
+.badge.good{color:var(--good);background:var(--good-soft);}
+table.metrics{width:100%; border-collapse:collapse; font-family:var(--mono); font-size:12px; margin:16px 0;}
+table.metrics th, table.metrics td{text-align:left; padding:6px 10px; border-bottom:1px solid var(--border);}
+table.metrics th{color:var(--ink-muted); font-weight:500;}
+table.metrics td.bad{color:var(--bad);}
+table.metrics td.good{color:var(--good);}
+.footnote{margin-top:40px; font-size:12.5px; color:var(--ink-muted); line-height:1.7; border-top:1px solid var(--border); padding-top:16px; max-width:84ch;}
+.footnote a{color:var(--accent);}
+.footnote code{font-family:var(--mono); background:var(--panel-2); padding:1px 5px; border-radius:4px; font-size:11.5px;}
+</style></head>
+<body>
+<div class="wrap">
+  <h1>Does physics-focused pretraining transfer to robot rollout success?</h1>
+  <div class="status">Null result (large-scale, 20 seeds x 40 trials): no detectable transfer</div>
+  <p class="sub">Testing whether fine-tuning Cosmos3-Edge's video generation on physics-relevant footage
+  (before any task-specific training) improves downstream LIBERO-10 manipulation success, versus the
+  stock pretrained backbone. Both the backbone and the action-adaptation data were held constant
+  across arms so any gap reflects backbone quality, not training budget.</p>
+
+  <div class="methodology">
+    <b>Setup.</b> Three Cosmos3-Edge backbones: <b>stock</b> (public pretrained checkpoint, untouched),
+    <b>WISA</b> (500 iters of vision-only continued pretrain on 254 clips of real-world explosions/smoke/splashes
+    from <a href="https://huggingface.co/datasets/qihoo360/WISA-80K">WISA-80K</a>), and <b>tower</b> (500 iters on
+    300 windows of our own bimanual-arm block-stacking teleop data -- rigid-body manipulation physics,
+    much closer to LIBERO's own domain than WISA's VFX content). All three were then adapted to LIBERO-10
+    with an <i>identical</i> 5-shot action-SFT recipe (5 demos/task instead of the ~38/task full dataset,
+    1500 iters, full-parameter) so the action head can't just memorize its way to a good score regardless
+    of backbone -- any success-rate gap should come from the backbone, not the data volume.
+  </div>
+
+  <div class="methodology" style="border-left-color:var(--bad);">
+    <b>Headline: no effect, at a sample size large enough to trust.</b> First pass (5 seeds, 20 trials/task,
+    1000 episodes/arm) suggested WISA might be ahead. A second pass with 3 more seeds flipped the direction.
+    Scaled to <b>20 seeds x 40 trials/task (8000 episodes/arm)</b>, stock/WISA/tower land within 1 point of
+    each other -- <b>15.28% / 14.65% / 14.20%</b> -- and stock is marginally <i>ahead</i> of both continued-pretrain
+    variants. Neither the VFX-physics data (WISA) nor the much more LIBERO-adjacent real-manipulation data
+    (tower) produced a measurable transfer effect at this scale.
+  </div>
+
+  <div class="methodology">
+    <b>A bigger finding: the seed itself dominates.</b> Per-seed success rate has <b>std ~8.6-9.0 points</b>
+    across the 20 seeds (range 2.5%-39%) -- roughly <b>5x</b> the ~1.8-point standard error that 400-trial
+    binomial sampling noise alone would predict. The diffusion sampling seed systematically determines how
+    good this 5-shot policy's action trajectories are, independent of which backbone it was adapted from.
+    At this few-shot scale, backbone differences (if any) are swamped by this seed effect.
+  </div>
+
+  <div class="methodology">
+    <b>In progress.</b> A LoRA follow-up (freeze the backbone, train only rank-128 LoRA + fresh action heads)
+    is running to check whether the earlier full-parameter action-SFT stage was simply overwriting whatever
+    physics prior the continued-pretrain baked into the shared <code>moe_gen</code> weights -- full-SFT and
+    the continued-pretrain both update the same weight groups, so 1500 further full-parameter iterations is
+    a plausible washout mechanism. Results to follow.
+  </div>
+
+  <table class="metrics">
+    <tr><th>backbone</th><th>episodes</th><th>successes</th><th>success rate</th><th>per-seed mean / std</th></tr>
+    <tr><td>stock</td><td>7760</td><td>1186</td><td>15.28%</td><td>15.46% / 8.59pp</td></tr>
+    <tr><td>WISA (VFX physics)</td><td>8000</td><td>1172</td><td>14.65%</td><td>14.65% / 8.96pp</td></tr>
+    <tr><td>tower (real manipulation)</td><td>8000</td><td>1136</td><td>14.20%</td><td>14.20% / 8.51pp</td></tr>
+  </table>
+
+  <div class="section">
+    <div class="section-head"><h2>What the policy actually sees</h2></div>
+    <div class="card">
+      <p class="prompt">Left half (blue banner): the model's own predicted next-frame video -- this action
+      policy works by generating a short predicted video and decoding the action from it, not via a separate
+      action head reading raw pixels. Right half (green banner): the real LIBERO simulator frame. Inside each
+      half: agentview (third-person, left) concatenated with the wrist camera (right) into one 256x512 image --
+      that concatenated pair is the actual model input.</p>
+      <img src="assets/img/libero_visual_input_sample.png" alt="Action prediction vs environment, agentview+wrist concat view">
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-head"><h2>Rollout examples (stock vs WISA, same initial state)</h2>
+      <span class="badge">illustrative only -- not representative of the null result above</span>
+    </div>
+    <p class="sub">These are real clips from one seed where WISA happened to succeed and stock happened to
+    fail on the same initial scene. Given the seed-variance finding above, treat these as examples of what a
+    single lucky/unlucky seed looks like, not evidence of a backbone difference.</p>
+    <div class="card"><div class="card-head"><span class="scenario">turn on the stove and put the moka pot on it</span></div>
+      <div class="trio">
+        <div class="cell bad"><video src="assets/video/libero_task2_stock_vs_wisa.mp4" controls preload="metadata" muted playsinline></video><div class="label">red border = stock (times out, 520/520 steps) / green border = WISA (succeeds, 288 steps)</div></div>
+      </div>
+    </div>
+    <div class="card"><div class="card-head"><span class="scenario">pick up the book and place it in the back compartment of the caddy</span></div>
+      <div class="trio">
+        <div class="cell bad"><video src="assets/video/libero_task5_stock_vs_wisa.mp4" controls preload="metadata" muted playsinline></video><div class="label">red border = stock (times out, 520/520 steps) / green border = WISA (succeeds, 204 steps)</div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="footnote">
+    All three backbones adapted with the identical LIBERO-10 action-SFT recipe (frame-wise-relative rot6d,
+    quantile_rot normalization, concat_view third-person+wrist, chunk length 16, 5 demos/task via
+    <code>LIBERO_MAX_EPISODES_PER_TASK=5</code>, 1500 iters full-parameter). Closed-loop eval:
+    <code>cosmos_framework/simulation/libero/closed_loop_eval.py</code>, LIBERO-10 suite, 10 tasks,
+    seed sweep via both the server's diffusion-sampling seed and the eval script's own seed (kept equal).
+    WISA/tower continued-pretrain: <code>vision_sft_edge</code> recipe, 500 iters, vision-only (no action head).
+    Base <code>Cosmos3-Edge</code> (2B MoT), no LoRA in the full-SFT arms.
+  </div>
+</div>
+</body></html>
